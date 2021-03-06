@@ -1,6 +1,17 @@
 # Roll for a Little Good Stuff
 
-## 0. Workout - D4
+[0. Workout](#0.-Workout)
+[1. Clean](#1.-Clean)
+[2. Personal care](#2.-personal-care)
+[3. Send a text](#3.-send-a-text)
+[4. Read a page](#4.-read-a-page)
+[5. Do a task](5.-do-a-task)
+[6. Process stuff](#6.-process)
+[7. Relax](#7.-relax)
+[8. Replenish](#8.-replenish)
+[9. Do something nice for Emily](#9.-do-something-nice-for-emily)
+
+## 0. Workout
 
 ### 1. Aerobic fitness
    1. Jump rope
@@ -39,12 +50,12 @@
    5. Single leg bodyweight squat
    6. Single leg bodyweight deadlift
 
-## 1. Clean - D4
+## 1. Clean
    1. Put something away
    2. Clean a small area of surface
    3. Wash a dish
    4. Clean a small area of floor
-## 2. Personal care - D4
+## 2. Personal care
    1. Hair and nails
       1. Shower
       2. Shower
@@ -73,13 +84,13 @@
       4. Vaseline in nose
       5. Q-tip ear
       6. Clean glasses
-## 3. Send a text to a friend or family member
-## 4. Read a page of a book or article
+## 3. Send a text
+## 4. Read a page
 Red: Crossroads of Twilight
 Blue: A Byte of Python
 
-## 5. Do a task from TickTick or BuJo
-## 6. Process - D4
+## 5. Do a task
+## 6. Process
    1. Process personal email
    2. Process UNC email
    3. Process desktop inbox
@@ -92,12 +103,12 @@ Blue: A Byte of Python
           6. FB Messenger
           7. TickTick inbox
           8. Mailbox
-## 7. Relax - D12 (+ D4)
+## 7. Relax
 ### Be mindful
 1. Meditate
 2. Pause, breathe, and listen for 1 minute
 3. Walking meditation
-### Play          
+### Play 
 4. Puzzle
     1. Spelling bee for 1 minute
     2. Jigsaw if in the middle, otherwise reroll
@@ -113,12 +124,12 @@ Blue: A Byte of Python
 10. Shake it out
 11. Do nothing for 1 minute
 12. Go out on the balcony or porch for some fresh air
-## 8. Replenish - D4
+## 8. Replenish
 1. Eat a piece of fruit
 2. Eat a vegetable
 3. Drink water
 4. Drink water
-## 9. Do something nice for Emily - D4
+## 9. Do something nice for Emily
    1. Quick massage
    2. Hug and a kiss
    3. Mad props
