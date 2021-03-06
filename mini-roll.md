@@ -56,29 +56,29 @@
    4. Clean a small area of floor
 ## 2. Personal care
 ### Hair and nails
-      1. Shower
-      2. Brush or comb hair and add product (/shower)
-      3. Shave
-      4. Trim body hair
-      5. Cut nails
+   1. Shower
+   2. Brush or comb hair and add product (/shower)
+   3. Shave
+   4. Trim body hair
+   5. Cut nails
 ### Skin
-      6. Vaseline lips
-      7. Wash face
-      8. Benzoyl peroxide (/shower/wash face/shave)
-      9. Moisturize
-      10. Face toner (/shave)
-      11. Triamcinolone acetonide OR fluticasone OR acne dot if needed
+   6. Vaseline lips
+   7. Wash face
+   8. Benzoyl peroxide (/shower/wash face/shave)
+   9. Moisturize
+   10. Face toner (/shave)
+   11. Triamcinolone acetonide OR fluticasone OR acne dot if needed
 ### Teeth
-      12. Floss (/brush teeth)
-      13. Dental pick/brush things (/brush teeth)
-      14. Fluoride rinse
-      15. Brush teeth
+   12. Floss (/brush teeth)
+   13. Dental pick/brush things (/brush teeth)
+   14. Fluoride rinse
+   15. Brush teeth
 ### Other
-      16. Eye drops
-      17. Deoderant
-      18. Vaseline in nose
-      19. Q-tip ear
-      20. Clean glasses
+   16. Eye drops
+   17. Deoderant
+   18. Vaseline in nose
+   19. Q-tip ear
+   20. Clean glasses
 ## 3. Send a text
 ## 4. Read a page
 Red: Crossroads of Twilight
