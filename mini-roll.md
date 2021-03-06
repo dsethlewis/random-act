@@ -1,7 +1,6 @@
 # Roll for a Little Good Stuff
 
 [0. Workout](#0.-Workout)
-
 [1. Clean](#1.-Clean)
 
 [2. Personal care](#2.-personal-care)
