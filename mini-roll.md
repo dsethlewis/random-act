@@ -1,24 +1,15 @@
 # Roll for a Little Good Stuff
 
-[0. Workout](#0.-Workout)
-[1. Clean](#1.-Clean)
-
-[2. Personal care](#2.-personal-care)
-
-[3. Send a text](#3.-send-a-text)
-
-[4. Read a page](#4.-read-a-page)
-
-[5. Do a task](5.-do-a-task)
-
-[6. Process stuff](#6.-process)
-
-[7. Relax](#7.-relax)
-
-[8. Replenish](#8.-replenish)
-
-[9. Do something nice for Emily](#9.-do-something-nice-for-emily)
-
+[0. Workout](#0.-Workout)  
+[1. Clean](#1.-Clean)  
+[2. Personal care](#2.-personal-care)  
+[3. Send a text](#3.-send-a-text)  
+[4. Read a page](#4.-read-a-page)  
+[5. Do a task](5.-do-a-task)  
+[6. Process stuff](#6.-process)  
+[7. Relax](#7.-relax)  
+[8. Replenish](#8.-replenish)  
+[9. Do something nice for Emily](#9.-do-something-nice-for-emily)  
 ## 0. Workout
 
 ### 1. Aerobic fitness
