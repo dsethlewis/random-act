@@ -1,15 +1,6 @@
-from random import random
-from math import trunc
-
-def infRand(n):
-    str_seed = str(trunc(random() * (10**n)))
-    str_seed = "0" * (n - len(str_seed)) + str_seed
-    return [int(x) for x in str_seed]
+import random
 
 def roll():
-
-    seed = infRand(4)
-
     t1 = [
         "Workout",
         "Clean",
@@ -23,7 +14,9 @@ def roll():
         "Do something nice for Emily"
     ]
 
-    print(t1[seed[0]])
+    r1 = random.randint(0, len(t1) - 1)
+
+    print(t1[r1])
 
     t2 = [
         # Workout
@@ -78,10 +71,11 @@ def roll():
         ]
     ]
 
-    a2 = t2[seed[0]]
+    a2 = t2[r1]
     if a2:
-        r2 = seed[1] % len(a2)
+        r2 = random.randint(0, len(a2) - 1)
         print(a2[r2])
+    
     t3 = [
         [
             [
@@ -193,10 +187,9 @@ def roll():
         [],
         []
     ]
-    a3 = t3[seed[0]]
+    a3 = t3[r1]
     if a3 and a3[r2]:
-        r3 = seed[2] % len(a3)
+        r3 = random.randint(0, len(a3[r2]) - 1)
         print(a3[r2][r3])
-    
 
 roll()
