@@ -101,12 +101,13 @@ def roll():
                 "Swing arms around",
                 "High knees",
                 "Butt kicks"
+                "Gokhale Method"
             ],
             [
                 "Tree pose",
                 "Balance a book on your head",
                 "Tightrope walk",
-                "Flamingo stand-and-reach",
+                "Flamingo",
                 "Single-leg bodyweight squat",
                 "Single-leg Romanian deadlift"
             ]
@@ -165,7 +166,7 @@ def roll():
             [
                 "Meditate",
                 "Pause, breathe, and listen",
-                "Walking meditation"
+                "Mindfully walk around"
             ],
             [
                 "Puzzle",
