@@ -179,7 +179,7 @@ tree = act("Do something", [
           	"Drink"
         ])
     ])
-]
+])
 
 # t2 = open("roll-table.txt")
 # def build(file):
