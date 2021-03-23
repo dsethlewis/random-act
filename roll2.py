@@ -10,7 +10,8 @@ tree = act("Do something", [
             "DDR",
             "Stairs",
             "Burpees",
-            "Mountain climbers"
+            "Mountain climbers",
+            "Go for a short run"
         ]),
         act("Muscular Fitness", [
             "Squats",
@@ -107,7 +108,8 @@ tree = act("Do something", [
     ]),
     act("Read", [
         "A Byte of Python",
-        "Crossroads of Twilight"
+        "Crossroads of Twilight",
+        "Chrome Reading List"
     ]),
     rand_task.task_tree,
     act("Process stuff", [
