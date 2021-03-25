@@ -120,7 +120,7 @@ tree = act("Do something", [
         "Crossroads of Twilight",
         "Chrome Reading List"
     ]),
-    rand_task.task_tree,
+    rand_task.task_tree.changeRank(2),
     act("Process stuff", [
         "Personal email",
         "UNC email",
@@ -176,8 +176,8 @@ tree = act("Do something", [
             "Massage",
             "Hug",
             "Kiss",
-          		"Hold hand",
-          		"Shoot your shot"
+          	"Hold hand",
+          	"Shoot your shot"
         ]),
         act("Words of affirmation", [
             "Mad props",
