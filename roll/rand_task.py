@@ -28,8 +28,10 @@ def build_task_tree(client):
 
     tree = act("Do a task", [
         act(p["name"], [
+            # subtasks have key "parentId", so this pulls only top-level tasks
             act(t["title"], task_children(t)) for t in client.task.get_from_project(p["id"]) if not "parentId" in t
-        ]) for p in active_projects
+        # checks if project list is empty
+        ]) if client.task.get_from_project(p["id"]) else act(p["name"], "Add next action to project") for p in active_projects
     ])
 
     return tree
