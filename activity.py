@@ -28,6 +28,10 @@ class Activity:
         print(c.title)
         if c.hasChild():
             c.choose()
+    
+    def changeRank(self, new_rank):
+        self.rank = new_rank
+        return self
 
     def __repr__(self):
         return "<Activity title:%s children:%s rank:%s>" % (self.title, self.children, self.rank)
