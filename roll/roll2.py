@@ -83,7 +83,8 @@ tree = act("Do something", [
             "Add product to hair",
             "Shave",
             "Trim body hair",
-            "Cut nails"
+            "Cut nails",
+            "Refill conditioner tube"
         ]),
         act("Skin", [
             "Vaseline lips",
@@ -94,7 +95,8 @@ tree = act("Do something", [
             "Triamcinolone acetonide",
             "Fluticasone",
             "Acne dot",
-            act("Clindamycin", rank=2)
+            act("Clindamycin", rank=2),
+            "Refill body wash tube"
         ]),
         act("Teeth", [
             "Floss",
