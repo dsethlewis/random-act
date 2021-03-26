@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import random
 from activity import act
 import rand_task
@@ -49,8 +50,16 @@ tree = act("Do something", [
             "Roll neck out",
             "Swing arms around",
             "High knees",
-            "Butt kicks"
-            "Gokhale Method"
+            "Butt kicks",
+            act("Gokhale Method", [
+                "Stretchsitting",
+                "Stacksitting",
+                "Stretchlying",
+                "Tallstanding",
+                "Hip-hinging",
+                "Inner corset",
+                "Glidewalking"
+            ])
         ]),
         act("Stability", [
             "Tree pose",
@@ -111,7 +120,7 @@ tree = act("Do something", [
         "Crossroads of Twilight",
         "Chrome Reading List"
     ]),
-    rand_task.task_tree,
+    rand_task.task_tree.changeRank(2),
     act("Process stuff", [
         "Personal email",
         "UNC email",
@@ -167,15 +176,26 @@ tree = act("Do something", [
             "Massage",
             "Hug",
             "Kiss",
-          		"Hold hand",
-          		"Shoot your shot"
+          	"Hold hand",
+          	"Shoot your shot"
         ]),
         act("Words of affirmation", [
             "Mad props",
           		"Sweet nothing"
         ]),
         "Quality time",
-        "Acts of service",
+        act("Acts of service", [
+            "Empty trash or recycling in her office",
+            "Declutter something in her office",
+            "Fold some of her laundry",
+            "Clean her side of the bathroom vanity",
+            "Clean her nightstand",
+            "Offer to solve a problem",
+            "Offer to pick up prescriptions",
+            "Offer to make a phone call she's avoiding",
+            "Clean her computer monitor, desk, whiteboard, or window",
+            "Make the bed"
+        ]),
        	act("Gifts", [
             "Snack",
           	"Drink"
