@@ -3,6 +3,7 @@ import random
 from activity import act
 import rand_task
 
+# construct a nested tree of activities to choose from
 tree = act("Do something", [
     act("Workout", [
         act("Aerobic Fitness", [
@@ -213,4 +214,5 @@ tree = act("Do something", [
 # print(build("roll-table.txt"))
 # 
 
+# recurse through tree, choosing paths at random, until reaching a dead end
 tree.choose()
