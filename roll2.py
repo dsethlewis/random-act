@@ -215,4 +215,4 @@ tree = act("Do something", [
 # 
 
 # recurse through tree, choosing paths at random, until reaching a dead end
-tree.choose()
+# tree.choose()

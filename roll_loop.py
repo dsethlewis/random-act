@@ -1,0 +1,44 @@
+from activity import act
+from roll2 import tree
+from datetime import datetime
+import math
+
+running = True
+
+aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
+
+next_options = ["next", "continue", "go", "do", "activity"]
+next_aliases = []
+for word in next_options:
+    next_aliases += aliases(word)
+
+quit_options = ["quit", "exit", "leave"]
+quit_aliases = []
+for word in quit_options:
+    quit_aliases += aliases(word)
+
+n = 0
+t = datetime.now()
+
+while running:
+
+    response = input("\nDo an activity or quit?\n").lower()
+
+    print(" ")
+
+    if response in quit_options:
+        running = False
+    elif response in next_aliases:
+        tree.choose()
+        n += 1
+    else:
+        print("\033[31mPlease enter a valid command.\033[0m")
+
+elapsed = (datetime.now() - t)
+
+summary = '''\033[1;34mSummary\033[0m
+Activities: {}
+Time elapsed: {}
+'''.format(n, str(elapsed).split('.')[:-1][0])
+
+print(summary)
