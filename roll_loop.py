@@ -20,7 +20,15 @@ for word in quit_options:
 n = 0
 t = datetime.now()
 
+early_start = False
+if t.hour < 12:
+    early_start = True
+
 while running:
+
+    if early_start and datetime.now().hour > 12:
+        print("\n\033[42mIf you haven't already, consider eating lunch.\033[0m\n")
+        early_start = False
 
     response = input("\nDo an activity or quit?\n").lower()
 
