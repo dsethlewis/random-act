@@ -75,7 +75,8 @@ tree = act("Do something", [
         act("Put something away", rank=2),
         "Clean a small area of surface",
         "Wash a dish",
-        "Clean a small area of floor"
+        "Clean a small area of floor",
+        "Empty a bin (or bring bins out/in"
     ]),
     act("Personal care", [
         act("Hair and nails", [
