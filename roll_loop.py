@@ -3,8 +3,6 @@ from roll2 import tree
 from datetime import datetime
 import math
 
-running = True
-
 aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 next_options = ["next", "continue", "go", "do", "activity"]
@@ -17,36 +15,43 @@ quit_aliases = []
 for word in quit_options:
     quit_aliases += aliases(word)
 
-n = 0
-t = datetime.now()
+def activityLoop():
 
-early_start = False
-if t.hour < 12:
-    early_start = True
+    running = True
+    n = 0
 
-while running:
+    t = datetime.now()
 
-    if early_start and datetime.now().hour >= 12:
-        print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
-        early_start = False
+    early_start = False
+    if t.hour < 12:
+        early_start = True
 
-    response = input("\nDo an activity or quit?\n").lower()
+    while running:
 
-    print(" ")
+        if early_start and datetime.now().hour >= 12:
+            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
+            early_start = False
 
-    if response in quit_options:
-        running = False
-    elif response in next_aliases:
-        tree.choose()
-        n += 1
-    else:
-        print("\033[31mPlease enter a valid command.\033[0m")
+        response = input("\nDo an activity or quit?\n").lower()
 
-elapsed = (datetime.now() - t)
+        print(" ")
 
-summary = '''\033[1;34mSummary\033[0m
-Activities: {}
-Time elapsed: {}
-'''.format(n, str(elapsed).split('.')[:-1][0])
+        if response in quit_aliases:
+            running = False
+        elif response in next_aliases:
+            tree.choose()
+            n += 1
+        else:
+            print("\033[31mPlease enter a valid command.\033[0m")
 
-print(summary)
+    elapsed = (datetime.now() - t)
+
+    summary = '''\033[1;34mSummary\033[0m
+    Activities: {}
+    Time elapsed: {}
+    '''.format(n, str(elapsed).split('.')[:-1][0])
+
+    print(summary)
+
+activityLoop()
+
