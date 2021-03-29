@@ -8,7 +8,7 @@ running = True
 aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 next_options = ["next", "continue", "go", "do", "activity"]
-next_aliases = []
+next_aliases = [""]
 for word in next_options:
     next_aliases += aliases(word)
 
@@ -26,8 +26,8 @@ if t.hour < 12:
 
 while running:
 
-    if early_start and datetime.now().hour > 12:
-        print("\n\033[42mIf you haven't already, consider eating lunch.\033[0m\n")
+    if early_start and datetime.now().hour >= 12:
+        print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
         early_start = False
 
     response = input("\nDo an activity or quit?\n").lower()
