@@ -76,7 +76,11 @@ tree = act("Do something", [
         "Clean a small area of surface",
         "Wash a dish",
         "Clean a small area of floor",
-        "Empty a bin (or bring bins out/in"
+        act("Other", [
+            "Empty a bin (or bring bins out/in",
+            "Spray vinegar mixture in shower",
+            "Move laundry along"
+        ])
     ]),
     act("Personal care", [
         act("Hair and nails", [
@@ -137,7 +141,10 @@ tree = act("Do something", [
             "OneNote",
             "FB Messenger",
             "TickTick inbox",
-            "Mailbox"
+            act("Mail", [
+                "Move mail from tray to desktop inbox",
+                "Move mail from mailbox to mail tray"
+            ]),
         ]),
     ]),
     act("Relax", [
