@@ -28,9 +28,7 @@ def activityLoop():
 
     while running:
 
-        if early_start and datetime.now().hour >= 12:
-            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
-            early_start = False
+        
 
         response = input("\nDo an activity or quit?\n").lower()
 
@@ -38,6 +36,9 @@ def activityLoop():
 
         if response in quit_aliases:
             running = False
+        elif early_start and datetime.now().hour >= 12:
+            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
+            early_start = False
         elif response in next_aliases:
             tree.choose()
             n += 1
