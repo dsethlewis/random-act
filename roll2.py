@@ -176,11 +176,11 @@ tree = act("Do something", [
             "Eat a piece of fruit",
             "Eat a vegetable",
             act("Drink water", rank=2)
-        ]),
+        ], rank = 2),
         act("Read", [
             "A Byte of Python",
             "Crossroads of Twilight",
-            "Chrome Reading List"
+            "OneNote Reading List"
         ])
     ], rank = 2),
 
