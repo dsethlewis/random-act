@@ -1,4 +1,5 @@
 import random
+from math import trunc
 
 # define an activity object
 class Activity:
@@ -32,9 +33,11 @@ class Activity:
         weighted = []
         [weighted.extend([x] * self.children[x].rank) for x in range(len(self.children))]
         c = self.children[random.choice(weighted)]
-        print("{} ({})".format(c.title, round(c.prob, 3)))
         if c.hasChild():
+            print(c.title)
             c.choose()
+        else:
+            print("{} ({}%)".format(c.title, round(c.prob * 100, 1)))
     
     # set a new rank and return self
     def changeRank(self, new_rank):
