@@ -22,7 +22,7 @@ class Activity:
             self.children.append(act_a)
         elif type(a) == Activity:
             act_a = Activity(a.title, a.children, self, self.n_children, a.rank)
-            self.children.extend([act_a] * act_a.rank)
+            [self.children.append(act_a) for x in range(act_a.rank)]
         elif type(a) == list:
             for x in a:
                 self.addChild(x)

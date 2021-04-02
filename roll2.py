@@ -33,7 +33,8 @@ tree = act("Do something", [
             act("Other", [
                 "Empty a bin (or bring bins out/in",
                 "Spray vinegar mixture in shower",
-                "Move laundry along"
+                "Move laundry along",
+                "Restock toilet paper, paper towels, tissues, or soap"
             ])
         ]),
     ], rank = 3),
@@ -194,12 +195,11 @@ tree = act("Do something", [
                 "Massage",
                 "Hug",
                 "Kiss",
-                "Hold hand",
-                "Shoot your shot"
+                "Hold hand"
             ]),
             act("Words of affirmation", [
                 "Mad props",
-                    "Sweet nothing"
+                "Sweet nothing"
             ]),
             "Quality time",
             act("Acts of service", [
@@ -231,4 +231,4 @@ tree = act("Do something", [
 # 
 
 # recurse through tree, choosing paths at random, until reaching a dead end
-# tree.choose()
+tree.choose()
