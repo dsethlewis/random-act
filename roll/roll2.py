@@ -33,7 +33,8 @@ tree = act("Do something", [
             act("Other", [
                 "Empty a bin (or bring bins out/in",
                 "Spray vinegar mixture in shower",
-                "Move laundry along"
+                "Move laundry along",
+                "Move dishwasher along"
             ])
         ]),
     ], rank = 3),
