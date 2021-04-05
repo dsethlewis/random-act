@@ -1,15 +1,15 @@
 import random
+from math import trunc
 
 # define an activity object
 class Activity:
 
-    def __init__(self, title, children = [], parent = None, n_siblings = 1, rank = 1):
+    def __init__(self, title, children = [], parent = None, rank = 1):
         self.title = title # text of activity
         self.children = [] # sub-categories of activity
         self.rank = rank # how many times an activity should appear in tree
         self.parent = parent
-        self.n_siblings = n_siblings
-        self.prob = (rank / n_siblings) * parent.prob if parent else 1
+        self.prob = (rank / parent.n_children) * parent.prob if parent else 1
         self.n_children = 1
         if children:
             self.n_children = sum([x.rank if type(x) == Activity else 1 for x in children])
@@ -18,14 +18,16 @@ class Activity:
     def addChild(self, a):
         '''Constructs a hierarchical activity tree.'''
         if type(a) == str:
-            act_a = Activity(a, parent = self, n_siblings = self.n_children)
-            self.children.append(act_a)
+            self.children.append(Activity(a, parent = self))
         elif type(a) == Activity:
+<<<<<<< HEAD
             act_a = Activity(a.title, a.children, self, self.n_children, a.rank)
             [self.children.append(act_a) for x in range(act_a.rank)]
+=======
+            self.children.append(Activity(a.title, a.children, self, a.rank))
+>>>>>>> duedate
         elif type(a) == list:
-            for x in a:
-                self.addChild(x)
+            [self.addChild(x) for x in a]
 
     # return true if children attribute is not empty
     def hasChild(self):
@@ -33,10 +35,14 @@ class Activity:
     
     # recurse through activity tree to select next activity
     def choose(self):
-        c = random.choice(self.children)
-        print("{} ({})".format(c.title, round(c.prob, 3)))
+        weighted = []
+        [weighted.extend([x] * self.children[x].rank) for x in range(len(self.children))]
+        c = self.children[random.choice(weighted)]
         if c.hasChild():
+            print(c.title)
             c.choose()
+        else:
+            print("{} ({}%)".format(c.title, round(c.prob * 100, 1)))
     
     # set a new rank and return self
     def changeRank(self, new_rank):
