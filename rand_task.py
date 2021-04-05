@@ -3,6 +3,7 @@ from ticktick import api
 from getpass import getpass
 from random import choice
 from activity import act
+import datetime
 
 # create a client (type: dict) object for the user.
 # if no username and password are passed as arguments, requests them from user.
@@ -27,12 +28,21 @@ def build_task_tree(client):
     # drop archived projects
     active_projects = [x for x in projects if not x["closed"]]
 
+    # get current date
+    today = datetime.datetime.now().date()
+
     # recurse through subtasks and transform into activity tree
     def task_children(t):
+        tc = []
         if "childIds" in t:
-            return [act(t2["title"], task_children(t2)) for t2 in tasks if t2["id"] in t["childIds"]]
-        else:
-            return []
+            for sub_t in tasks:
+                due = False
+                if "dueDate" in sub_t:
+                    raw_due = sub_t["dueDate"]
+                    due = today >= datetime.date(int(raw_due[0:4]), int(raw_due[5:7]), int(raw_due[8:10]))
+                if sub_t in t["childIds"] and due:
+                    tc.append(act(sub_t["title"], task_children(sub_t)))
+        return tc
 
     # map through projects and high-level tasks
     tree = act("Do a task", [
