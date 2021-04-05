@@ -20,12 +20,7 @@ class Activity:
         if type(a) == str:
             self.children.append(Activity(a, parent = self))
         elif type(a) == Activity:
-<<<<<<< HEAD
-            act_a = Activity(a.title, a.children, self, self.n_children, a.rank)
-            [self.children.append(act_a) for x in range(act_a.rank)]
-=======
             self.children.append(Activity(a.title, a.children, self, a.rank))
->>>>>>> duedate
         elif type(a) == list:
             [self.addChild(x) for x in a]
 
