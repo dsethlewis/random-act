@@ -28,30 +28,34 @@ def build_task_tree(client):
     # drop archived projects
     active_projects = [x for x in projects if not x["closed"]]
 
-    # get current date
-    today = datetime.datetime.now().date()
+    # change TickTick date string into datetime.date object
+    def isDue(t):
+        if "dueDate" not in t : return True
+        dd = t["dueDate"]
+        return datetime.datetime.now().date() >= datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
+
+    # transform TickTick task into Activity
+    def taskToActivity(t):
+        return act(
+            title = t["title"],
+            children = task_children(t),
+            rank = t["priority"] + 1
+            )
 
     # recurse through subtasks and transform into activity tree
     def task_children(t):
         tc = []
         if "childIds" in t:
             for sub_t in tasks:
-
-                # check if the task is due yet
-                due = True
-                if "dueDate" in sub_t:
-                    raw_due = sub_t["dueDate"]
-                    due = today >= datetime.date(int(raw_due[0:4]), int(raw_due[5:7]), int(raw_due[8:10]))
-
-                if sub_t["id"] in t["childIds"] and due:
-                    tc.append(act(sub_t["title"], task_children(sub_t)))
+                if sub_t["id"] in t["childIds"] and isDue(sub_t):
+                    tc.append(taskToActivity(sub_t))
         return tc
 
     # map through projects and high-level tasks
     tree = act("Do a task", [
         act(p["name"], [
             # subtasks have key "parentId", so this pulls only top-level tasks
-            act(t["title"], task_children(t)) for t in client.task.get_from_project(p["id"]) if not "parentId" in t
+            taskToActivity(t) for t in client.task.get_from_project(p["id"]) if not "parentId" in t and isDue(t)
         # if project list is empty, add activity for adding to project list
         ]) if client.task.get_from_project(p["id"]) else act(p["name"], "Add next action to project") for p in active_projects
     ])
