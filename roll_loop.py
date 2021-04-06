@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 from activity import act
-from roll2 import tree
+import roll2
 from datetime import datetime
 import math
 from textwrap import dedent
+from importlib import reload
 
 # simple function that creates a list of initial substrings for a word
 # e.g., aliases("word") -> ["w", "wo", "wor", "word"]
@@ -20,6 +21,9 @@ quit_options = ["quit", "exit", "leave"]
 quit_aliases = []
 for word in quit_options:
     quit_aliases += aliases(word)
+
+# create list of options for update command
+update_aliases = aliases("update")
 
 # follow commands from user to proceed through multiple activities
 def activityLoop():
@@ -41,7 +45,7 @@ def activityLoop():
     while running:
 
         # ask user for command
-        response = input("\nDo an activity or quit?\n").lower()
+        response = input("\nDo an activity, update, or quit?\n").lower()
 
         # respond to user command
         if response in quit_aliases: # user wants to quit
@@ -50,8 +54,11 @@ def activityLoop():
             print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
             early_start = False
         elif response in next_aliases: # user wants to continue with next activity
-            tree.choose()
+            roll2.tree.choose()
             n += 1
+        elif response in update_aliases:
+            reload(roll2)
+            print("\nActivity list has been updated.")
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
 
