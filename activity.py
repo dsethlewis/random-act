@@ -1,10 +1,11 @@
 import random
+import webbrowser
 from math import trunc
 
 # define an activity object
 class Activity:
 
-    def __init__(self, title, children = [], parent = None, rank = 1):
+    def __init__(self, title, children = [], parent = None, rank = 1, url = None):
         self.title = title # text of activity
         self.children = [] # sub-categories of activity
         self.rank = rank # how many times an activity should appear in tree
@@ -14,13 +15,14 @@ class Activity:
         if children:
             self.n_children = sum([x.rank if type(x) == Activity else 1 for x in children])
             self.addChild(children)
+        self.url = url
 
     def addChild(self, a):
         '''Constructs a hierarchical activity tree.'''
         if type(a) == str:
             self.children.append(Activity(a, parent = self))
         elif type(a) == Activity:
-            self.children.append(Activity(a.title, a.children, self, a.rank))
+            self.children.append(Activity(a.title, a.children, self, a.rank, a.url))
         elif type(a) == list:
             [self.addChild(x) for x in a]
 
@@ -38,6 +40,8 @@ class Activity:
             c.choose()
         else:
             print("{} ({}%)".format(c.title, round(c.prob * 100, 1)))
+            if c.url : webbrowser.open(c.url)
+                
     
     # set a new rank and return self
     def changeRank(self, new_rank):

@@ -8,11 +8,11 @@ tree = act("Do something", [
     act("Get things done", [
         rand_task.task_tree.changeRank(2), # Do a task from TickTick
         act("Process stuff", [
-            "Personal email",
-            "UNC email",
+            act("Personal email", url = "https://mail.google.com/mail/u/0/#inbox"),
+            act("UNC email", url = "https://mail.business.unc.edu/owa/#path=/mail"),
             "Desktop inbox",
             act("Alternate channels", [
-                "YNAB",
+                act("YNAB", url = "https://app.youneedabudget.com"),
                 "Texts",
                 "Discord",
                 "WhatsApp",
@@ -26,12 +26,12 @@ tree = act("Do something", [
             ]),
         ]),
         act("Clean", [
-            act("Put something away", rank=2),
+            act("Put something away", rank = 2),
             "Clean a small area of surface",
             "Wash a dish",
             "Clean a small area of floor",
             act("Other", [
-                "Empty a bin (or bring bins out/in",
+                "Empty a bin (or bring bins out/in)",
                 "Spray vinegar mixture in shower",
                 "Move laundry along",
                 "Restock toilet paper, paper towels, tissues, or soap",
@@ -154,9 +154,9 @@ tree = act("Do something", [
             ]),
             act("Play", [
                 act("Puzzle", [
-                    "Spelling Bee",
+                    act("Spelling Bee", url = "https://www.nytimes.com/puzzles/spelling-bee"),
                     "Jigsaw puzzle",
-                    "Edabit",
+                    act("Edabit", url = "https://edabit.com/challenges"),
                     "DOX"
                 ]),
                 "Color",
@@ -164,9 +164,9 @@ tree = act("Do something", [
             ]),
             act("Enjoy", [
                 "Listen to a song",
-                "Read a poem",
+                act("Read a poem", url = "https://www.reddit.com/r/Poetry/top/?t=all"),
                 "Eat something yummy",
-                "Watch a funny video"
+                act("Watch a funny video", url = "https://www.youtube.com/")
             ]),
             act("Rest", [
                 "Shake it out",
@@ -180,7 +180,7 @@ tree = act("Do something", [
             act("Drink water", rank=2)
         ], rank = 2),
         act("Read", [
-            "A Byte of Python",
+            act("A Byte of Python", url = "https://python.swaroopch.com/oop.html"),
             "Crossroads of Twilight",
             "OneNote Reading List"
         ])
@@ -232,4 +232,4 @@ tree = act("Do something", [
 # 
 
 # recurse through tree, choosing paths at random, until reaching a dead end
-tree.choose()
+# tree.choose()

@@ -38,12 +38,12 @@ def build_task_tree(client):
             for sub_t in tasks:
 
                 # check if the task is due yet
-                due = False
+                due = True
                 if "dueDate" in sub_t:
                     raw_due = sub_t["dueDate"]
                     due = today >= datetime.date(int(raw_due[0:4]), int(raw_due[5:7]), int(raw_due[8:10]))
 
-                if sub_t in t["childIds"] and due:
+                if sub_t["id"] in t["childIds"] and due:
                     tc.append(act(sub_t["title"], task_children(sub_t)))
         return tc
 
