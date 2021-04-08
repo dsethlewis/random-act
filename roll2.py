@@ -26,7 +26,7 @@ tree = act("Do something", [
             ]),
         ]),
         act("Clean", [
-            act("Put something away", rank = 2),
+            act("Put something away", rank = 3),
             "Clean a small area of surface",
             "Wash a dish",
             "Clean a small area of floor",
@@ -61,8 +61,8 @@ tree = act("Do something", [
                     act("Core", [
                         "Plank",
                         "Side plank",
-                        "Superman"
-                        "TRX knee tucks"
+                        "Superman",
+                        "TRX knee tucks",
                         "TRX hip press"
                     ]),
                     act("Upper body", [
@@ -157,7 +157,8 @@ tree = act("Do something", [
                     act("Spelling Bee", url = "https://www.nytimes.com/puzzles/spelling-bee"),
                     "Jigsaw puzzle",
                     act("Edabit", url = "https://edabit.com/challenges"),
-                    "DOX"
+                    "DOX",
+                    act("Answer a question on Quora", url = "https://quora.com")
                 ]),
                 "Color",
                 "Play a video game"
