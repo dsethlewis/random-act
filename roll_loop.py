@@ -73,7 +73,8 @@ def activityLoop():
         
         elif response in update_aliases: # user wants to refresh TickTick tasks
             reload(rand_task)
-            tree.children[0].children[0] = rand_task.task_tree.changeRank(2)
+            del tree.children[0].children[-1]
+            tree.children[0].children.append(rand_task.task_tree.changeRank(2))
             print("\nTask list has been updated.")
         
         else: # user did not select a valid command
