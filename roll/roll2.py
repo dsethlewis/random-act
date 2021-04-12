@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 import random
 from activity import act
 import rand_task
@@ -12,7 +11,10 @@ tree = act("Do something", [
             act("UNC email", url = "https://mail.business.unc.edu/owa/#path=/mail"),
             "Desktop inbox",
             act("Alternate channels", [
-                act("YNAB", url = "https://app.youneedabudget.com"),
+                act(
+                    "YNAB",
+                    url = "https://app.youneedabudget.com/411791cc-fb41-4e42-aae5-e9596f27dbf7/accounts"
+                    ),
                 "Texts",
                 "Discord",
                 "WhatsApp",
@@ -51,7 +53,7 @@ tree = act("Do something", [
                     )
             ])
         ])
-    ], rank = 3),
+    ], rank = 5),
 
     act("Take care of yourself", [
         act("Workout", [
@@ -197,7 +199,7 @@ tree = act("Do something", [
             "Crossroads of Twilight",
             "OneNote Reading List"
         ])
-    ], rank = 2),
+    ], rank = 3),
 
     act("Connect with others", [
         act("Send a text", [
@@ -251,7 +253,7 @@ tree = act("Do something", [
                 "Organize a meal for friends or family"
             ])
         ])
-    ], rank = 1)
+    ])
 ])
 
 # t2 = open("roll-table.txt")
