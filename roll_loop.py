@@ -2,9 +2,13 @@
 from roll2 import tree
 from datetime import datetime
 from textwrap import dedent
-#from selenium import webdriver
 from webbrowser import open
 from statistics import mode
+import rand_task
+from importlib import reload
+from os import system
+
+system("")
 
 # simple function that creates a list of initial substrings for a word
 # e.g., aliases("word") -> ["w", "wo", "wor", "word"]
@@ -67,6 +71,7 @@ def activityLoop():
                 history.append(choice)
         
         elif response in update_aliases: # user wants to refresh TickTick tasks
+            reload(rand_task)
             tree.children[0].children[0] = rand_task.task_tree.changeRank(2)
             print("\nTask list has been updated.")
         

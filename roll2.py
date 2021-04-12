@@ -38,6 +38,15 @@ tree = act("Do something", [
                 "Move dishwasher along"
             ])
         ]),
+        act("Study", [
+            act("Python", [
+                act(
+                    "Work through next step in Flask tutorial",
+                    url = "https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars"
+                    ),
+                act("Read A Byte of Python", url = "https://python.swaroopch.com/io.html")
+            ])
+        ])
     ], rank = 3),
 
     act("Take care of yourself", [
@@ -181,7 +190,6 @@ tree = act("Do something", [
             act("Drink water", rank=2)
         ], rank = 2),
         act("Read", [
-            act("A Byte of Python", url = "https://python.swaroopch.com/oop.html"),
             "Crossroads of Twilight",
             "OneNote Reading List"
         ])
@@ -192,33 +200,51 @@ tree = act("Do something", [
             "Family",
             "Friend"
         ]),
-        act("Do something nice for Emily", [
-            act("Touch", [
-                "Massage",
-                "Hug",
-                "Kiss",
-                "Hold hand"
+        act("Do a good turn", [
+            act("Do something nice for Emily", [
+                act("Touch", [
+                    "Massage",
+                    "Hug",
+                    "Kiss",
+                    "Hold hand"
+                ]),
+                act("Words of affirmation", [
+                    "Mad props",
+                    "Sweet nothing"
+                ]),
+                "Quality time",
+                act("Acts of service", [
+                    "Empty trash or recycling in her office",
+                    "Declutter something in her office",
+                    "Fold some of her laundry",
+                    "Clean her side of the bathroom vanity",
+                    "Clean her nightstand",
+                    "Offer to solve a problem",
+                    "Offer to pick up prescriptions",
+                    "Offer to make a phone call she's avoiding",
+                    "Clean her computer monitor, desk, whiteboard, or window",
+                    "Make the bed"
+                ]),
+                act("Gifts", [
+                    "Snack",
+                    "Drink"
+                ])
+            ], rank=3),
+            act("Give", [
+                "Bring a book to a nearby little free library",
+                "Donate stuff to Goodwill/etc.",
+                "Make a small donation to a charity",
+                "Bring food to a local food bank/drop-off location"
             ]),
-            act("Words of affirmation", [
-                "Mad props",
-                "Sweet nothing"
-            ]),
-            "Quality time",
-            act("Acts of service", [
-                "Empty trash or recycling in her office",
-                "Declutter something in her office",
-                "Fold some of her laundry",
-                "Clean her side of the bathroom vanity",
-                "Clean her nightstand",
-                "Offer to solve a problem",
-                "Offer to pick up prescriptions",
-                "Offer to make a phone call she's avoiding",
-                "Clean her computer monitor, desk, whiteboard, or window",
-                "Make the bed"
-            ]),
-            act("Gifts", [
-                "Snack",
-                "Drink"
+            act("Serve", [
+                "Bake something for a neighbor or friend",
+                "Look up one-off volunteer opportunities",
+                "Walk around the block picking up litter"
+            ])
+            act("Love", [
+                "Write a thank you note",
+                "Send a gift to a friend or family member",
+                "Organize a meal for friends or family"
             ])
         ])
     ], rank = 1)
