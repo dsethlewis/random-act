@@ -2,7 +2,7 @@
 from roll2 import tree
 from datetime import datetime
 from textwrap import dedent
-from webbrowser import open
+import webbrowser
 from statistics import mode
 import rand_task
 from importlib import reload
@@ -15,8 +15,24 @@ system("")
 # e.g., aliases("word") -> ["w", "wo", "wor", "word"]
 aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
+def suggestActivity(choice=None):
+    if not choice : choice = tree.choose()
+    if choice.rep or choice not in history:
+        choice.displ()
+        response2 = input("\nDo or pass?\n").lower()
+        if response2 in do_aliases:
+            return choice
+        elif response2 in pass_aliases:
+            return suggestActivity()
+        elif response2 in quit_aliases:
+            return
+        else:
+            print("\nPlease make a valid selection.\n")
+            return suggestActivity(choice)
+    return suggestActivity()
+
 # create list of options for next activity command
-next_options = ["next", "continue", "go", "do", "activity"]
+next_options = ["next", "continue", "go", "activity"]
 next_aliases = [""]
 for word in next_options:
     next_aliases += aliases(word)
@@ -29,6 +45,9 @@ for word in quit_options:
 
 # create list of options for update command
 update_aliases = aliases("update")
+
+do_aliases = aliases("do") + [""]
+pass_aliases = aliases("pass")
 
 #drv = webdriver.Chrome()
 
@@ -65,10 +84,9 @@ def activityLoop():
             early_start = False
         
         elif response in next_aliases: # user wants to continue with next activity
-            choice = tree.choose()
-            if choice.rep or choice not in history:
-                choice.displ()
-                if choice.url : open(choice.url, autoraise=False)
+            choice = suggestActivity()
+            if choice:
+                if choice.url : webbrowser.open(choice.url, autoraise=False)
                 history.append(choice)
         
         elif response in update_aliases: # user wants to refresh TickTick tasks
@@ -100,7 +118,7 @@ def activityLoop():
             )
         print(dedent(summary))
     else:
-        print("No activities completed.\n")
+        print("\nNo activities completed.\n")
 
 # start a session
 activityLoop()
