@@ -44,7 +44,11 @@ tree = act("Do something", [
                     "Work through next step in Flask tutorial",
                     url = "https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars"
                     ),
-                act("Read A Byte of Python", url = "https://python.swaroopch.com/io.html")
+                act("Read A Byte of Python", url = "https://python.swaroopch.com/io.html"),
+                act(
+                    "Work through next step in SQLAlchemy tutorial",
+                    url = "https://www.tutorialspoint.com/sqlalchemy/index.htm"
+                    )
             ])
         ])
     ], rank = 3),
@@ -240,7 +244,7 @@ tree = act("Do something", [
                 "Bake something for a neighbor or friend",
                 "Look up one-off volunteer opportunities",
                 "Walk around the block picking up litter"
-            ])
+            ]),
             act("Love", [
                 "Write a thank you note",
                 "Send a gift to a friend or family member",
