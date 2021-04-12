@@ -59,6 +59,10 @@ class Activity:
         [print(t.title) for t in self.ancestry]
         print("{} ({}%)".format(self.title, self.getPct()))
 
+    def displTree(self, spc=""):
+        print("{}{} ({}%)".format(spc, self.title, self.getPct()))
+        for a in self.children : a.displTree(spc+" ")
+
     # how Activity object will be compared with other Activity objects
     def __lt__(self, other):
         return self.prob < other.prob
