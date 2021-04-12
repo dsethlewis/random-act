@@ -5,7 +5,6 @@ import rand_task
 # construct a nested tree of activities to choose from
 tree = act("Do something", [
     act("Get things done", [
-        rand_task.task_tree.changeRank(2), # Do a task from TickTick
         act("Process stuff", [
             act("Personal email", url = "https://mail.google.com/mail/u/0/#inbox"),
             act("UNC email", url = "https://mail.business.unc.edu/owa/#path=/mail"),
@@ -52,7 +51,8 @@ tree = act("Do something", [
                     url = "https://www.tutorialspoint.com/sqlalchemy/index.htm"
                     )
             ])
-        ])
+        ]),
+        rand_task.task_tree.changeRank(2) # Do a task from TickTick
     ], rank = 5),
 
     act("Take care of yourself", [
