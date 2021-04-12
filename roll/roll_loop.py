@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3.9
 from roll2 import tree
 from datetime import datetime
 from textwrap import dedent
@@ -7,6 +7,7 @@ from statistics import mode
 import rand_task
 from importlib import reload
 from os import system
+from activity import act
 
 system("")
 
@@ -67,7 +68,7 @@ def activityLoop():
             choice = tree.choose()
             if choice.rep or choice not in history:
                 choice.displ()
-                if choice.url : open(choice.url)
+                if choice.url : open(choice.url, autoraise=False)
                 history.append(choice)
         
         elif response in update_aliases: # user wants to refresh TickTick tasks
@@ -80,22 +81,25 @@ def activityLoop():
 
     elapsed = (datetime.now() - t0) # timedelta for how much time passed while program was running
 
-    modal = mode(history)
-    rarest = min(history)
-
     # print a summary of the session
-    summary = '''
-    \033[1;34mSummary\033[0m
-    Time elapsed: {}
-    Activities: {}
-    Mode: {} ({} times)
-    Rarest: {} ({}%)'''.format(
-        str(elapsed).split('.')[:-1][0],
-        len(history),
-        modal.title, history.count(modal),
-        rarest.title, rarest.getPct()
-        )
-    print(dedent(summary))
+    print("\n\033[1;34mSummary\033[0m", end='')
+    if history:
+        modal = mode(history)
+        rarest = min(history) 
+        summary = '''
+        Time elapsed: {}
+        Activities: {}
+        Mode: {} ({} times)
+        Rarest: {} ({}%)
+        '''.format(
+            str(elapsed).split('.')[:-1][0],
+            len(history),
+            modal.title, history.count(modal),
+            rarest.title, rarest.getPct()
+            )
+        print(dedent(summary))
+    else:
+        print("No activities completed.\n")
 
 # start a session
 activityLoop()
