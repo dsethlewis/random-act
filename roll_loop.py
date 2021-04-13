@@ -5,7 +5,6 @@ from textwrap import dedent
 import webbrowser
 from statistics import mode
 import rand_task
-from importlib import reload
 from os import system
 from activity import act
 
@@ -17,9 +16,9 @@ aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 def suggestActivity(choice=None):
     if not choice : choice = tree.choose()
-    if choice.rep or choice not in history:
+    if choice.rep or choice not in history or (type(choice) == rand_task.Task and choice.isDue()):
         choice.displ()
-        response2 = input("\nDo or pass?\n").lower()
+        response2 = input("\nDo or pass? ").lower()
         if response2 in do_aliases:
             return choice
         elif response2 in pass_aliases:
@@ -44,10 +43,12 @@ for word in quit_options:
     quit_aliases += aliases(word)
 
 # create list of options for update command
-update_aliases = aliases("update")
+# update_aliases = aliases("update")
 
 do_aliases = aliases("do") + [""]
 pass_aliases = aliases("pass")
+yes_aliases = aliases("yes")
+no_aliases = aliases("no")
 
 #drv = webdriver.Chrome()
 
@@ -72,7 +73,7 @@ def activityLoop():
     while running:
 
         # ask user for command
-        response = input("\nDo an activity, update, or quit?\n").lower()
+        response = input("\nDo an activity?\n").lower()
 
         # respond to user command
 
@@ -88,12 +89,20 @@ def activityLoop():
             if choice:
                 if choice.url : webbrowser.open(choice.url, autoraise=False)
                 history.append(choice)
+                if isinstance(choice, rand_task.Task):
+                    response2 = input("\nWould you like to mark this task completed?\n")
+                    if response2 in yes_aliases:
+                        choice.complete()
+                        print("Task list updated.")
+                    elif response2 not in no_aliases:
+                        print("Please enter a valid command.")
         
-        elif response in update_aliases: # user wants to refresh TickTick tasks
-            reload(rand_task)
-            del tree.children[0].children[-1]
-            tree.children[0].children.append(rand_task.task_tree.changeRank(2))
-            print("\nTask list has been updated.")
+        # elif response in update_aliases: # user wants to refresh TickTick tasks
+        #     del tree.children[0].children[-1]
+        #     tree.children[0].children.append(
+        #         rand_task.build_task_tree(rand_task.my_client.sync()).changeRank(2)
+        #         )
+        #     print("\nTask list has been updated.")
         
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
