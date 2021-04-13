@@ -22,13 +22,13 @@ class Activity:
         return self
 
     def setAncestry(self):
-        self.ancestry = self.parent.ancestry + [self.parent] if self.parent else []
+        self.ancestry = self.parent.ancestry + [self.parent] if self.parent else [] # NOT WORKING
 
     def setProb(self):
         self.prob = (self.rank / self.parent.n_children) * self.parent.prob if self.parent else 1
 
     def setNChildren(self, children):
-        self.n_children = sum([x.rank if type(x) == Activity else 1 for x in children])
+        self.n_children = sum([x.rank if isinstance(x, Activity) else 1 for x in children])
 
     def addChild(self, a):
         '''Constructs a hierarchical activity tree.'''
