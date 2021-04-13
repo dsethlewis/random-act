@@ -60,7 +60,6 @@ class Task(activity.Activity):
         supernode = task_tree.parent
         supernode.children[supernode.children.index(task_tree)] = build_task_tree(self.client)
 
-
 # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
 def build_task_tree(client):
 
