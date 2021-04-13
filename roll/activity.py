@@ -7,22 +7,36 @@ class Activity:
         self.title = title # text of activity
         self.children = [] # sub-categories of activity
         self.rank = rank # how many times an activity should appear in tree
-        self.parent = parent
-        self.ancestry = parent.ancestry + [parent] if parent else []
-        self.prob = (rank / parent.n_children) * parent.prob if parent else 1
+        self.setParent(parent)
         self.n_children = 1
         if children:
-            self.n_children = sum([x.rank if type(x) == Activity else 1 for x in children])
+            self.setNChildren(children)
             self.addChild(children)
         self.url = url
         self.rep = rep
+
+    def setParent(self, parent):
+        self.parent = parent
+        self.setAncestry()
+        self.setProb()
+        return self
+
+    def setAncestry(self):
+        self.ancestry = self.parent.ancestry + [self.parent] if self.parent else []
+
+    def setProb(self):
+        self.prob = (self.rank / self.parent.n_children) * self.parent.prob if self.parent else 1
+
+    def setNChildren(self, children):
+        self.n_children = sum([x.rank if type(x) == Activity else 1 for x in children])
 
     def addChild(self, a):
         '''Constructs a hierarchical activity tree.'''
         if type(a) == str:
             self.children.append(Activity(a, parent = self))
-        elif type(a) == Activity:
-            self.children.append(Activity(a.title, a.children, self, a.rank, a.url))
+        elif isinstance(a, Activity):
+            # self.children.append(Activity(a.title, a.children, self, a.rank, a.url))
+            self.children.append(a.setParent(self))
         elif type(a) == list:
             [self.addChild(x) for x in a]
     

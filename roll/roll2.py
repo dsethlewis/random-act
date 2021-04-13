@@ -2,6 +2,10 @@ import random
 from activity import act
 import rand_task
 
+# TickTick credentials
+ttuser = "dsethlewis@gmail.com"
+ttpw = "zq3vzIGUmN5y"
+
 # construct a nested tree of activities to choose from
 tree = act("Do something", [
     act("Get things done", [
@@ -52,7 +56,7 @@ tree = act("Do something", [
                     )
             ])
         ]),
-        rand_task.task_tree.changeRank(2) # Do a task from TickTick
+        rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).changeRank(2) # Do a task from TickTick
     ], rank = 5),
 
     act("Take care of yourself", [
@@ -266,3 +270,5 @@ tree = act("Do something", [
 
 # recurse through tree, choosing paths at random, until reaching a dead end
 # tree.choose()
+
+x = None
