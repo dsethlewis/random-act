@@ -4,31 +4,23 @@ from random import choice
 class Activity:
 
     def __init__(self, title, children = [], parent = None, rank = 1, url = None, rep = True):
+
         self.title = title # text of activity
-        self.children = [] # sub-categories of activity
+        self.children = children # sub-categories of activity expressed as string or Activity or list thereof
         self.rank = rank # how many times an activity should appear in tree
-        self.setParent(parent)
-        self.n_children = 1
-        if children:
-            self.setNChildren(children)
-            self.addChild(children)
-        self.url = url
-        self.rep = rep
+        self.url = url # related webpage
+        self.rep = rep # whether this activity can be done repeatedly during a given session
 
-    def setParent(self, parent):
-        self.parent = parent
-        self.setAncestry()
-        self.setProb()
-        return self
+        if children : self.addChild(children) # finish initializing inputted children
 
-    def setAncestry(self):
-        self.ancestry = self.parent.ancestry + [self.parent] if self.parent else [] # NOT WORKING
+    def traceAncestry(self):
+        return self.parent.ancestry + [self.parent] if self.parent else []
 
-    def setProb(self):
-        self.prob = (self.rank / self.parent.n_children) * self.parent.prob if self.parent else 1
+    def calcProb(self):
+        return (self.rank / self.parent.n_children) * self.parent.prob if self.parent else 1
 
-    def setNChildren(self, children):
-        self.n_children = sum([x.rank if isinstance(x, Activity) else 1 for x in children])
+    def nChildren(self, children):
+        return sum([a.rank if isinstance(a, Activity) else 1 for a in children])
 
     def addChild(self, a):
         '''Constructs a hierarchical activity tree.'''
@@ -36,7 +28,7 @@ class Activity:
             self.children.append(Activity(a, parent = self))
         elif isinstance(a, Activity):
             # self.children.append(Activity(a.title, a.children, self, a.rank, a.url))
-            self.children.append(a.setParent(self))
+            self.children.append(a.reinit(self))
         elif type(a) == list:
             [self.addChild(x) for x in a]
     
@@ -77,6 +69,10 @@ class Activity:
         print("{}{} ({}%)".format(spc, self.title, self.getPct()))
         for a in self.children : a.displTree(spc+" ")
 
+    # Activity object equivalence
+    def __eq__(self, other):
+        return vars(self) == vars(other)
+
     # how Activity object will be compared with other Activity objects
     def __lt__(self, other):
         return self.prob < other.prob
@@ -87,3 +83,19 @@ class Activity:
 
 # create an alias for the object
 act = Activity
+
+sample_activity = Activity("Do something", ["This", "That"])
+
+class activityTreeNode():
+    
+    def __init__(self, activity, parent = None, children = []):
+        self.activity = activity
+        self.parent = parent
+        self.children = [activityTreeNode(child, self,) for child in children]
+
+
+        self.ancestry = self.traceAncestry() # lineage of node
+        self.prob = self.calcProb() # overall probability of being selected
+        self.n_children = self.nChildren(children) if children else 1 # weighted (by rank) number of sub-activities
+
+    
