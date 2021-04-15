@@ -1,13 +1,15 @@
-import random
-from activity import act
 import rand_task
+
+from activity2 import Activity, ActivityTreeNode
+act = Activity
+node = ActivityTreeNode
 
 # TickTick credentials
 ttuser = "dsethlewis@gmail.com"
 ttpw = "zq3vzIGUmN5y"
 
 # construct a nested tree of activities to choose from
-tree = act("Do something", [
+my_activities = act("Do something", [
     act("Get things done", [
         act("Process stuff", [
             act("Personal email", url = "https://mail.google.com/mail/u/0/#inbox"),
@@ -31,7 +33,7 @@ tree = act("Do something", [
             ]),
         ]),
         act("Clean", [
-            act("Put something away", rank = 3),
+            act("Put something away", priority=3),
             "Clean a small area of surface",
             "Wash a dish",
             "Clean a small area of floor",
@@ -56,8 +58,8 @@ tree = act("Do something", [
                     )
             ])
         ]),
-        rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).changeRank(2) # Do a task from TickTick
-    ], rank = 5),
+        rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).setPriority(3) # Do a task from TickTick
+    ], priority=5),
 
     act("Take care of yourself", [
         act("Workout", [
@@ -128,7 +130,7 @@ tree = act("Do something", [
         ]),
         act("Personal care", [
             act("Hair and nails", [
-                act("Shower", rank=2),
+                act("Shower", priority=2),
                 "Brush hair",
                 "Add product to hair",
                 "Shave",
@@ -145,14 +147,14 @@ tree = act("Do something", [
                 "Triamcinolone acetonide",
                 "Fluticasone",
                 "Acne dot",
-                act("Clindamycin", rank=2),
+                act("Clindamycin", priority=2),
                 "Refill body wash tube"
             ]),
             act("Teeth", [
                 "Floss",
                 "Dental pick",
                 "Fluoride rinse",
-                act("Brush teeth", rank=2)
+                act("Brush teeth", priority=2)
             ]),
             act("Other", [
                 "Eye drops",
@@ -197,13 +199,13 @@ tree = act("Do something", [
         act("Replenish", [
             "Eat a piece of fruit",
             "Eat a vegetable",
-            act("Drink water", rank=2)
-        ], rank = 2),
+            act("Drink water", priority=2)
+        ], priority=2),
         act("Read", [
             "Crossroads of Twilight",
             "OneNote Reading List"
         ])
-    ], rank = 3),
+    ], priority=3),
 
     act("Connect with others", [
         act("Send a text", [
@@ -239,7 +241,7 @@ tree = act("Do something", [
                     "Snack",
                     "Drink"
                 ])
-            ], rank=3),
+            ], priority=3),
             act("Give", [
                 "Bring a book to a nearby little free library",
                 "Donate stuff to Goodwill/etc.",
@@ -259,16 +261,3 @@ tree = act("Do something", [
         ])
     ])
 ])
-
-# t2 = open("roll-table.txt")
-# def build(file):
-#     reading = open(file).read()
-#     listed = reading.split('\n')
-#     t = act("Do")
-# print(build("roll-table.txt"))
-# 
-
-# recurse through tree, choosing paths at random, until reaching a dead end
-# tree.choose()
-
-x = None

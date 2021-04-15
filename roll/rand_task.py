@@ -2,7 +2,7 @@
 from ticktick import api
 from getpass import getpass
 from random import choice
-import activity
+import activity2
 import datetime
 
 # create a client (type: dict) object for the user.
@@ -14,15 +14,14 @@ def login(username = "", password = ""):
         password = getpass()
     return api.TickTickClient(username, password)
 
-class Task(activity.Activity):
+class Task(activity2.Activity):
 
     def __init__(self, client, task_dict):
         
         super().__init__(
             title = task_dict["title"],
-            children = [],
-            parent = None,
-            rank = task_dict["priority"] + 1,
+            options = [],
+            priority = task_dict["priority"] + 1,
             url = None,
             rep = True
             )
@@ -44,26 +43,26 @@ class Task(activity.Activity):
     # populate list of subtasks
     def addSubtasks(self):
         for sub_t in self.client.state["tasks"]:
-            if sub_t["id"] in self.task_dict["childIds"] : self.children.append(Task(self.client, sub_t))
+            if sub_t["id"] in self.task_dict["childIds"] : self.options.append(Task(self.client, sub_t))
 
     # call TickTick (or other) API to mark task completed
     def complete(self):
         self.client.task.complete(self.id)
 
-        # find task component of overall tree
-        def topTaskNode(node):
-            for c in node.children:
-                if c.title == "Do a task" : return c
-                topTaskNode(c)
+        # # find task component of overall tree
+        # def topTaskNode(node):
+        #     for c in node.children:
+        #         if c.title == "Do a task" : return c
+        #         topTaskNode(c)
 
-        task_tree = topTaskNode(self.ancestry[0])
-        supernode = task_tree.parent
-        supernode.children[supernode.children.index(task_tree)] = build_task_tree(self.client)
+        # task_tree = topTaskNode(self.ancestry[0])
+        # supernode = task_tree.parent
+        # supernode.children[supernode.children.index(task_tree)] = build_task_tree(self.client)
 
 # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
 def build_task_tree(client):
 
-    act = activity.act
+    act = activity2.Activity
 
     # client state is the core database of tasks
     state = client.state
@@ -71,7 +70,7 @@ def build_task_tree(client):
     def taskMaker(client, project):
         if client.task.get_from_project(project["id"]):
             return [Task(client, task_dict) for task_dict in client.task.get_from_project(project["id"])]
-        return "Add next action to project"
+        return ["Add next action to project"]
 
     # initialize activity tree for tasks
     return act("Do a task", [
@@ -84,10 +83,10 @@ def build_task_tree(client):
                 # that are active and in the current folder
                 if not project["closed"] and project["groupId"] == folder["id"]
         # loop through folders
-        ]) for folder in state["project_folders"]] \
+        ]) for folder in state["project_folders"] \
             # add pseudo-folder for any projects not in folders
             + [{"id": None, "name": "Other Projects"}]
-    )
+    ])
 
 # client = login("dsethlewis@gmail.com", "zq3vzIGUmN5y")
 # tree = build_task_tree(client)

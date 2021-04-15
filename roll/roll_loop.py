@@ -1,14 +1,16 @@
 #!/usr/bin/env python3.9
-from roll2 import tree
 from datetime import datetime
 from textwrap import dedent
 import webbrowser
 from statistics import mode
 import rand_task
 from os import system
-from activity import act
+from activity2 import ActivityTreeNode
+from roll2 import my_activities
 
 system("")
+
+tree = ActivityTreeNode(my_activities)
 
 # simple function that creates a list of initial substrings for a word
 # e.g., aliases("word") -> ["w", "wo", "wor", "word"]
@@ -16,7 +18,7 @@ aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 def suggestActivity(choice=None):
     if not choice : choice = tree.choose()
-    if choice.rep or choice not in history or (type(choice) == rand_task.Task and choice.isDue()):
+    if choice.activity.rep or choice not in history or (isinstance(choice.activity, rand_task.Task) and choice.isDue()):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in do_aliases:
@@ -29,6 +31,16 @@ def suggestActivity(choice=None):
             print("\nPlease make a valid selection.\n")
             return suggestActivity(choice)
     return suggestActivity()
+
+def completeActivity(choice):
+    response2 = input("\nWould you like to mark this task completed? (Y/n) ")
+    if response2 in yes_aliases:
+        choice.activity.complete()
+        tree.findNode("Do a task")
+        print("Task list updated.")
+    elif response2 not in no_aliases:
+        print("Please enter a valid command.")
+        completeActivity(choice)
 
 # create list of options for next activity command
 next_options = ["next", "continue", "go", "activity"]
@@ -73,7 +85,7 @@ def activityLoop():
     while running:
 
         # ask user for command
-        response = input("\nDo an activity?\n").lower()
+        response = input("\nSuggest an activity?\n").lower()
 
         # respond to user command
 
@@ -87,15 +99,10 @@ def activityLoop():
         elif response in next_aliases: # user wants to continue with next activity
             choice = suggestActivity()
             if choice:
-                if choice.url : webbrowser.open(choice.url, autoraise=False)
+                if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
                 history.append(choice)
-                if isinstance(choice, rand_task.Task):
-                    response2 = input("\nWould you like to mark this task completed?\n")
-                    if response2 in yes_aliases:
-                        choice.complete()
-                        print("Task list updated.")
-                    elif response2 not in no_aliases:
-                        print("Please enter a valid command.")
+                if isinstance(choice.activity, rand_task.Task):
+                    completeActivity(choice)
         
         # elif response in update_aliases: # user wants to refresh TickTick tasks
         #     del tree.children[0].children[-1]
@@ -118,12 +125,12 @@ def activityLoop():
         Time elapsed: {}
         Activities: {}
         Mode: {} ({} times)
-        Rarest: {} ({}%)
+        Rarest: {}
         '''.format(
             str(elapsed).split('.')[:-1][0],
             len(history),
-            modal.title, history.count(modal),
-            rarest.title, rarest.getPct()
+            modal.activity.title, history.count(modal),
+            rarest.pctProb()
             )
         print(dedent(summary))
     else:
