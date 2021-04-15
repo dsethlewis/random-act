@@ -4,13 +4,15 @@ from textwrap import dedent
 import webbrowser
 from statistics import mode
 import rand_task
+import myactivities
+
 from os import system
 from activity import ActivityTreeNode
-from myactivities import my_activities
+from timerange import TimeRange
 
 system("")
 
-tree = ActivityTreeNode(my_activities)
+tree = ActivityTreeNode(myactivities.my_activities)
 
 # simple function that creates a list of initial substrings for a word
 # e.g., aliases("word") -> ["w", "wo", "wor", "word"]
@@ -18,7 +20,9 @@ aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 def suggestActivity(choice=None):
     if not choice : choice = tree.choose()
-    if choice.activity.rep or choice not in history or (isinstance(choice.activity, rand_task.Task) and choice.isDue()):
+    if choice.activity.rep \
+        or choice not in history \
+        or (isinstance(choice.activity, rand_task.Task) and choice.isDue()):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in do_aliases:
@@ -36,7 +40,8 @@ def completeActivity(choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ")
     if response2 in yes_aliases:
         choice.activity.complete()
-        tree.findNode("Do a task")
+        n = tree.findNode("Do a task")
+        n.parent.activity.options[index(n)] = rand_task.build_task_tree(choice.client)
         print("Task list updated.")
     elif response2 not in no_aliases:
         print("Please enter a valid command.")
@@ -72,6 +77,7 @@ def activityLoop():
     running = True # true while session is active
 
     t0 = datetime.now() # start time
+    t1 = None
 
     # check if program started running before noon
     early_start = False
@@ -84,11 +90,18 @@ def activityLoop():
     # session loop
     while running:
 
+        t2 = datetime.now()
+        if t1 and t1.hour != t2.hour:
+            priorities = TimeRange.pick(myactivities.times)
+            for i, child in enumerate(tree.children):
+                child.activity.setPriority(priorities[i])
+        t1 = t2
+            
+
         # ask user for command
         response = input("\nSuggest an activity?\n").lower()
 
         # respond to user command
-
         if response in quit_aliases: # user wants to quit
             running = False
         
@@ -103,13 +116,6 @@ def activityLoop():
                 history.append(choice)
                 if isinstance(choice.activity, rand_task.Task):
                     completeActivity(choice)
-        
-        # elif response in update_aliases: # user wants to refresh TickTick tasks
-        #     del tree.children[0].children[-1]
-        #     tree.children[0].children.append(
-        #         rand_task.build_task_tree(rand_task.my_client.sync()).changeRank(2)
-        #         )
-        #     print("\nTask list has been updated.")
         
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
