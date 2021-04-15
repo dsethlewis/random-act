@@ -1,5 +1,6 @@
 import rand_task
 
+from datetime import datetime, time
 from activity import Activity, ActivityTreeNode
 
 act = Activity
@@ -7,6 +8,23 @@ act = Activity
 # TickTick credentials
 ttuser = "dsethlewis@gmail.com"
 ttpw = "zq3vzIGUmN5y"
+
+class timeRange():
+    def __init__(self, start: int, end: int, name: str=None):
+        self.start = time(start)
+        self.end = time(23, 59, 59) if end in (24, 0) else time(end)
+        self.name = name
+
+    def nowInRange(self):
+        t = datetime.now().time()
+        return t >= self.start and t < self.end
+
+morning = timeRange(0, 9)
+daytime = timeRange(9, 5)
+evening = timeRange(5, 10)
+nighttime = timeRange(10, 0)
+
+print(morning.nowInRange())
 
 # construct a nested tree of activities to choose from
 my_activities = act("Do something", [
