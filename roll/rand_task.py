@@ -2,7 +2,7 @@
 from ticktick import api
 from getpass import getpass
 from random import choice
-import activity2
+import activity
 import datetime
 
 # create a client (type: dict) object for the user.
@@ -14,7 +14,7 @@ def login(username = "", password = ""):
         password = getpass()
     return api.TickTickClient(username, password)
 
-class Task(activity2.Activity):
+class Task(activity.Activity):
 
     def __init__(self, client, task_dict):
         
@@ -62,7 +62,7 @@ class Task(activity2.Activity):
 # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
 def build_task_tree(client):
 
-    act = activity2.Activity
+    act = activity.Activity
 
     # client state is the core database of tasks
     state = client.state
