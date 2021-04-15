@@ -1,8 +1,8 @@
 import rand_task
 
-from activity2 import Activity, ActivityTreeNode
+from activity import Activity, ActivityTreeNode
+
 act = Activity
-node = ActivityTreeNode
 
 # TickTick credentials
 ttuser = "dsethlewis@gmail.com"

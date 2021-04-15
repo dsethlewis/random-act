@@ -5,8 +5,8 @@ import webbrowser
 from statistics import mode
 import rand_task
 from os import system
-from activity2 import ActivityTreeNode
-from roll2 import my_activities
+from activity import ActivityTreeNode
+from myactivities import my_activities
 
 system("")
 
