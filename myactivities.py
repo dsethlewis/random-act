@@ -1,7 +1,7 @@
 import rand_task
 
-from datetime import datetime, time
 from activity import Activity, ActivityTreeNode
+from timerange import TimeRange
 
 act = Activity
 
@@ -9,22 +9,13 @@ act = Activity
 ttuser = "dsethlewis@gmail.com"
 ttpw = "zq3vzIGUmN5y"
 
-class timeRange():
-    def __init__(self, start: int, end: int, name: str=None):
-        self.start = time(start)
-        self.end = time(23, 59, 59) if end in (24, 0) else time(end)
-        self.name = name
-
-    def nowInRange(self):
-        t = datetime.now().time()
-        return t >= self.start and t < self.end
-
-morning = timeRange(0, 9)
-daytime = timeRange(9, 5)
-evening = timeRange(5, 10)
-nighttime = timeRange(10, 0)
-
-print(morning.nowInRange())
+times = [
+    TimeRange(4, 9, "morning", (1, 5, 1)),
+    TimeRange(9, 17, "daytime", (5, 2, 1)),
+    TimeRange(17, 22, "evening", (1, 3, 5)),
+    TimeRange(22, 4, "nighttime", (1, 5, 1))
+    ]
+priorities = list(TimeRange.pick(times))
 
 # construct a nested tree of activities to choose from
 my_activities = act("Do something", [
@@ -60,7 +51,9 @@ my_activities = act("Do something", [
                 "Spray vinegar mixture in shower",
                 "Move laundry along",
                 "Restock toilet paper, paper towels, tissues, or soap",
-                "Move dishwasher along"
+                "Move dishwasher along",
+                "Change sheets",
+                "Change towels"
             ])
         ]),
         act("Study", [
@@ -77,7 +70,7 @@ my_activities = act("Do something", [
             ])
         ]),
         rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).setPriority(3) # Do a task from TickTick
-    ], priority=5),
+    ], priority=priorities[0]),
 
     act("Take care of yourself", [
         act("Workout", [
@@ -182,7 +175,7 @@ my_activities = act("Do something", [
                 "Wipe glasses",
                 "Pick a random Birch Box thing"
             ]),
-        ]),
+        ], priority=2),
         act("Relax", [
             act("Be mindful", [
                 "Meditate",
@@ -223,7 +216,7 @@ my_activities = act("Do something", [
             "Crossroads of Twilight",
             "OneNote Reading List"
         ])
-    ], priority=3),
+    ], priority=priorities[1]),
 
     act("Connect with others", [
         act("Send a text", [
@@ -277,5 +270,5 @@ my_activities = act("Do something", [
                 "Organize a meal for friends or family"
             ])
         ])
-    ])
+    ], priority=priorities[2])
 ])

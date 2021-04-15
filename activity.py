@@ -18,6 +18,11 @@ class Activity():
         self.priority = priority
         return self
 
+    # set new options
+    def setOptions(self, options):
+        self.options = options
+        return self
+
     def __eq__(self, other):
         return vars(self) == vars(other)
 
