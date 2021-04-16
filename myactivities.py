@@ -24,7 +24,7 @@ my_activities = act("Do something", [
     act("Get things done", [
         act("Process stuff", [
             act("Personal email", url = "https://mail.google.com/mail/u/0/#inbox"),
-            act("UNC email", url = "https://mail.business.unc.edu/owa/#path=/mail"),
+            act("UNC email", url = "https://heelmail.unc.edu"),
             "Desktop inbox",
             act("Alternate channels", [
                 act(
