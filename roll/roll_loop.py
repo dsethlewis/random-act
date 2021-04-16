@@ -1,4 +1,5 @@
 #!/usr/bin/env python3.9
+
 from datetime import datetime
 from textwrap import dedent
 import webbrowser
@@ -9,14 +10,11 @@ import myactivities
 from os import system
 from activity import ActivityTreeNode
 from timerange import TimeRange
+from alias import all_aliases
 
 system("")
 
 tree = ActivityTreeNode(myactivities.my_activities)
-
-# simple function that creates a list of initial substrings for a word
-# e.g., aliases("word") -> ["w", "wo", "wor", "word"]
-aliases = lambda word : [word[0:x] for x in range(1, len(word)+1)]
 
 def suggestActivity(choice=None):
     if not choice : choice = tree.choose()
@@ -25,11 +23,11 @@ def suggestActivity(choice=None):
         or (isinstance(choice.activity, rand_task.Task) and choice.isDue()):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
-        if response2 in do_aliases:
+        if response2 in all_aliases["do"]:
             return choice
-        elif response2 in pass_aliases:
+        elif response2 in all_aliases["pass"]:
             return suggestActivity()
-        elif response2 in quit_aliases:
+        elif response2 in all_aliases["quit"]:
             return
         else:
             print("\nPlease make a valid selection.\n")
@@ -37,35 +35,22 @@ def suggestActivity(choice=None):
     return suggestActivity()
 
 def completeActivity(choice):
-    response2 = input("\nWould you like to mark this task completed? (Y/n) ")
-    if response2 in yes_aliases:
+    response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
+    if response2 in all_aliases["yes"]:
         choice.activity.complete()
         n = tree.findNode("Do a task")
-        n.parent.activity.options[index(n)] = rand_task.build_task_tree(choice.client)
-        print("Task list updated.")
-    elif response2 not in no_aliases:
+        o = n.parent.activity.options
+        new = rand_task.build_task_tree(choice.activity.client)
+        o[o.index(n)] = new
+        n.replaceWith(ActivityTreeNode(new))
+        print("Task marked complete and list updated.")
+    elif response2 in all_aliases["no"]:
+        print("Task not marked complete")
+    elif response2 in all_aliases["quit"]:
+        return
+    else:
         print("Please enter a valid command.")
         completeActivity(choice)
-
-# create list of options for next activity command
-next_options = ["next", "continue", "go", "activity"]
-next_aliases = [""]
-for word in next_options:
-    next_aliases += aliases(word)
-
-# create list of options for quit command
-quit_options = ["quit", "exit", "leave"]
-quit_aliases = []
-for word in quit_options:
-    quit_aliases += aliases(word)
-
-# create list of options for update command
-# update_aliases = aliases("update")
-
-do_aliases = aliases("do") + [""]
-pass_aliases = aliases("pass")
-yes_aliases = aliases("yes")
-no_aliases = aliases("no")
 
 #drv = webdriver.Chrome()
 
@@ -91,32 +76,39 @@ def activityLoop():
     while running:
 
         t2 = datetime.now()
-        if t1 and t1.hour != t2.hour:
+        hour = t2.hour
+        if t1 and t1.hour != hour:
             priorities = TimeRange.pick(myactivities.times)
-            for i, child in enumerate(tree.children):
-                child.activity.setPriority(priorities[i])
+            for i, option in enumerate(myactivities.my_activities):
+                option.setPriority(priorities[i])
+            tree = ActivityTreeNode(myactivities.my_activities)
         t1 = t2
-            
+
+        if (early_start and hour >= 12) or \
+            (not history and hour < 14): # user started before noon and it's now after noon
+            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m")
+            early_start = False
 
         # ask user for command
         response = input("\nSuggest an activity?\n").lower()
 
         # respond to user command
-        if response in quit_aliases: # user wants to quit
+        if response in all_aliases["quit"]: # user wants to quit
             running = False
         
-        elif early_start and datetime.now().hour >= 12: # user started before noon and it's now after noon
-            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m\n")
-            early_start = False
-        
-        elif response in next_aliases: # user wants to continue with next activity
+        elif response in all_aliases["next"]: # user wants to continue with next activity
             choice = suggestActivity()
             if choice:
+
                 if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
+
                 history.append(choice)
-                if isinstance(choice.activity, rand_task.Task):
-                    completeActivity(choice)
-        
+                choice.incrementCount()
+
+                if isinstance(choice.activity, rand_task.Task): completeActivity(choice)
+
+                if not choice.activity.rep : choice.parent.updateProbs()
+
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
 
@@ -135,7 +127,7 @@ def activityLoop():
         '''.format(
             str(elapsed).split('.')[:-1][0],
             len(history),
-            modal.activity.title, history.count(modal),
+            modal.activity.title, modal.count,
             rarest.pctProb()
             )
         print(dedent(summary))

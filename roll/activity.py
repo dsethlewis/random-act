@@ -23,8 +23,17 @@ class Activity():
         self.options = options
         return self
 
+    def __key(self):
+        return (self.title, self.priority, self.rep, self.url)
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    # ActivityTreeNode object equivalence
     def __eq__(self, other):
-        return vars(self) == vars(other)
+        if isinstance(other, Activity):
+            return self.__key() == other.__key()
+        return NotImplemented
 
 class ActivityTreeNode():
 
@@ -35,11 +44,15 @@ class ActivityTreeNode():
         self.parent = parent
 
         # calculate further variables
+        self.count = 0
         self.ancestry = parent.ancestry + [parent] if parent else []
-        self.prob = (self.activity.priority / sum(
-            [x.priority if isinstance(x, Activity) else 1 for x in parent.activity.options]
-            )) * parent.prob if parent else 1
+        self.prob = (self.activity.priority * parent.prob) \
+            / sum([x.priority if isinstance(x, Activity) else 1 for x in parent.activity.options]) \
+            if parent else 1
         self.children = [ActivityTreeNode(option, self) for option in self.activity.options]
+
+    def setProb(self, prob):
+        self.prob = prob
 
     # get Activity's probability as a percentage
     def pctProb(self):
@@ -52,7 +65,7 @@ class ActivityTreeNode():
 
     # print task and all parents
     def displ(self):
-        [print(t.activity.title) for t in self.ancestry]
+        [print(t.activity.title) for t in self.ancestry[1:]]
         print(self.pctProb())
 
     # recurse through activity tree to select next activity
@@ -77,11 +90,36 @@ class ActivityTreeNode():
         
     def replaceWith(self, other):
         self.parent.children[self.parent.children.index(self)] = ActivityTreeNode(other, self.parent)
+
+    def incrementCount(self):
+        self.count += 1
+
+    def priorityValue(self):
+        return 0 if not self.activity.rep and self.count else self.activity.priority
+
+    # calculate probability of current node being selected
+    def calcProb(self):
+        return (self.priorityValue() * self.parent.prob) \
+            / sum([x.priorityValue() for x in self.parent.children]) \
+            if self.parent else 1
+
+    # update all probabilities in tree
+    def updateProbs(self):
+        self.setProb(self.calcProb())
+        for child in self.children : child.updateProbs()
     
     # how ActivityTreeNode object will be compared with other ActivityTreeNode objects
     def __lt__(self, other):
         return self.prob < other.prob
 
+    def __key(self):
+        return (self.activity, self.parent)
+
+    def __hash__(self):
+        return hash(self.__key())
+
     # ActivityTreeNode object equivalence
     def __eq__(self, other):
-        return vars(self) == vars(other)
+        if isinstance(other, ActivityTreeNode):
+            return self.__key() == other.__key()
+        return NotImplemented

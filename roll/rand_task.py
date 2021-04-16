@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.9
+
 # import functions
 from ticktick import api
 from getpass import getpass
@@ -48,16 +50,6 @@ class Task(activity.Activity):
     # call TickTick (or other) API to mark task completed
     def complete(self):
         self.client.task.complete(self.id)
-
-        # # find task component of overall tree
-        # def topTaskNode(node):
-        #     for c in node.children:
-        #         if c.title == "Do a task" : return c
-        #         topTaskNode(c)
-
-        # task_tree = topTaskNode(self.ancestry[0])
-        # supernode = task_tree.parent
-        # supernode.children[supernode.children.index(task_tree)] = build_task_tree(self.client)
 
 # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
 def build_task_tree(client):
