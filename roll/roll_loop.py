@@ -41,7 +41,7 @@ def completeActivity(choice):
         n = tree.findNode("Do a task")
         o = n.parent.activity.options
         new = rand_task.build_task_tree(choice.activity.client)
-        o[o.index(n)] = new
+        o[o.index(n.activity)] = new
         n.replaceWith(ActivityTreeNode(new))
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:

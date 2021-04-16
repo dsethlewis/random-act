@@ -17,8 +17,8 @@ all_aliases = {
     "quit": aliases(["quit", "exit", "leave"]),
 
     "do": aliases(["do"], blank=True),
-    "pass": alias(["pass", "skip"]),
+    "pass": aliases(["pass", "skip"]),
 
-    "yes": alias(["yes", "yeah", "yep"]),
-    "no": alias(["no", "nah", "nope", "nay"])
+    "yes": aliases(["yes", "yeah", "yep"]),
+    "no": aliases(["no", "nah", "nope", "nay"])
     }
