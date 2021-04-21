@@ -17,7 +17,7 @@ times = [
     TimeRange(17, 22, "evening", (1, 5, 3)),
     TimeRange(22, 4, "nighttime", (1, 5, 1))
     ]
-priorities = list(TimeRange.pick(times))
+priorities = TimeRange.pick(times).priorities
 
 # construct a nested tree of activities to choose from
 my_activities = act("Do something", [
