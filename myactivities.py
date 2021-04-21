@@ -67,6 +67,9 @@ my_activities = act("Do something", [
                     "Work through next step in SQLAlchemy tutorial",
                     url = "https://www.tutorialspoint.com/sqlalchemy/index.htm"
                     )
+            ]),
+            act("Thesis", [
+                "Read a page of an article"
             ])
         ]),
         rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).setPriority(3) # Do a task from TickTick
@@ -252,7 +255,7 @@ my_activities = act("Do something", [
                     "Snack",
                     "Drink"
                 ])
-            ], priority=3),
+            ], priority=5),
             act("Give", [
                 "Bring a book to a nearby little free library",
                 "Donate stuff to Goodwill/etc.",
