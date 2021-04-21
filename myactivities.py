@@ -38,8 +38,8 @@ my_activities = act("Do something", [
                 "FB Messenger",
                 "TickTick inbox",
                 act("Mail", [
-                    "Move mail from tray to desktop inbox",
-                    "Move mail from mailbox to mail tray"
+                    act("Move mail from tray to desktop inbox", limit=1),
+                    act("Move mail from mailbox to mail tray", limit=1)
                 ]),
             ]),
         ]),
@@ -56,11 +56,13 @@ my_activities = act("Do something", [
                     "Toilet paper",
                     "Paper towels",
                     "Tissues",
-                    "Soap"
+                    "Soap",
+                    act("Conditioner", limit=1),
+                    act("Body wash", limit=1)
                 ]),
                 "Move dishwasher along",
-                "Change sheets",
-                "Change towels"
+                act("Change sheets", limit=1),
+                act("Change towels", limit=1)
             ])
         ]),
         act("Study", [
@@ -151,38 +153,36 @@ my_activities = act("Do something", [
         ]),
         act("Personal care", [
             act("Hair and nails", [
-                act("Shower", priority=2),
+                act("Shower", priority=2, limit=2),
                 "Brush hair",
-                "Add product to hair",
-                "Shave",
+                act("Add product to hair", limit=1),
+                act("Shave", limit=1),
                 "Trim body hair",
-                "Cut nails",
-                "Refill conditioner tube"
+                "Cut nails"
             ]),
             act("Skin", [
                 "Vaseline lips",
-                "Wash face",
-                "Benzoyl peroxide",
+                act("Wash face", limit=2),
+                act("Benzoyl peroxide", limit=2),
                 "Moisturize",
-                "Face toner",
+                act("Face toner", limit=1),
                 "Triamcinolone acetonide",
-                "Fluticasone",
-                "Acne dot",
-                act("Clindamycin", priority=2),
-                "Refill body wash tube"
+                act("Fluticasone", limit=2),
+                act("Acne dot"),
+                act("Clindamycin", priority=2, limit=2)
             ]),
             act("Teeth", [
-                "Floss",
-                "Dental pick",
-                "Fluoride rinse",
-                act("Brush teeth", priority=2)
+                act("Floss", limit=2),
+                act("Dental pick", limit=1),
+                act("Fluoride rinse", limit=1),
+                act("Brush teeth", priority=2, limit=3)
             ]),
             act("Other", [
                 "Eye drops",
-                "Deoderant",
-                "Vaseline nose",
-                "Q-Tip ear",
-                "Wipe glasses",
+                act("Deoderant", limit=2),
+                act("Vaseline nose", limit=3),
+                act("Q-Tip ear", limit=2),
+                act("Wipe glasses", limit=2),
                 "Pick a random Birch Box thing"
             ]),
         ], priority=2),
@@ -247,16 +247,16 @@ my_activities = act("Do something", [
                 ]),
                 "Quality time",
                 act("Acts of service", [
-                    "Empty trash or recycling in her office",
+                    act("Empty trash or recycling in her office", limit=2),
                     "Declutter something in her office",
                     "Fold some of her laundry",
                     "Clean her side of the bathroom vanity",
                     "Clean her nightstand",
                     "Offer to solve a problem",
-                    "Offer to pick up prescriptions",
+                    act("Offer to pick up prescriptions", limit=1),
                     "Offer to make a phone call she's avoiding",
                     "Clean her computer monitor, desk, whiteboard, or window",
-                    "Make the bed"
+                    act("Make the bed", limit=1)
                 ]),
                 act("Gifts", [
                     "Snack",
@@ -268,12 +268,12 @@ my_activities = act("Do something", [
                 "Donate stuff to Goodwill/etc.",
                 "Make a small donation to a charity",
                 "Bring food to a local food bank/drop-off location"
-            ]),
+            ], limit=1),
             act("Serve", [
                 "Bake something for a neighbor or friend",
                 "Look up one-off volunteer opportunities",
                 "Walk around the block picking up litter"
-            ]),
+            ], limit=1),
             act("Love", [
                 "Write a thank you note",
                 "Send a gift to a friend or family member",
