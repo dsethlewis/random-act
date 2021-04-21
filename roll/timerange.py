@@ -15,4 +15,17 @@ class TimeRange():
         return before and after
 
     def pick(times):
-        return [x.priorities for x in times if x.isNow()][0]
+        for time in times:
+            if time.isNow() : return time
+
+    def __key(self):
+        return (self.start, self.end, self.name)
+
+    def __hash__(self):
+        return hash(self.__key())
+
+    # TimeRange object equivalence
+    def __eq__(self, other):
+        if isinstance(other, TimeRange):
+            return self.__key() == other.__key()
+        return NotImplemented
