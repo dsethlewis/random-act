@@ -52,7 +52,12 @@ my_activities = act("Do something", [
                 "Empty a bin (or bring bins out/in)",
                 "Spray vinegar mixture in shower",
                 "Move laundry along",
-                "Restock toilet paper, paper towels, tissues, or soap",
+                act("Restock", [
+                    "Toilet paper",
+                    "Paper towels",
+                    "Tissues",
+                    "Soap"
+                ]),
                 "Move dishwasher along",
                 "Change sheets",
                 "Change towels"
