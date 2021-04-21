@@ -1,3 +1,5 @@
+#!/usr/bin/env python3.9
+
 import rand_task
 
 from activity import Activity, ActivityTreeNode
@@ -11,8 +13,8 @@ ttpw = "zq3vzIGUmN5y"
 
 times = [
     TimeRange(4, 9, "morning", (1, 5, 1)),
-    TimeRange(9, 17, "daytime", (5, 2, 1)),
-    TimeRange(17, 22, "evening", (1, 3, 5)),
+    TimeRange(9, 17, "daytime", (10, 4, 1)),
+    TimeRange(17, 22, "evening", (1, 5, 3)),
     TimeRange(22, 4, "nighttime", (1, 5, 1))
     ]
 priorities = list(TimeRange.pick(times))
@@ -22,7 +24,7 @@ my_activities = act("Do something", [
     act("Get things done", [
         act("Process stuff", [
             act("Personal email", url = "https://mail.google.com/mail/u/0/#inbox"),
-            act("UNC email", url = "https://mail.business.unc.edu/owa/#path=/mail"),
+            act("UNC email", url = "https://heelmail.unc.edu"),
             "Desktop inbox",
             act("Alternate channels", [
                 act(
