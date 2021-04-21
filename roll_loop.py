@@ -79,7 +79,7 @@ def activityLoop():
         hour = t2.hour
         if t1 and t1.hour != hour:
             priorities = TimeRange.pick(myactivities.times)
-            for i, option in enumerate(myactivities.my_activities):
+            for i, option in enumerate(myactivities.my_activities.options):
                 option.setPriority(priorities[i])
             tree = ActivityTreeNode(myactivities.my_activities)
         t1 = t2
