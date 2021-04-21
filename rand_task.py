@@ -25,7 +25,7 @@ class Task(activity.Activity):
             options = [],
             priority = task_dict["priority"] + 1,
             url = None,
-            rep = True
+            limit = -1
             )
 
         self.client = client
