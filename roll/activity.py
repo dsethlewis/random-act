@@ -27,7 +27,7 @@ class Activity():
         return self
 
     def __key(self):
-        return (self.title, self.priority, self.rep, self.url)
+        return (self.title, self.priority, self.limit, self.url)
 
     def __hash__(self):
         return hash(self.__key())
@@ -58,8 +58,9 @@ class ActivityTreeNode():
         self.prob = prob
 
     # get Activity's probability as a percentage
-    def pctProb(self):
-        return "{} ({}%)".format(self.activity.title, round(self.prob * 100, 2))
+    def pctProb(self, prob=None):
+        if not prob : prob = self.prob
+        return "{} ({}%)".format(self.activity.title, round(prob * 100, 2))
 
     # print full tree from this node down
     def displTree(self, spc=""):
@@ -113,10 +114,6 @@ class ActivityTreeNode():
     def updateProbs(self):
         self.setProb(self.calcProb())
         for child in self.children : child.updateProbs()
-    
-    # how ActivityTreeNode object will be compared with other ActivityTreeNode objects
-    def __lt__(self, other):
-        return self.prob < other.prob
 
     def __key(self):
         return (self.activity, self.parent)
