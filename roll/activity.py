@@ -4,11 +4,14 @@ from random import choice
 
 class Activity():
 
-    def __init__(self, title: str, options: abc.Sequence=[], priority: int=1, rep: bool=True, url: str=None):
+    def __init__(
+        self, title: str, options: abc.Sequence=[],
+        priority: int=1, limit: int=-1, url: str=None
+        ):
         self.title = title
         self.options = options
         self.priority = priority
-        self.rep = rep
+        self.limit = limit
         self.url = url
 
         # [Activity(options)] if isinstance(options, str) else [Activity(option) for option in options]
@@ -94,8 +97,11 @@ class ActivityTreeNode():
     def incrementCount(self):
         self.count += 1
 
+    def isActive(self):
+        return self.activity.limit == -1 or self.count < self.activity.limit
+
     def priorityValue(self):
-        return 0 if not self.activity.rep and self.count else self.activity.priority
+        return 0 if not self.isActive() else self.activity.priority
 
     # calculate probability of current node being selected
     def calcProb(self):

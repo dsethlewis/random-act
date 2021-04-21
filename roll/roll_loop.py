@@ -18,9 +18,8 @@ tree = ActivityTreeNode(myactivities.my_activities)
 
 def suggestActivity(choice=None):
     if not choice : choice = tree.choose()
-    if choice.activity.rep \
-        or choice not in history \
-        or (isinstance(choice.activity, rand_task.Task) and choice.isDue()):
+    if choice.isActive() \
+        and (not isinstance(choice.activity, rand_task.Task) or choice.activity.isDue()):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in all_aliases["do"]:
@@ -97,17 +96,19 @@ def activityLoop():
             running = False
         
         elif response in all_aliases["next"]: # user wants to continue with next activity
+
             choice = suggestActivity()
+
             if choice:
 
                 if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
 
                 history.append(choice)
                 choice.incrementCount()
+                if not choice.isActive() : choice.parent.updateProbs()
 
                 if isinstance(choice.activity, rand_task.Task): completeActivity(choice)
 
-                if not choice.activity.rep : choice.parent.updateProbs()
 
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
