@@ -41,7 +41,8 @@ def completeActivity(choice):
     if response2 in yes_aliases:
         choice.activity.complete()
         n = tree.findNode("Do a task")
-        n.parent.activity.options[index(n)] = rand_task.build_task_tree(choice.client)
+        n.parent.activity.options[index(n)] \
+            = rand_task.build_task_tree(choice.activity.client)
         print("Task list updated.")
     elif response2 not in no_aliases:
         print("Please enter a valid command.")
