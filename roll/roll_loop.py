@@ -16,7 +16,7 @@ system("")
 
 tree = ActivityTreeNode(myactivities.my_activities)
 
-def suggestActivity(choice=None):
+def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
     if choice.isActive() \
         and (not isinstance(choice.activity, rand_task.Task) or choice.activity.isDue()):
@@ -25,13 +25,13 @@ def suggestActivity(choice=None):
         if response2 in all_aliases["do"]:
             return choice
         elif response2 in all_aliases["pass"]:
-            return suggestActivity()
+            return suggestActivity(tree)
         elif response2 in all_aliases["quit"]:
             return
         else:
             print("\nPlease make a valid selection.\n")
-            return suggestActivity(choice)
-    return suggestActivity()
+            return suggestActivity(tree, choice)
+    return suggestActivity(tree)
 
 def completeActivity(choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
@@ -97,7 +97,7 @@ def activityLoop():
         
         elif response in all_aliases["next"]: # user wants to continue with next activity
 
-            choice = suggestActivity()
+            choice = suggestActivity(tree)
 
             if choice:
 
