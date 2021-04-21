@@ -85,7 +85,7 @@ def activityLoop():
         t1 = t2
 
         if (early_start and hour >= 12) or \
-            (not history and hour < 14): # user started before noon and it's now after noon
+            (not history and 12 <= hour < 14): # user started before noon and it's now after noon
             print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m")
             early_start = False
 
