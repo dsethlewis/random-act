@@ -31,7 +31,7 @@ def suggestActivity(tree, choice=None):
             return suggestActivity(tree, choice)
     return suggestActivity(tree)
 
-def completeActivity(choice):
+def completeActivity(tree, choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
     if response2 in all_aliases["yes"]:
         choice.activity.complete()
@@ -43,11 +43,10 @@ def completeActivity(choice):
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:
         print("Task not marked complete")
-    elif response2 in all_aliases["quit"]:
-        return
-    else:
+    elif response2 not in all_aliases["quit"]:
         print("Please enter a valid command.")
-        completeActivity(choice)
+        return completeActivity(tree, choice)
+    return tree
 
 #drv = webdriver.Chrome()
 
@@ -110,7 +109,8 @@ def activityLoop():
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
 
-                if isinstance(choice.activity, rand_task.Task): completeActivity(choice)
+                if isinstance(choice.activity, rand_task.Task):
+                    tree = completeActivity(tree, choice)
 
 
         else: # user did not select a valid command

@@ -34,8 +34,10 @@ class Task(activity.Activity):
 
         if "childIds" in task_dict : self.addSubtasks()
 
-        dueDate = lambda dd : datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
         self.due = dueDate(task_dict["dueDate"]) if "dueDate" in task_dict else None
+
+    def dueDate(dd):
+        return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
 
     # check if task is due yet
     def isDue(self):
@@ -45,11 +47,17 @@ class Task(activity.Activity):
     # populate list of subtasks
     def addSubtasks(self):
         for sub_t in self.client.state["tasks"]:
-            if sub_t["id"] in self.task_dict["childIds"] : self.options.append(Task(self.client, sub_t))
+            if sub_t["id"] in self.task_dict["childIds"]:
+                self.options.append(Task(self.client, sub_t))
 
     # call TickTick (or other) API to mark task completed
     def complete(self):
         self.client.task.complete(self.id)
+
+def taskMaker(client, project):
+    if client.task.get_from_project(project["id"]):
+        return [Task(client, task_dict) for task_dict in client.task.get_from_project(project["id"])]
+    return ["Add next action to project"]
 
 # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
 def build_task_tree(client):
@@ -58,11 +66,6 @@ def build_task_tree(client):
 
     # client state is the core database of tasks
     state = client.state
-
-    def taskMaker(client, project):
-        if client.task.get_from_project(project["id"]):
-            return [Task(client, task_dict) for task_dict in client.task.get_from_project(project["id"])]
-        return ["Add next action to project"]
 
     # initialize activity tree for tasks
     return act("Do a task", [
