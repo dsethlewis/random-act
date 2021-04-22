@@ -11,6 +11,7 @@ from os import system
 from activity import ActivityTreeNode
 from timerange import TimeRange
 from alias import all_aliases
+from messages import niceJob
 
 system("")
 
@@ -118,6 +119,8 @@ def activityLoop():
 
                 if isinstance(choice.activity, rand_task.Task):
                     tree = completeTask(tree, choice)
+
+                print(niceJob())
 
 
         else: # user did not select a valid command
