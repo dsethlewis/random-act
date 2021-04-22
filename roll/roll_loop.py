@@ -1,12 +1,12 @@
 #!/usr/bin/env python3.9
+import webbrowser
+import rand_task
+import myactivities
+import pickle
 
 from datetime import datetime
 from textwrap import dedent
-import webbrowser
 from statistics import mode
-import rand_task
-import myactivities
-
 from os import system
 from activity import ActivityTreeNode
 from timerange import TimeRange
@@ -31,31 +31,63 @@ def suggestActivity(tree, choice=None):
             return suggestActivity(tree, choice)
     return suggestActivity(tree)
 
-def completeActivity(tree, choice):
+def updateTasks(tree):
+    n = tree.findNode("Do a task")
+    o = n.parent.activity.options
+    new = rand_task.TaskTree(myactivities.task_tree.client).tree
+    o[o.index(n.activity)] = new
+    n.replaceWith(ActivityTreeNode(new))
+    return tree
+
+def completeTask(tree, choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
     if response2 in all_aliases["yes"]:
-        choice.activity.complete()
-        n = tree.findNode("Do a task")
-        o = n.parent.activity.options
-        new = rand_task.build_task_tree(choice.activity.client)
-        o[o.index(n.activity)] = new
-        n.replaceWith(ActivityTreeNode(new))
+        myactivities.task_tree.complete(choice.activity)
+        updateTasks(tree)
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:
         print("Task not marked complete")
     elif response2 not in all_aliases["quit"]:
         print("Please enter a valid command.")
-        return completeActivity(tree, choice)
+        return completeTask(tree, choice)
     return tree
 
-#drv = webdriver.Chrome()
+def continueSession(filename):
+    response = input("\nWould you like to continue from last session? (Y/n) ").lower()
+    if response in all_aliases["yes"]:
+        infile = open(filename, 'rb')
+        old_jar = pickle.load(infile)
+        infile.close()
+        print("Session continued.")
+        return old_jar
+    elif response not in all_aliases["no"]:
+        print("Please enter a valid command.")
+        return continueSession(filename)
+
+def saveAndQuit(filename, jar):
+    quit_response = input("Would you like to save? (Y/n) ").lower()
+    if quit_response in all_aliases["yes"]:
+        outfile = open(filename, 'wb')
+        pickle.dump(jar, outfile)
+        outfile.close()
+        print("Session saved.")
+    elif quit_response not in all_aliases["no"]:
+        print("Please enter a valid command.")
+        saveAndQuit(filename, jar)
 
 # follow commands from user to proceed through multiple activities
 def activityLoop():
 
     # initialize session
+    
+    pickle_file = 'record'
 
-    tree = ActivityTreeNode(myactivities.my_activities)
+    try:
+        old_jar = continueSession(pickle_file)
+    except FileNotFoundError:
+        old_jar = None
+
+    tree = updateTasks(old_jar[0]) if old_jar else ActivityTreeNode(myactivities.my_activities)
 
     running = True # true while session is active
 
@@ -69,8 +101,7 @@ def activityLoop():
         early_start = True
 
     # list of completed activities
-    history = []
-    i = 0
+    history = old_jar[1] if old_jar else []
 
     # session loop
     while running:
@@ -104,19 +135,19 @@ def activityLoop():
 
                 if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
 
-                i += 1
-                history.append((choice, choice.prob, i))
+                history.append((choice, choice.prob))
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
 
                 if isinstance(choice.activity, rand_task.Task):
-                    tree = completeActivity(tree, choice)
+                    tree = completeTask(tree, choice)
 
 
         else: # user did not select a valid command
             print("\033[31mPlease enter a valid command.\033[0m")
 
     elapsed = (datetime.now() - t0) # timedelta for how much time passed while program was running
+    if old_jar : elapsed += old_jar[2]
 
     # print a summary of the session
     print("\n\033[1;34mSummary\033[0m", end='')
@@ -140,6 +171,9 @@ def activityLoop():
         print(dedent(summary))
     else:
         print("\nNo activities completed.\n")
+
+    jar = (tree, history, elapsed)
+    saveAndQuit(pickle_file, jar)
 
 # start a session
 activityLoop()

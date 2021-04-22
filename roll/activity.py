@@ -14,8 +14,6 @@ class Activity():
         self.limit = limit
         self.url = url
 
-        # [Activity(options)] if isinstance(options, str) else [Activity(option) for option in options]
-
     # set a new priority and return self
     def setPriority(self, priority):
         self.priority = priority
@@ -57,10 +55,14 @@ class ActivityTreeNode():
     def setProb(self, prob):
         self.prob = prob
 
+    def displLimit(self):
+        return "{}/{}".format(self.count, self.activity.limit) \
+            if self.activity.limit != -1 else ""
+
     # get Activity's probability as a percentage
     def pctProb(self, prob=None):
         if not prob : prob = self.prob
-        return "{} ({}%)".format(self.activity.title, round(prob * 100, 2))
+        return "{} ({}%) {}".format(self.activity.title, round(prob * 100, 2), self.displLimit())
 
     # print full tree from this node down
     def displTree(self, spc=""):

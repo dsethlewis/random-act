@@ -11,6 +11,8 @@ act = Activity
 ttuser = "dsethlewis@gmail.com"
 ttpw = "zq3vzIGUmN5y"
 
+task_tree = rand_task.TaskTree(rand_task.login(ttuser, ttpw))
+
 times = [
     TimeRange(4, 9, "morning", (1, 5, 1)),
     TimeRange(9, 17, "daytime", (10, 4, 1)),
@@ -81,7 +83,7 @@ my_activities = act("Do something", [
                 "Read a page of an article"
             ])
         ]),
-        rand_task.build_task_tree(rand_task.login(ttuser, ttpw)).setPriority(3) # Do a task from TickTick
+        task_tree.tree.setPriority(3) # Do a task from TickTick
     ], priority=priorities[0]),
 
     act("Take care of yourself", [

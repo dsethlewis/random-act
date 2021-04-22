@@ -1,11 +1,12 @@
 #!/usr/bin/env python3.9
 
-# import functions
+# import statements
 from ticktick import api
 from getpass import getpass
 from random import choice
-import activity
 import datetime
+
+from activity import Activity as act
 
 # create a client (type: dict) object for the user.
 # if no username and password are passed as arguments, requests them from user.
@@ -16,7 +17,7 @@ def login(username = "", password = ""):
         password = getpass()
     return api.TickTickClient(username, password)
 
-class Task(activity.Activity):
+class Task(act):
 
     def __init__(self, client, task_dict):
         
@@ -28,11 +29,10 @@ class Task(activity.Activity):
             limit = -1
             )
 
-        self.client = client
         self.task_dict = task_dict
         self.id = task_dict["id"]
 
-        if "childIds" in task_dict : self.addSubtasks()
+        if "childIds" in task_dict : self.addSubtasks(client)
 
         self.due = dueDate(task_dict["dueDate"]) if "dueDate" in task_dict else None
 
@@ -45,43 +45,40 @@ class Task(activity.Activity):
         return datetime.datetime.now().date() >= self.due
 
     # populate list of subtasks
-    def addSubtasks(self):
-        for sub_t in self.client.state["tasks"]:
+    def addSubtasks(self, client):
+        for sub_t in client.state["tasks"]:
             if sub_t["id"] in self.task_dict["childIds"]:
-                self.options.append(Task(self.client, sub_t))
+                self.options.append(Task(client, sub_t))
+
+class TaskTree():
+
+    def __init__(self, client):
+        self.client = client
+        self.tree = self.build_task_tree()
 
     # call TickTick (or other) API to mark task completed
-    def complete(self):
-        self.client.task.complete(self.id)
+    def complete(self, t):
+        self.client.task.complete(t.id)
 
-def taskMaker(client, project):
-    if client.task.get_from_project(project["id"]):
-        return [Task(client, task_dict) for task_dict in client.task.get_from_project(project["id"])]
-    return ["Add next action to project"]
+    def taskMaker(self, project):
+        if self.client.task.get_from_project(project["id"]):
+            return [Task(self.client, task_dict) for task_dict in self.client.task.get_from_project(project["id"])]
+        return ["Add next action to project"]
 
-# create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
-def build_task_tree(client):
-
-    act = activity.Activity
-
-    # client state is the core database of tasks
-    state = client.state
-
-    # initialize activity tree for tasks
-    return act("Do a task", [
-        # turn project folder into Activity
-        act(folder["name"], [
-            # turn project into Activity
-            act(project["name"], taskMaker(client, project)) \
-                # loop through projects 
-                for project in state["projects"] \
-                # that are active and in the current folder
-                if not project["closed"] and project["groupId"] == folder["id"]
-        # loop through folders
-        ]) for folder in state["project_folders"] \
-            # add pseudo-folder for any projects not in folders
-            + [{"id": None, "name": "Other Projects"}]
-    ])
-
-# client = login("dsethlewis@gmail.com", "zq3vzIGUmN5y")
-# tree = build_task_tree(client)
+    # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
+    def build_task_tree(self):
+        # initialize activity tree for tasks
+        return act("Do a task", [
+            # turn project folder into Activity
+            act(folder["name"], [
+                # turn project into Activity
+                act(project["name"], self.taskMaker(project)) \
+                    # loop through projects 
+                    for project in self.client.state["projects"] \
+                    # that are active and in the current folder
+                    if not project["closed"] and project["groupId"] == folder["id"]
+            # loop through folders
+            ]) for folder in self.client.state["project_folders"] \
+                # add pseudo-folder for any projects not in folders
+                + [{"id": None, "name": "Other Projects"}]
+        ])
