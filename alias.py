@@ -15,6 +15,7 @@ def aliases(words: list, blank: bool=False):
 all_aliases = {
     "next": aliases(["next", "continue", "go", "activity"], blank=True),
     "quit": aliases(["quit", "exit", "leave"]),
+    "stats": aliases(["statistics", "stats", "update", "progress"]),
 
     "do": aliases(["do"], blank=True),
     "pass": aliases(["pass", "skip"]),
