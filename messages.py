@@ -38,7 +38,7 @@ positivity = (
     "Phat",
     "Dope",
     "Sweet",
-    "Smokin'"
+    "Smokin'",
     "Encroyable",
     "Magnifique",
     "Hit it",
