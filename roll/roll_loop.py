@@ -138,24 +138,17 @@ def activityLoop():
             running = False
         
         elif response in all_aliases["next"]: # user wants to continue with next activity
-
             choice = suggestActivity(tree)
-
             if choice:
-
+                print(niceJob())
                 if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
-                
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
-
                 if isinstance(choice.activity, rand_task.Task):
                     tree = completeTask(tree, choice)
-
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)
                 session_history.append(history_entry)
-
-                print(niceJob())
 
         elif response in all_aliases["stats"]:
             dualSummaries(datetime.now()-t0, session_history, history, old_jar)
