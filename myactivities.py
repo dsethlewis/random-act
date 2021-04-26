@@ -68,15 +68,15 @@ my_activities = act("Do something", [
             ])
         ]),
         act("Study", [
-            act("Python", [
+            act("Programming", [
                 act(
                     "Work through next step in Flask tutorial",
                     url = "https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars"
                     ),
                 act("Read A Byte of Python", url = "https://python.swaroopch.com/io.html"),
                 act(
-                    "Work through next step in SQLAlchemy tutorial",
-                    url = "https://www.tutorialspoint.com/sqlalchemy/index.htm"
+                    "Work through next step in interactive SQL tutorial",
+                    url = "https://sqlbolt.com"
                     )
             ]),
             act("Thesis", [
