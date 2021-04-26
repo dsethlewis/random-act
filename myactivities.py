@@ -15,7 +15,7 @@ task_tree = rand_task.TaskTree(rand_task.login(ttuser, ttpw))
 
 times = [
     TimeRange(4, 9, "morning", (1, 5, 1)),
-    TimeRange(9, 17, "daytime", (10, 4, 1)),
+    TimeRange(9, 17, "daytime", (5, 4, 1)),
     TimeRange(17, 22, "evening", (1, 5, 3)),
     TimeRange(22, 4, "nighttime", (1, 5, 1))
     ]

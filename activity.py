@@ -2,7 +2,7 @@ import collections.abc as abc
 
 from random import choice
 
-class Activity():
+class Activity:
 
     def __init__(
         self, title: str, options: abc.Sequence=[],
@@ -36,7 +36,7 @@ class Activity():
             return self.__key() == other.__key()
         return NotImplemented
 
-class ActivityTreeNode():
+class ActivityTreeNode:
 
     def __init__(self, activity, parent=None):
         self.activity = activity if isinstance(activity, Activity) \

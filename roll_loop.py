@@ -3,6 +3,7 @@ import webbrowser
 import rand_task
 import myactivities
 import pickling
+import pomodoro
 
 from datetime import datetime
 from textwrap import dedent
@@ -97,12 +98,15 @@ def activityLoop():
         old_jar = None
 
     tree = updateTasks(old_jar[0]) if old_jar else ActivityTreeNode(myactivities.my_activities)
+    gtd = tree.activity.options[0]
 
     running = True # true while session is active
 
     t0 = datetime.now() # start time
     t1 = None
     period1 = TimeRange.pick(myactivities.times)
+
+    pomo = pomodoro.PomodoroTimer()
 
     # check if program started running before noon
     early_start = False
@@ -116,14 +120,29 @@ def activityLoop():
     # session loop
     while running:
 
+        # if time of day has changed (e.g., daytime --> evening),
+        # update top-level activity priorities
         t2 = datetime.now()
         period2 = TimeRange.pick(myactivities.times)
+        gtd_priority = period2.priorities[0]
         if period2 != period1:
-            for i, option in enumerate(myactivities.my_activities.options):
+            for i, option in enumerate(tree.activity.options):
                 option.setPriority(period2.priorities[i])
-            tree = ActivityTreeNode(myactivities.my_activities)
+            tree = ActivityTreeNode(tree.activity)
         period1 = period2
         t1 = t2
+
+        # change priority for getting things done based on
+        # status of pomodoro timer
+        if pomo.ring():
+            if pomo.isOnBreak():
+                print("You're on a break.")
+                new_prio = gtd_priority
+            else:
+                print("You're in a pomodoro.")
+                new_prio = gtd_priority * 2
+            gtd.setPriority(new_prio)
+            tree = ActivityTreeNode(tree.activity)
 
         if (early_start and t2.hour >= 12) or \
             (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
