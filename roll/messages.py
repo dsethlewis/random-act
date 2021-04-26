@@ -1,4 +1,5 @@
 from random import choice
+from termcolor import colored
 
 positivity = (
     "Nice",
@@ -38,7 +39,7 @@ positivity = (
     "Phat",
     "Dope",
     "Sweet",
-    "Smokin'"
+    "Smokin'",
     "Encroyable",
     "Magnifique",
     "Hit it",
@@ -50,3 +51,5 @@ positivity = (
 
 def niceJob():
     return choice(positivity) + "!"
+
+invalid = colored("Please enter a valid command.", "red")
