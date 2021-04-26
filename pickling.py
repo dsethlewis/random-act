@@ -1,5 +1,6 @@
 from pickle import load, dump
 from alias import all_aliases
+from messages import invalid
 
 def continueSession(filename):
     response = input("\nWould you like to continue from last session? (Y/n) ").lower()
@@ -10,7 +11,7 @@ def continueSession(filename):
         print("Session continued.")
         return old_jar
     elif response not in all_aliases["no"]:
-        print("Please enter a valid command.")
+        print(invalid)
         return continueSession(filename)
 
 def saveAndQuit(filename, jar):
@@ -21,5 +22,5 @@ def saveAndQuit(filename, jar):
         outfile.close()
         print("Session saved.")
     elif quit_response not in all_aliases["no"]:
-        print("Please enter a valid command.")
+        print(invalid)
         saveAndQuit(filename, jar)

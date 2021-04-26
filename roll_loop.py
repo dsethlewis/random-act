@@ -11,7 +11,8 @@ from os import system
 from activity import ActivityTreeNode
 from timerange import TimeRange
 from alias import all_aliases
-from messages import niceJob
+from termcolor import colored
+from messages import niceJob, invalid
 
 system("")
 
@@ -28,7 +29,7 @@ def suggestActivity(tree, choice=None):
         elif response2 in all_aliases["quit"]:
             return
         else:
-            print("\nPlease make a valid selection.\n")
+            print(invalid)
             return suggestActivity(tree, choice)
     return suggestActivity(tree)
 
@@ -49,7 +50,7 @@ def completeTask(tree, choice):
     elif response2 in all_aliases["no"]:
         print("Task not marked complete")
     elif response2 not in all_aliases["quit"]:
-        print("Please enter a valid command.")
+        print(invalid)
         return completeTask(tree, choice)
     return tree
 
@@ -77,10 +78,10 @@ def summarize(elapsed, history):
         print("\nNo activities completed.\n")
 
 def dualSummaries(elapsed, session_history, history, old_jar):
-    print("\n\033[1;34mSession Summary\033[0m", end='')
+    print(colored("Session Summary", "blue", attrs=["bold"]), end='')
     summarize(elapsed, session_history)
     if old_jar:
-        print("\033[1;34mOverall Summary\033[0m", end='')
+        print(colored("Overall Summary", "magenta", attrs=["bold"]), end='')
         elapsed += old_jar[2]
         summarize(elapsed, history)
 
@@ -127,7 +128,7 @@ def activityLoop():
 
         if (early_start and t2.hour >= 12) or \
             (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
-            print("\n\033[32mIf you haven't already, consider eating lunch.\033[0m")
+            print(colored("\nIf you haven't already, consider eating lunch.", "green"))
             early_start = False
 
         # ask user for command
@@ -154,7 +155,7 @@ def activityLoop():
             dualSummaries(datetime.now()-t0, session_history, history, old_jar)
 
         else: # user did not select a valid command
-            print("\033[31mPlease enter a valid command.\033[0m")
+            print(invalid)
 
     elapsed = (datetime.now() - t0) # timedelta for how much time passed while program was running
     dualSummaries(elapsed, session_history, history, old_jar)
