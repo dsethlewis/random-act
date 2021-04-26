@@ -56,7 +56,7 @@ def completeTask(tree, choice):
     return tree
 
 # print a summary of the session
-def summarize(elapsed, history):
+def summarize(elapsed, history, pomo=None):
     if history:
         modal = mode([x[0] for x in history])
         rarest_prob = min([x[1] for x in history])
@@ -74,13 +74,14 @@ def summarize(elapsed, history):
             modal.activity.title, modal.count,
             rarest.pctProb(rarest_prob)
             )
+        if pomo : summary += "Pomodoros: {}\n".format(pomo.count())
         print(dedent(summary))
     else:
         print("\nNo activities completed.\n")
 
-def dualSummaries(elapsed, session_history, history, old_jar):
+def dualSummaries(elapsed, session_history, history, old_jar, pomo=None):
     print(colored("Session Summary", "blue", attrs=["bold"]), end='')
-    summarize(elapsed, session_history)
+    summarize(elapsed, session_history, pomo)
     if old_jar:
         print(colored("Overall Summary", "magenta", attrs=["bold"]), end='')
         elapsed += old_jar[2]
@@ -171,13 +172,13 @@ def activityLoop():
                 session_history.append(history_entry)
 
         elif response in all_aliases["stats"]:
-            dualSummaries(datetime.now()-t0, session_history, history, old_jar)
+            dualSummaries(datetime.now()-t0, session_history, history, old_jar, pomo)
 
         else: # user did not select a valid command
             print(invalid)
 
     elapsed = (datetime.now() - t0) # timedelta for how much time passed while program was running
-    dualSummaries(elapsed, session_history, history, old_jar)
+    dualSummaries(elapsed, session_history, history, old_jar, pomo)
     if old_jar : elapsed += old_jar[2]
     jar = (tree, history, elapsed)
     pickling.saveAndQuit(pickle_file, jar)
