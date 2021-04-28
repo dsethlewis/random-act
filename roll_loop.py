@@ -64,17 +64,22 @@ def summarize(elapsed, history, pomo=None):
             if x[1] == rarest_prob:
                 rarest = x[0]
         summary = '''
-        Time elapsed: {}
-        Activities: {}
-        Mode: {} ({} times)
-        Rarest: {}
-        '''.format(
+            Time elapsed: {}
+            Activities: {}
+            Mode: {} ({} time{})
+            Rarest: {}
+            '''.format(
             str(elapsed).split('.')[:-1][0],
             len(history),
-            modal.activity.title, modal.count,
+            modal.activity.title, modal.count, "s" if modal.count > 1 else "",
             rarest.pctProb(rarest_prob)
             )
-        if pomo : summary += "Pomodoros: {}\n".format(pomo.count())
+        if pomo:
+            summary += '''Pomodoros: {}
+            {}'''.format(
+                pomo.count(),
+                "On a break" if pomo.isOnBreak() else "In a Pomodoro"
+                )
         print(dedent(summary))
     else:
         print("\nNo activities completed.\n")

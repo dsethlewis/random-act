@@ -34,8 +34,9 @@ class Task(act):
 
         if "childIds" in task_dict : self.addSubtasks(client)
 
-        self.due = dueDate(task_dict["dueDate"]) if "dueDate" in task_dict else None
+        self.due = self.dueDate(task_dict["dueDate"]) if "dueDate" in task_dict else None
 
+    @staticmethod
     def dueDate(dd):
         return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
 
