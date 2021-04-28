@@ -16,9 +16,9 @@ class PomodoroTimer:
     def count(self):
         n = self.nowInMinutes() // 30
         if self.isOnBreak() : n += 1
-        return n
+        return int(n)
 
     def ring(self):
         prev = self.prev
-        self.prev = time.time()
+        self.prev = time.time() - self.start
         return self.isOnBreak() != self.isOnBreak(prev)
