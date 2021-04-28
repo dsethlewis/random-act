@@ -139,6 +139,14 @@ def activityLoop():
         period1 = period2
         t1 = t2
 
+        if (early_start and t2.hour >= 12) or \
+            (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
+            print(colored("\nIf you haven't already, consider eating lunch.", "green"))
+            early_start = False
+
+        # ask user for command
+        response = input("\nSuggest an activity?\n").lower()
+
         # change priority for getting things done based on
         # status of pomodoro timer
         if pomo.ring():
@@ -150,14 +158,6 @@ def activityLoop():
                 new_prio = gtd_priority * 2
             gtd.setPriority(new_prio)
             tree = ActivityTreeNode(tree.activity)
-
-        if (early_start and t2.hour >= 12) or \
-            (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
-            print(colored("\nIf you haven't already, consider eating lunch.", "green"))
-            early_start = False
-
-        # ask user for command
-        response = input("\nSuggest an activity?\n").lower()
 
         # respond to user command
         if response in all_aliases["quit"]: # user wants to quit
