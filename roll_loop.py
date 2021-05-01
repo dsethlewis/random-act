@@ -4,6 +4,7 @@ import rand_task
 import myactivities
 import pickling
 import pomodoro
+import csv
 
 from datetime import datetime
 from textwrap import dedent
@@ -175,6 +176,17 @@ def activityLoop():
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)
                 session_history.append(history_entry)
+
+                # export to persistent CSV
+                with open('history.csv', 'a') as history_file:
+                    history_writer = csv.writer(history_file)
+                    history_writer.writerow([
+                        t1.timestamp(),
+                        choice.activity.title,
+                        choice.ancestryStr(),
+                        choice.prob,
+                        not pomo.isOnBreak()
+                        ])
 
         elif response in all_aliases["stats"]:
             dualSummaries(datetime.now()-t0, session_history, history, old_jar, pomo)

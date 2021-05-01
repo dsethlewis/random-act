@@ -1,0 +1,1477 @@
+{
+    "title": "Do something",
+    "options": [
+        {
+            "title": "Get things done",
+            "options": [
+                {
+                    "title": "Process stuff",
+                    "options": [
+                        {
+                            "title": "Personal email",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": "https://mail.google.com/mail/u/0/#inbox"
+                        },
+                        {
+                            "title": "UNC email",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": "https://heelmail.unc.edu"
+                        },
+                        {
+                            "title": "Desktop inbox",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Alternate channels",
+                            "options": [
+                                {
+                                    "title": "YNAB",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://app.youneedabudget.com/411791cc-fb41-4e42-aae5-e9596f27dbf7/accounts"
+                                },
+                                {
+                                    "title": "Texts",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Discord",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "WhatsApp",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "OneNote",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "FB Messenger",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "TickTick inbox",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Mail",
+                                    "options": [
+                                        {
+                                            "title": "Move mail from tray to desktop inbox",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Move mail from mailbox to mail tray",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Clean",
+                    "options": [
+                        {
+                            "title": "Put something away",
+                            "options": [],
+                            "priority": 3,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Clean a small area of surface",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Wash a dish",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Clean a small area of floor",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Other",
+                            "options": [
+                                {
+                                    "title": "Empty a bin (or bring bins out/in)",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Spray vinegar mixture in shower",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Pour boiling water down shower drain",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Move laundry along",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Restock",
+                                    "options": [
+                                        {
+                                            "title": "Toilet paper",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Paper towels",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Tissues",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Soap",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Conditioner",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Body wash",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Move dishwasher along",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Change sheets",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Change towels",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Study",
+                    "options": [
+                        {
+                            "title": "Programming",
+                            "options": [
+                                {
+                                    "title": "Work through next step in Flask tutorial",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars"
+                                },
+                                {
+                                    "title": "Read A Byte of Python",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://python.swaroopch.com/io.html"
+                                },
+                                {
+                                    "title": "Work through next step in interactive SQL tutorial",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://sqlbolt.com"
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Thesis",
+                            "options": [
+                                {
+                                    "title": "Read a page of an article",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                null
+            ],
+            "priority": 5,
+            "limit": -1,
+            "url": null
+        },
+        {
+            "title": "Take care of yourself",
+            "options": [
+                {
+                    "title": "Workout",
+                    "options": [
+                        {
+                            "title": "Aerobic Fitness",
+                            "options": [
+                                {
+                                    "title": "Jump rope",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Boxing",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "DDR",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Stairs",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Burpees",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Mountain climbers",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Go for a short run",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Muscular Fitness",
+                            "options": [
+                                {
+                                    "title": "Squats",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Floor press",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Rows",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Overhead press",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Deadlift",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Accessory",
+                                    "options": [
+                                        {
+                                            "title": "Core",
+                                            "options": [
+                                                {
+                                                    "title": "Plank",
+                                                    "options": [],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "Side plank",
+                                                    "options": [],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "Superman",
+                                                    "options": [],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "TRX knee tucks",
+                                                    "options": [],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "TRX hip press",
+                                                    "options": [],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                }
+                                            ],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Upper body",
+                                            "options": [
+                                                {
+                                                    "title": "Biceps",
+                                                    "options": [
+                                                        {
+                                                            "title": "TRX curls",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        },
+                                                        {
+                                                            "title": "Dumbbell curls",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        }
+                                                    ],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "Triceps",
+                                                    "options": [
+                                                        {
+                                                            "title": "TRX tricep extensions",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        },
+                                                        {
+                                                            "title": "Diamond push-ups",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        },
+                                                        {
+                                                            "title": "Skull crushers",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        }
+                                                    ],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                },
+                                                {
+                                                    "title": "Shoulders",
+                                                    "options": [
+                                                        {
+                                                            "title": "TRX clock press",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        },
+                                                        {
+                                                            "title": "Resistance band pull aparts",
+                                                            "options": [],
+                                                            "priority": 1,
+                                                            "limit": -1,
+                                                            "url": null
+                                                        }
+                                                    ],
+                                                    "priority": 1,
+                                                    "limit": -1,
+                                                    "url": null
+                                                }
+                                            ],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Flexibility",
+                            "options": [
+                                {
+                                    "title": "Happy baby",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Child pose",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Roll neck out",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Swing arms around",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "High knees",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Butt kicks",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Gokhale Method",
+                                    "options": [
+                                        {
+                                            "title": "Stretchsitting",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Stacksitting",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Stretchlying",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Tallstanding",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Hip-hinging",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Inner corset",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Glidewalking",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Stability",
+                            "options": [
+                                {
+                                    "title": "Tree pose",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Balance a book on your head",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Tightrope walk",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Flamingo",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Single-leg bodyweight squat",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Single-leg Romanian deadlift",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Personal care",
+                    "options": [
+                        {
+                            "title": "Hair and nails",
+                            "options": [
+                                {
+                                    "title": "Shower",
+                                    "options": [],
+                                    "priority": 2,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Brush hair",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Add product to hair",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Shave",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Trim body hair",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Cut nails",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Skin",
+                            "options": [
+                                {
+                                    "title": "Vaseline lips",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Wash face",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Benzoyl peroxide",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Moisturize",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Face toner",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Triamcinolone acetonide",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Fluticasone",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Acne dot",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Clindamycin",
+                                    "options": [],
+                                    "priority": 2,
+                                    "limit": 2,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Teeth",
+                            "options": [
+                                {
+                                    "title": "Floss",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Dental pick",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Fluoride rinse",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Brush teeth",
+                                    "options": [],
+                                    "priority": 2,
+                                    "limit": 3,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Other",
+                            "options": [
+                                {
+                                    "title": "Eye drops",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Deoderant",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Vaseline nose",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 3,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Q-Tip ear",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Wipe glasses",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": 2,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Pick a random Birch Box thing",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 2,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Relax",
+                    "options": [
+                        {
+                            "title": "Be mindful",
+                            "options": [
+                                {
+                                    "title": "Meditate",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Mindfully eat a piece of chocolate",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Mindful movement",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Pause, breathe, and listen",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Buddha Board",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Play",
+                            "options": [
+                                {
+                                    "title": "Puzzle",
+                                    "options": [
+                                        {
+                                            "title": "Spelling Bee",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": "https://www.nytimes.com/puzzles/spelling-bee"
+                                        },
+                                        {
+                                            "title": "Jigsaw puzzle",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Edabit",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": "https://edabit.com/challenges"
+                                        },
+                                        {
+                                            "title": "DOX",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Answer a question on Quora",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": "https://quora.com"
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Color",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Play a video game",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Enjoy",
+                            "options": [
+                                {
+                                    "title": "Listen to a song",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Read a poem",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://www.reddit.com/r/Poetry/top/?t=all"
+                                },
+                                {
+                                    "title": "Eat something yummy",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Watch a funny video",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": "https://www.youtube.com/"
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Rest",
+                            "options": [
+                                {
+                                    "title": "Shake it out",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Do nothing",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Go out for fresh air",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Replenish",
+                    "options": [
+                        {
+                            "title": "Eat a piece of fruit",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Eat a vegetable",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Drink water",
+                            "options": [],
+                            "priority": 2,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 2,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Read",
+                    "options": [
+                        {
+                            "title": "Crossroads of Twilight",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "OneNote Reading List",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                }
+            ],
+            "priority": 4,
+            "limit": -1,
+            "url": null
+        },
+        {
+            "title": "Connect with others",
+            "options": [
+                {
+                    "title": "Send a text",
+                    "options": [
+                        {
+                            "title": "Family",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Friend",
+                            "options": [],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                },
+                {
+                    "title": "Do a good turn",
+                    "options": [
+                        {
+                            "title": "Do something nice for Emily",
+                            "options": [
+                                {
+                                    "title": "Touch",
+                                    "options": [
+                                        {
+                                            "title": "Massage",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Hug",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Kiss",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Hold hand",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Words of affirmation",
+                                    "options": [
+                                        {
+                                            "title": "Mad props",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Sweet nothing",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Quality time",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Acts of service",
+                                    "options": [
+                                        {
+                                            "title": "Empty trash or recycling in her office",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 2,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Declutter something in her office",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Fold some of her laundry",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Clean her side of the bathroom vanity",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Clean her nightstand",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Offer to solve a problem",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Offer to pick up prescriptions",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Offer to make a phone call she's avoiding",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Clean her computer monitor, desk, whiteboard, or window",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Make the bed",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": 1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Gifts",
+                                    "options": [
+                                        {
+                                            "title": "Snack",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        },
+                                        {
+                                            "title": "Drink",
+                                            "options": [],
+                                            "priority": 1,
+                                            "limit": -1,
+                                            "url": null
+                                        }
+                                    ],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 5,
+                            "limit": -1,
+                            "url": null
+                        },
+                        {
+                            "title": "Give",
+                            "options": [
+                                {
+                                    "title": "Bring a book to a nearby little free library",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Donate stuff to Goodwill/etc.",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Make a small donation to a charity",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Bring food to a local food bank/drop-off location",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": 1,
+                            "url": null
+                        },
+                        {
+                            "title": "Serve",
+                            "options": [
+                                {
+                                    "title": "Bake something for a neighbor or friend",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Look up one-off volunteer opportunities",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Walk around the block picking up litter",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": 1,
+                            "url": null
+                        },
+                        {
+                            "title": "Love",
+                            "options": [
+                                {
+                                    "title": "Write a thank you note",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Send a gift to a friend or family member",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                },
+                                {
+                                    "title": "Organize a meal for friends or family",
+                                    "options": [],
+                                    "priority": 1,
+                                    "limit": -1,
+                                    "url": null
+                                }
+                            ],
+                            "priority": 1,
+                            "limit": -1,
+                            "url": null
+                        }
+                    ],
+                    "priority": 1,
+                    "limit": -1,
+                    "url": null
+                }
+            ],
+            "priority": 1,
+            "limit": -1,
+            "url": null
+        }
+    ],
+    "priority": 1,
+    "limit": -1,
+    "url": null
+}

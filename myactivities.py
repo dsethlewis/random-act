@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.9
 
 import rand_task
+import json
 
 from activity import Activity, ActivityTreeNode
 from timerange import TimeRange
@@ -285,3 +286,12 @@ my_activities = act("Do something", [
         ])
     ], priority=priorities[2])
 ])
+
+def toDict(node):
+    if not isinstance(node.activity, act) or node.activity.title == "Do a task" : return
+    d = vars(node.activity)
+    d["options"] = [toDict(a) for a in node.children]
+    return d
+
+with open('myactivities.json', 'w') as outfile:
+    json.dump(toDict(ActivityTreeNode(my_activities)), outfile, indent=4)

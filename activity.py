@@ -74,6 +74,9 @@ class ActivityTreeNode:
         [print(t.activity.title) for t in self.ancestry[1:]]
         print(self.pctProb())
 
+    def ancestryStr(self):
+        return '/'.join([a.activity.title for a in self.ancestry])
+
     # recurse through activity tree to select next activity
     def choose(self):
 
