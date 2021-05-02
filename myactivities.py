@@ -2,6 +2,7 @@
 
 import rand_task
 import json
+import jsbeautifier
 
 from activity import Activity, ActivityTreeNode
 from timerange import TimeRange
@@ -287,11 +288,25 @@ my_activities = act("Do something", [
     ], priority=priorities[2])
 ])
 
+default = {
+    "options": [],
+    "priority": 1,
+    "limit": -1,
+    "url": None
+}
+
 def toDict(node):
-    if not isinstance(node.activity, act) or node.activity.title == "Do a task" : return
+    if node.activity.title == "Do a task" : return
     d = vars(node.activity)
     d["options"] = [toDict(a) for a in node.children]
+    for key in default:
+        if d[key] == default[key] : del d[key]
     return d
 
-with open('myactivities.json', 'w') as outfile:
-    json.dump(toDict(ActivityTreeNode(my_activities)), outfile, indent=4)
+json_file = 'myactivities.json'
+opts = jsbeautifier.default_options()
+opts.brace_style = "collapse"
+
+with open(json_file, 'w') as outfile:
+    output = jsbeautifier.beautify(json.dumps(toDict(ActivityTreeNode(my_activities)), indent=4), opts)
+    outfile.write(output)

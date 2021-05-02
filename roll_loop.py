@@ -1,22 +1,22 @@
 #!/usr/bin/env python3.9
 import webbrowser
 import rand_task
-import myactivities
 import pickling
 import pomodoro
 import csv
+import os
 
 from datetime import datetime
 from textwrap import dedent
 from statistics import mode
-from os import system
 from activity import ActivityTreeNode
 from timerange import TimeRange
 from alias import all_aliases
 from termcolor import colored
 from messages import niceJob, invalid
+from treebuilder import tree, tt_client, times
 
-system("")
+outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
 def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
@@ -38,7 +38,7 @@ def suggestActivity(tree, choice=None):
 def updateTasks(tree):
     n = tree.findNode("Do a task")
     o = n.parent.activity.options
-    new = rand_task.TaskTree(myactivities.task_tree.client).tree
+    new = rand_task.TaskTree(tt_client).tree
     o[o.index(n.activity)] = new
     n.replaceWith(ActivityTreeNode(new))
     return tree
@@ -46,7 +46,7 @@ def updateTasks(tree):
 def completeTask(tree, choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
     if response2 in all_aliases["yes"]:
-        myactivities.task_tree.complete(choice.activity)
+        tt_client.complete(choice.activity)
         updateTasks(tree)
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:
@@ -94,7 +94,7 @@ def dualSummaries(elapsed, session_history, history, old_jar, pomo=None):
         summarize(elapsed, history)
 
 # follow commands from user to proceed through multiple activities
-def activityLoop():
+def activityLoop(tree):
 
     # initialize session
     
@@ -105,14 +105,13 @@ def activityLoop():
     except FileNotFoundError:
         old_jar = None
 
-    tree = updateTasks(old_jar[0]) if old_jar else ActivityTreeNode(myactivities.my_activities)
-    gtd = tree.activity.options[0]
+    if old_jar : tree = updateTasks(old_jar[0])
+    gtd = tree.children[0]
 
     running = True # true while session is active
 
     t0 = datetime.now() # start time
-    t1 = None
-    period1 = TimeRange.pick(myactivities.times)
+    t1 = period1 = None
 
     pomo = pomodoro.PomodoroTimer()
 
@@ -131,17 +130,17 @@ def activityLoop():
         # if time of day has changed (e.g., daytime --> evening),
         # update top-level activity priorities
         t2 = datetime.now()
-        period2 = TimeRange.pick(myactivities.times)
+        period2 = TimeRange.pick(times)
         gtd_priority = period2.priorities[0]
         if period2 != period1:
-            for i, option in enumerate(tree.activity.options):
-                option.setPriority(period2.priorities[i])
+            for i, child in enumerate(tree.children):
+                child.activity.setPriority(period2.priorities[i])
             tree = ActivityTreeNode(tree.activity)
         period1 = period2
         t1 = t2
 
-        if (early_start and t2.hour >= 12) or \
-            (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
+        if (early_start and t2.hour >= 12) \
+            or (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
             print(colored("\nIf you haven't already, consider eating lunch.", "green"))
             early_start = False
 
@@ -157,7 +156,7 @@ def activityLoop():
             else:
                 print("You're in a pomodoro.")
                 new_prio = gtd_priority * 2
-            gtd.setPriority(new_prio)
+            gtd.activity.setPriority(new_prio)
             tree = ActivityTreeNode(tree.activity)
 
         # respond to user command
@@ -178,7 +177,7 @@ def activityLoop():
                 session_history.append(history_entry)
 
                 # export to persistent CSV
-                with open('history.csv', 'a') as history_file:
+                with open(os.path.join(outdir, 'history.csv'), 'a') as history_file:
                     history_writer = csv.writer(history_file)
                     history_writer.writerow([
                         t1.timestamp(),
@@ -201,4 +200,4 @@ def activityLoop():
     pickling.saveAndQuit(pickle_file, jar)
 
 # start a session
-activityLoop()
+activityLoop(tree)
