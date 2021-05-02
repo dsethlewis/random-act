@@ -1,10 +1,9 @@
 from datetime import datetime, time
 
 class TimeRange():
-    def __init__(self, start: int, end: int, name: str=None, priorities=None):
+    def __init__(self, start: int, end: int, priorities=None):
         self.start = time(start)
         self.end = time(23, 59, 59) if end in (24, 0) else time(end)
-        self.name = name
         self.priorities = priorities
 
     def isNow(self):
@@ -19,7 +18,7 @@ class TimeRange():
             if time.isNow() : return time
 
     def __key(self):
-        return (self.start, self.end, self.name)
+        return (self.start, self.end, self.priorities)
 
     def __hash__(self):
         return hash(self.__key())

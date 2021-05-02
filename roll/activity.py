@@ -1,11 +1,10 @@
-import collections.abc as abc
-
+from collections.abc import Sequence
 from random import choice
 
 class Activity:
-
+    pass
     def __init__(
-        self, title: str, options: abc.Sequence=[],
+        self, title: str, options: Sequence=[],
         priority: int=1, limit: int=-1, url: str=None
         ):
         self.title = title
@@ -41,6 +40,7 @@ class ActivityTreeNode:
     def __init__(self, activity, parent=None):
         self.activity = activity if isinstance(activity, Activity) \
             else activity.activity if isinstance(activity, ActivityTreeNode) \
+            else Activity(**activity) if isinstance(activity, dict) \
             else Activity(activity)
         self.parent = parent
 
@@ -54,6 +54,10 @@ class ActivityTreeNode:
 
     def setProb(self, prob):
         self.prob = prob
+
+    def addChild(self, child: Activity):
+        self.children.append(ActivityTreeNode(child, self))
+        self.activity.options.append(child)
 
     def displLimit(self):
         return "{}/{}".format(self.count, self.activity.limit) \
