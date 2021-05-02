@@ -93,6 +93,16 @@ def dualSummaries(elapsed, session_history, history, old_jar, pomo=None):
         elapsed += old_jar[2]
         summarize(elapsed, history)
 
+def linkOut(url):
+    response2 = input("\nWould you like to open this activity in a browser? (Y/n) ").lower()
+    if response2 in all_aliases["yes"]:
+        webbrowser.open(url, autoraise=False)
+    elif response2 in all_aliases["no"]:
+        print("Webpage not opened.")
+    else:
+        print(invalid)
+        linkOut(url)
+
 # follow commands from user to proceed through multiple activities
 def activityLoop(tree):
 
@@ -167,7 +177,7 @@ def activityLoop(tree):
             choice = suggestActivity(tree)
             if choice:
                 print(niceJob())
-                if choice.activity.url : webbrowser.open(choice.activity.url, autoraise=False)
+                if choice.activity.url : linkOut(choice.activity.url)
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
                 if isinstance(choice.activity, rand_task.Task):
