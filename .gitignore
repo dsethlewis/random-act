@@ -1,2 +1,4 @@
-# VS Code Workspace
-roll.code-workspace
+__pycache__/
+record
+*.pyc
+mydata/output/
