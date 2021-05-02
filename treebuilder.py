@@ -14,13 +14,11 @@ tree = activity.ActivityTreeNode(activities)
 # TickTick credentials
 with open(os.path.join(indir, 'credentials.json')) as infile:
     credentials = json.load(infile)
-tt_client = login(
+task_tree = TaskTree(login(
     credentials["TickTick"]["username"],
-   credentials["TickTick"]["password"]
-)
-tree.findNode("Get things done").addChild(
-    TaskTree(tt_client).tree.setPriority(3)
-    )
+    credentials["TickTick"]["password"]
+))
+tree.findNode("Get things done").addChild(task_tree.tree.setPriority(3))
 tree.updateProbs()
 
 with open(os.path.join(indir, 'timeranges.json')) as infile:
