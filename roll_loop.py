@@ -187,7 +187,7 @@ def activityLoop(tree):
                 session_history.append(history_entry)
 
                 # export to persistent CSV
-                with open(os.path.join(outdir, 'history.csv'), 'a') as history_file:
+                with open(os.path.join(outdir, 'history.csv'), 'a', newline='') as history_file:
                     history_writer = csv.writer(history_file)
                     history_writer.writerow([
                         t1.timestamp(),
