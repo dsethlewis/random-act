@@ -2,4 +2,3 @@ __pycache__/
 record
 *.pyc
 *.code-workspace
-mydata/output/
