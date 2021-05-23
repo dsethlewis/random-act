@@ -145,7 +145,7 @@ def activityLoop(tree):
         if period2 != period1:
             for i, child in enumerate(tree.children):
                 child.activity.setPriority(period2.priorities[i])
-            tree = ActivityTreeNode(tree.activity)
+            tree.updateProbs()
         period1 = period2
         t1 = t2
 
@@ -156,6 +156,8 @@ def activityLoop(tree):
 
         # ask user for command
         response = input("\nSuggest an activity?\n").lower()
+
+        if response == "tree" : tree.displTree()
 
         # change priority for getting things done based on
         # status of pomodoro timer
