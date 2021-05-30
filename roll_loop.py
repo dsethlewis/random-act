@@ -14,7 +14,7 @@ from timerange import TimeRange
 from alias import all_aliases
 from termcolor import colored
 from messages import niceJob, invalid
-from treebuilder import tree, task_tree, times
+from treebuilder import tree, times#, task_tree
 
 outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
