@@ -1,27 +1,28 @@
 #!/usr/bin/env python3.9
 import webbrowser
-import rand_task
+import rollticktick
 import pickling
 import pomodoro
 import csv
 import os
+import rolltodoist
 
 from datetime import datetime
 from textwrap import dedent
 from statistics import mode
-from activity import ActivityTreeNode
+from activity import *
 from timerange import TimeRange
 from alias import all_aliases
 from termcolor import colored
 from messages import niceJob, invalid
-from treebuilder import tree, task_tree, times
+from treebuilder import tree, times, task_tree, todoist_client
 
 outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
 def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
     if choice.isActive() \
-        and (not isinstance(choice.activity, rand_task.Task) or choice.activity.isDue()):
+        and (not isinstance(choice.activity, Task) or choice.activity.isDue()):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in all_aliases["do"]:
@@ -38,7 +39,7 @@ def suggestActivity(tree, choice=None):
 def updateTasks(tree):
     n = tree.findNode("Do a task")
     o = n.parent.activity.options
-    new = rand_task.TaskTree(task_tree.client).tree
+    new = rollticktick.TaskTree(task_tree.client).tree
     o[o.index(n.activity)] = new
     n.replaceWith(ActivityTreeNode(new))
     return tree
@@ -46,7 +47,10 @@ def updateTasks(tree):
 def completeTask(tree, choice):
     response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
     if response2 in all_aliases["yes"]:
-        task_tree.complete(choice.activity)
+        if isinstance(choice, rollticktick.TickTickTask):
+            task_tree.complete(choice.activity)
+        elif isinstance(choice, rolltodoist.TodoistTask):
+            choice.activity.complete(todoist_client)
         updateTasks(tree)
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:
@@ -182,7 +186,7 @@ def activityLoop(tree):
                 if choice.activity.url : linkOut(choice.activity.url)
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
-                if isinstance(choice.activity, rand_task.Task):
+                if isinstance(choice.activity, rollticktick.TickTickTask) or isinstance(choice.activity, rolltodoist.TodoistTask):
                     tree = completeTask(tree, choice)
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)

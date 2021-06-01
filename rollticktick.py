@@ -6,18 +6,18 @@ from getpass import getpass
 from random import choice
 import datetime
 
-from activity import Activity as act
+from activity import *
 
 # create a client (type: dict) object for the user.
 # if no username and password are passed as arguments, requests them from user.
-def login(username = "", password = ""):
+def loginTickTick(username = "", password = ""):
     if username == "":
         username = input("Enter your TickTick username: ")
     if password == "":
         password = getpass()
     return api.TickTickClient(username, password)
 
-class Task(act):
+class TickTickTask(Activity, Task):
 
     def __init__(self, client, task_dict):
         
@@ -49,9 +49,9 @@ class Task(act):
     def addSubtasks(self, client):
         for sub_t in client.state["tasks"]:
             if sub_t["id"] in self.task_dict["childIds"]:
-                self.options.append(Task(client, sub_t))
+                self.options.append(TickTickTask(client, sub_t))
 
-class TaskTree():
+class TickTickTaskTree():
 
     def __init__(self, client):
         self.client = client
@@ -63,11 +63,12 @@ class TaskTree():
 
     def taskMaker(self, project):
         if self.client.task.get_from_project(project["id"]):
-            return [Task(self.client, task_dict) for task_dict in self.client.task.get_from_project(project["id"])]
+            return [TickTickTask(self.client, task_dict) for task_dict in self.client.task.get_from_project(project["id"])]
         return ["Add next action to project"]
 
     # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
     def build_task_tree(self):
+        act = Activity
         # initialize activity tree for tasks
         return act("Do a task", [
             # turn project folder into Activity
