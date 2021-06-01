@@ -2,7 +2,6 @@ from collections.abc import Sequence
 from random import choice
 
 class Activity:
-    pass
     def __init__(
         self, title: str, options: Sequence=[],
         priority: int=1, limit: int=-1, url: str=None
@@ -135,3 +134,8 @@ class ActivityTreeNode:
         if isinstance(other, ActivityTreeNode):
             return self.__key() == other.__key()
         return NotImplemented
+
+class Task:
+    def __init__(self, due):
+        self.due = due
+        
