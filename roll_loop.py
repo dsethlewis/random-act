@@ -7,7 +7,7 @@ import csv
 import os
 import rolltodoist
 
-from datetime import datetime
+from datetime import datetime as dt
 from textwrap import dedent
 from statistics import mode
 from activity import *
@@ -21,8 +21,8 @@ outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
 def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
-    if choice.isActive() \
-        and (not isinstance(choice.activity, Task) or choice.activity.isDue()):
+    if (choice.isActive() and
+        (not isinstance(choice.activity, Task) or choice.activity.isDue())):
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in all_aliases["do"]:
@@ -37,15 +37,20 @@ def suggestActivity(tree, choice=None):
     return suggestActivity(tree)
 
 def updateTasks(tree):
-    n = tree.findNode("Do a task")
-    o = n.parent.activity.options
-    new = rollticktick.TaskTree(task_tree.client).tree
-    o[o.index(n.activity)] = new
-    n.replaceWith(ActivityTreeNode(new))
+    # TickTick
+    # new = rollticktick.TaskTree(task_tree.client).tree
+    # Todoist
+    new = rolltodoist.buildTree(todoist_client)
+    old = tree.findNode("Do a task")
+    if old:
+        old.replaceWith(new)
+    else:
+        tree.findNode("Get things done").addChild(new)
     return tree
 
 def completeTask(tree, choice):
-    response2 = input("\nWould you like to mark this task completed? (Y/n) ").lower()
+    prompt = "\nWould you like to mark this task completed? (Y/n) "
+    response2 = input(prompt).lower()
     if response2 in all_aliases["yes"]:
         if isinstance(choice, rollticktick.TickTickTask):
             task_tree.complete(choice.activity)
@@ -98,7 +103,8 @@ def dualSummaries(elapsed, session_history, history, old_jar, pomo=None):
         summarize(elapsed, history)
 
 def linkOut(url):
-    response2 = input("\nWould you like to open this activity in a browser? (Y/n) ").lower()
+    prompt = "\nWould you like to open this activity in a browser? (Y/n) "
+    response2 = input(prompt).lower()
     if response2 in all_aliases["yes"]:
         webbrowser.open(url, autoraise=False)
     elif response2 in all_aliases["no"]:
@@ -124,7 +130,7 @@ def activityLoop(tree):
 
     running = True # true while session is active
 
-    t0 = datetime.now() # start time
+    t0 = dt.now() # start time
     t1 = period1 = None
 
     pomo = pomodoro.PomodoroTimer()
@@ -143,7 +149,7 @@ def activityLoop(tree):
 
         # if time of day has changed (e.g., daytime --> evening),
         # update top-level activity priorities
-        t2 = datetime.now()
+        t2 = dt.now()
         period2 = TimeRange.pick(times)
         gtd_priority = period2.priorities[0]
         if period2 != period1:
@@ -153,9 +159,11 @@ def activityLoop(tree):
         period1 = period2
         t1 = t2
 
-        if (early_start and t2.hour >= 12) \
-            or (not session_history and 12 <= t2.hour < 14): # user started before noon and it's now after noon
-            print(colored("\nIf you haven't already, consider eating lunch.", "green"))
+         # it's now after noon
+        if ((early_start and t2.hour >= 12)
+            or (not session_history and 12 <= t2.hour < 14)):
+            print(colored("\nIf you haven't already, consider eating lunch.",
+                          "green"))
             early_start = False
 
         # ask user for command
@@ -173,27 +181,35 @@ def activityLoop(tree):
                 print("You're in a pomodoro.")
                 new_prio = gtd_priority * 2
             gtd.activity.setPriority(new_prio)
-            tree = ActivityTreeNode(tree.activity)
+            tree.updateProbs()
 
         # respond to user command
-        if response in all_aliases["quit"]: # user wants to quit
+
+        # user wants to quit
+        if response in all_aliases["quit"]:
             running = False
         
-        elif response in all_aliases["next"]: # user wants to continue with next activity
+        # user wants to continue with next activity
+        elif response in all_aliases["next"]: 
             choice = suggestActivity(tree)
             if choice:
                 print(niceJob())
                 if choice.activity.url : linkOut(choice.activity.url)
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
-                if isinstance(choice.activity, rollticktick.TickTickTask) or isinstance(choice.activity, rolltodoist.TodoistTask):
+                if (isinstance(choice.activity, rollticktick.TickTickTask) or
+                    isinstance(choice.activity, rolltodoist.TodoistTask)):
                     tree = completeTask(tree, choice)
+                if choice.activity.title == "Add a next action":
+                    todoist_client.sync()
+                    updateTasks(tree)
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)
                 session_history.append(history_entry)
 
                 # export to persistent CSV
-                with open(os.path.join(outdir, 'history.csv'), 'a', newline='') as history_file:
+                with open(os.path.join(outdir, 'history.csv'),
+                          'a', newline='') as history_file:
                     history_writer = csv.writer(history_file)
                     history_writer.writerow([
                         t1.timestamp(),
@@ -204,12 +220,15 @@ def activityLoop(tree):
                         ])
 
         elif response in all_aliases["stats"]:
-            dualSummaries(datetime.now()-t0, session_history, history, old_jar, pomo)
+            dualSummaries(dt.now()-t0, session_history,
+                          history, old_jar, pomo)
 
         else: # user did not select a valid command
             print(invalid)
 
-    elapsed = (datetime.now() - t0) # timedelta for how much time passed while program was running
+    # timedelta for how much time passed while program was running
+    elapsed = (dt.now() - t0)
+
     dualSummaries(elapsed, session_history, history, old_jar, pomo)
     if old_jar : elapsed += old_jar[2]
     jar = (tree, history, elapsed)

@@ -1,11 +1,10 @@
+import datetime
 from collections.abc import Sequence
 from random import choice
 
 class Activity:
-    def __init__(
-        self, title: str, options: Sequence=[],
-        priority: int=1, limit: int=-1, url: str=None
-        ):
+    def __init__(self, title: str, options: Sequence=[],
+                 priority: int=1, limit: int=-1, url: str=None):
         self.title = title
         self.options = options
         self.priority = priority
@@ -28,7 +27,7 @@ class Activity:
     def __hash__(self):
         return hash(self.__key())
 
-    # ActivityTreeNode object equivalence
+    # Activity object equivalence
     def __eq__(self, other):
         if isinstance(other, Activity):
             return self.__key() == other.__key()
@@ -46,9 +45,8 @@ class ActivityTreeNode:
         # calculate further variables
         self.count = 0
         self.ancestry = parent.ancestry + [parent] if parent else []
-        self.prob = (self.activity.priority * parent.prob) \
-            / sum([x.priority if isinstance(x, Activity) else 1 for x in parent.activity.options]) \
-            if parent else 1
+        self.prob = 0
+        self.children_weight = 0
         self.children = [ActivityTreeNode(option, self) for option in self.activity.options]
 
     def setProb(self, prob):
@@ -56,7 +54,7 @@ class ActivityTreeNode:
 
     def addChild(self, child: Activity):
         self.children.append(ActivityTreeNode(child, self))
-        self.activity.options.append(child)
+        # self.activity.options.append(child)
 
     def displLimit(self):
         return "{}/{}".format(self.count, self.activity.limit) \
@@ -70,8 +68,9 @@ class ActivityTreeNode:
     # print full tree from this node down
     def displTree(self, spc=""):
         print("{}{}".format(spc, self.pctProb()))
-        for child in self.children : child.displTree(spc+" ")
-
+        # print("{}{}".format(spc, type(self.activity)))
+        for child in self.children : child.displTree(spc+"-")
+        
     # print task and all parents
     def displ(self):
         [print(t.activity.title) for t in self.ancestry[1:]]
@@ -94,6 +93,7 @@ class ActivityTreeNode:
             return c
 
     def findNode(self, query):
+        # print("{} == {}?".format(query, self.activity.title))
         if self.activity.title == query : return self
         if self.children:
             for child in self.children:
@@ -101,6 +101,7 @@ class ActivityTreeNode:
                 if target : return target
         
     def replaceWith(self, other):
+        # self.parent.activity.options[self.parent.activity.options.index(self.activity)] = other
         self.parent.children[self.parent.children.index(self)] = ActivityTreeNode(other, self.parent)
 
     def incrementCount(self):
@@ -110,17 +111,23 @@ class ActivityTreeNode:
         return self.activity.limit == -1 or self.count < self.activity.limit
 
     def priorityValue(self):
-        return 0 if not self.isActive() else self.activity.priority
+        return self.activity.priority if self.isActive() else 0
 
     # calculate probability of current node being selected
     def calcProb(self):
-        return (self.priorityValue() * self.parent.prob) \
-            / sum([x.priorityValue() for x in self.parent.children]) \
-            if self.parent else 1
+        return (self.priorityValue()
+                * self.parent.prob
+                / self.parent.children_weight) if self.parent else 1
 
     # update all probabilities in tree
     def updateProbs(self):
+        self.children_weight = sum([c.priorityValue() for c in self.children])
         self.setProb(self.calcProb())
+        assert self.prob >= 0 and self.prob <= 1, \
+            ("["
+             + self.activity.title
+             + "]'s probability is invalid: "
+             + str(self.prob))
         for child in self.children : child.updateProbs()
 
     def __key(self):
@@ -136,6 +143,10 @@ class ActivityTreeNode:
         return NotImplemented
 
 class Task:
-    def __init__(self, due):
+    def __init__(self, due = None):
         self.due = due
-        
+
+    # check if task is due yet
+    def isDue(self):
+        if not self.due : return True
+        return datetime.datetime.now().date() >= self.due

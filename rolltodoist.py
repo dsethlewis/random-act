@@ -1,8 +1,9 @@
 import todoist
+import datetime
 
 from activity import *
 
-def loginTodoist(token):
+def loginTodoist(token = ""):
     if token == "":
         token = input("Enter your Todoist token: ")
     return todoist.TodoistAPI(token)
@@ -72,7 +73,8 @@ class TodoistSection(TodoistObject):
 class TodoistTask(TodoistObject, Task):
 
     def __init__(self, task_dict):
-        super().__init__(task_dict)
+        TodoistObject.__init__(self, task_dict)
+        Task.__init__(self, self.dueDate(task_dict))
         super(TodoistObject, self).__init__(
             title = task_dict["content"],
             priority = task_dict["priority"],
@@ -101,13 +103,20 @@ class TodoistTask(TodoistObject, Task):
         client.close(self.todo_dict["id"])
         client.commit()
 
+    @staticmethod
+    def dueDate(todo_dict):
+        if todo_dict["due"]:
+            dd = todo_dict["due"]["date"]
+            return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
 
 def buildTree(client):
     state = client.state
     projects = list(state["projects"])
     sections = list(state["sections"])
-    tasks = list(state["items"])
-    tip = Activity("Do a task").setOptions([TodoistProject(p) for p in projects if "inbox_project" not in p and not p["parent_id"]])
+    tasks = [item for item in state["items"] if not item["checked"]]
+    tip = Activity("Do a task").setOptions([TodoistProject(p) \
+        for p in projects \
+        if "inbox_project" not in p and not p["parent_id"]])
     for p in tip.options:
         projects, sections, tasks = p.addOptions(projects, sections, tasks)
     return tip

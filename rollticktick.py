@@ -40,11 +40,6 @@ class TickTickTask(Activity, Task):
     def dueDate(dd):
         return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
 
-    # check if task is due yet
-    def isDue(self):
-        if not self.due : return True
-        return datetime.datetime.now().date() >= self.due
-
     # populate list of subtasks
     def addSubtasks(self, client):
         for sub_t in client.state["tasks"]:
