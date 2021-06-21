@@ -85,16 +85,18 @@ class ActivityTreeNode:
     def choose(self):
 
         # check whether to choose randomly or sequentially
-        if not self.ordered:
+        if not self.activity.ordered:
 
             # list indices with rank number of duplicates
             weighted = []
             for x in range(len(self.children)):
                 weighted.extend([x] * self.children[x].activity.priority)
 
+            # choose a random activity
             c = self.children[choice(weighted)]
 
         else:
+            # choose the next activity
             c = self.children[self.count]
 
         return c.choose() if c.children else c
