@@ -4,11 +4,13 @@ from random import choice
 
 class Activity:
     def __init__(self, title: str, options: Sequence=[],
-                 priority: int=1, limit: int=-1, url: str=None):
+                 priority: int=1, limit: int=-1, ordered: bool=False,
+                 url: str=None):
         self.title = title
         self.options = options
         self.priority = priority
         self.limit = limit
+        self.ordered = ordered
         self.url = url
 
     # set a new priority and return self
@@ -82,15 +84,20 @@ class ActivityTreeNode:
     # recurse through activity tree to select next activity
     def choose(self):
 
-        # list indices with rank number of duplicates
-        weighted = [] 
-        [weighted.extend([x] * self.children[x].activity.priority) for x in range(len(self.children))]
+        # check whether to choose randomly or sequentially
+        if not self.ordered:
 
-        c = self.children[choice(weighted)]
-        if c.children:
-            return c.choose()
+            # list indices with rank number of duplicates
+            weighted = []
+            for x in range(len(self.children)):
+                weighted.extend([x] * self.children[x].activity.priority)
+
+            c = self.children[choice(weighted)]
+
         else:
-            return c
+            c = self.children[self.count]
+
+        return c.choose() if c.children else c
 
     def findNode(self, query):
         # print("{} == {}?".format(query, self.activity.title))
@@ -150,3 +157,7 @@ class Task:
     def isDue(self):
         if not self.due : return True
         return datetime.datetime.now().date() >= self.due
+
+    def untilDue(self):
+        if not self.due : return 0
+        return (self.due - datetime.datetime.now().date()).days
