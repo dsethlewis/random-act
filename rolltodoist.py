@@ -67,6 +67,7 @@ class TodoistSection(TodoistObject):
                 if t["id"] in task_parent_ids:
                     tasks = tact.addOptions(tasks)
         if not options : options.append("Add a next action")
+        assert options, "Section option list is empty"
         self.setOptions(options)
         return tasks
 
@@ -77,9 +78,20 @@ class TodoistTask(TodoistObject, Task):
         Task.__init__(self, self.dueDate(task_dict))
         super(TodoistObject, self).__init__(
             title = task_dict["content"],
-            priority = task_dict["priority"],
+
+            # Calculate priority as a sum of Todoist priority flags
+            # and number of days until task is due
+            priority = max((task_dict["priority"]
+                            - round(self.untilDue() / 3)), 1),
             url = self.createURL(task_dict)
             )
+        assert self.priority >= 1, "Priority is invalid: " + str(self.priority)
+
+    @staticmethod
+    def dueDate(todo_dict):
+        if todo_dict["due"]:
+            dd = todo_dict["due"]["date"]
+            return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
 
     @staticmethod
     def createURL(todo_dict):
@@ -102,12 +114,7 @@ class TodoistTask(TodoistObject, Task):
     def complete(self, client):
         client.close(self.todo_dict["id"])
         client.commit()
-
-    @staticmethod
-    def dueDate(todo_dict):
-        if todo_dict["due"]:
-            dd = todo_dict["due"]["date"]
-            return datetime.date(int(dd[0:4]), int(dd[5:7]), int(dd[8:10]))
+        return client
 
 def buildTree(client):
     state = client.state

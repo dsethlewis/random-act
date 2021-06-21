@@ -21,8 +21,7 @@ outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
 def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
-    if (choice.isActive() and
-        (not isinstance(choice.activity, Task) or choice.activity.isDue())):
+    if choice.isActive():
         choice.displ()
         response2 = input("\nDo or pass? ").lower()
         if response2 in all_aliases["do"]:
@@ -48,14 +47,17 @@ def updateTasks(tree):
         tree.findNode("Get things done").addChild(new)
     return tree
 
-def completeTask(tree, choice):
+def completeTask(tree, choice, todoist_client = None):
     prompt = "\nWould you like to mark this task completed? (Y/n) "
     response2 = input(prompt).lower()
     if response2 in all_aliases["yes"]:
         if isinstance(choice, rollticktick.TickTickTask):
             task_tree.complete(choice.activity)
         elif isinstance(choice, rolltodoist.TodoistTask):
-            choice.activity.complete(todoist_client)
+            todoist_client = choice.activity.complete(todoist_client)
+            assert choice.activity.todo_dict["id"] in \
+                [t["id"] for t in \
+                    todoist_client.state["tasks"] if t["checked"]]
         updateTasks(tree)
         print("Task marked complete and list updated.")
     elif response2 in all_aliases["no"]:
@@ -179,7 +181,7 @@ def activityLoop(tree):
                 new_prio = gtd_priority
             else:
                 print("You're in a pomodoro.")
-                new_prio = gtd_priority * 2
+                new_prio = gtd_priority * 3
             gtd.activity.setPriority(new_prio)
             tree.updateProbs()
 
@@ -199,7 +201,7 @@ def activityLoop(tree):
                 if not choice.isActive() : choice.parent.updateProbs()
                 if (isinstance(choice.activity, rollticktick.TickTickTask) or
                     isinstance(choice.activity, rolltodoist.TodoistTask)):
-                    tree = completeTask(tree, choice)
+                    tree = completeTask(tree, choice, todoist_client)
                 if choice.activity.title == "Add a next action":
                     todoist_client.sync()
                     updateTasks(tree)
