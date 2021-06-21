@@ -1,5 +1,5 @@
 __pycache__/
 record
 *.pyc
-*.code-workspace
+*.vscode
 mydata/output/
