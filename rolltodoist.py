@@ -28,26 +28,26 @@ class TodoistProject(TodoistObject):
     def createURL(todo_dict):
         return TodoistObject.baseURL + str(todo_dict["id"])
 
-    def addOptions(self, projects, sections, tasks):
+    def addOptions(self, projs, sects, tasks):
         options = []
-        project_parent_ids = {p["parent_id"] for p in projects}
-        section_project_ids = {s["project_id"] for s in sections}
-        task_section_ids = {t["section_id"] for t in tasks}
-        for p in projects:
+        project_parent_ids = {p["parent_id"] for p in projs}
+        section_project_ids = {s["project_id"] for s in sects}
+        # task_section_ids = {t["section_id"] for t in tasks}
+        for p in projs:
             if p["parent_id"] == self.todo_dict["id"]:
                 pact = TodoistProject(p)
                 options.append(pact)
-                if p["id"] in project_parent_ids or p["id"] in section_project_ids:
-                    projects, sections, tasks = pact.addOptions(projects, sections, tasks)
-        for s in sections:
+                if (p["id"] in project_parent_ids or
+                    p["id"] in section_project_ids):
+                    projs, sects, tasks = pact.addOptions(projs, sects, tasks)
+        for s in sects:
             if s["project_id"] == self.todo_dict["id"]:
                 sact = TodoistSection(s)
                 options.append(sact)
-                if s["id"] in task_section_ids:
-                    tasks = sact.addOptions(tasks)
+                tasks = sact.addOptions(tasks)
         if not options : options.append("Add a next action")
         self.setOptions(options)
-        return projects, sections, tasks
+        return projs, sects, tasks
 
 class TodoistSection(TodoistObject):
 
@@ -59,6 +59,7 @@ class TodoistSection(TodoistObject):
 
     def addOptions(self, tasks):
         options = []
+        assert not options, "Section option list is not empty"
         task_parent_ids = {t["parent_id"] for t in tasks}
         for t in tasks:
             if t["section_id"] == self.todo_dict["id"] and not t["parent_id"]:
@@ -112,8 +113,11 @@ class TodoistTask(TodoistObject, Task):
         return tasks
 
     def complete(self, client):
-        client.close(self.todo_dict["id"])
+        id = self.todo_dict["id"]
+        client.items.close(id)
         client.commit()
+        client.sync()
+        assert client.items.get(id)["checked"]
         return client
 
 def buildTree(client):

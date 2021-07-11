@@ -15,7 +15,8 @@ from timerange import TimeRange
 from alias import all_aliases
 from termcolor import colored
 from messages import niceJob, invalid
-from treebuilder import tree, times, task_tree, todoist_client
+from treebuilder import tree, times, task_tree
+# from treebuilder import todoist_client
 
 outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
@@ -37,9 +38,9 @@ def suggestActivity(tree, choice=None):
 
 def updateTasks(tree):
     # TickTick
-    # new = rollticktick.TaskTree(task_tree.client).tree
-    # Todoist
-    new = rolltodoist.buildTree(todoist_client)
+    new = rollticktick.TickTickTaskTree(task_tree.client).tree
+    # # Todoist
+    # new = rolltodoist.buildTree(todoist_client)
     old = tree.findNode("Do a task")
     if old:
         old.replaceWith(new)
@@ -52,7 +53,7 @@ def completeTask(tree, choice, todoist_client = None):
     response2 = input(prompt).lower()
     if response2 in all_aliases["yes"]:
         if isinstance(choice, rollticktick.TickTickTask):
-            task_tree.complete(choice.activity)
+            task_tree.complete(choice.activity.task_dict)
         elif isinstance(choice, rolltodoist.TodoistTask):
             todoist_client = choice.activity.complete(todoist_client)
             assert choice.activity.todo_dict["id"] in \
@@ -83,7 +84,9 @@ def summarize(elapsed, history, pomo=None):
             '''.format(
             str(elapsed).split('.')[:-1][0],
             len(history),
-            modal.activity.title, modal.count, "s" if modal.count > 1 else "",
+            modal.activity.title,
+            modal.count,
+            "s" if modal.count > 1 else "",
             rarest.pctProb(rarest_prob)
             )
         if pomo:
@@ -171,8 +174,6 @@ def activityLoop(tree):
         # ask user for command
         response = input("\nSuggest an activity?\n").lower()
 
-        if response == "tree" : tree.displTree()
-
         # change priority for getting things done based on
         # status of pomodoro timer
         if pomo.ring():
@@ -190,6 +191,14 @@ def activityLoop(tree):
         # user wants to quit
         if response in all_aliases["quit"]:
             running = False
+
+        elif response == "tree" : tree.displTree()
+
+        elif response == "update" : updateTasks(tree)
+
+        elif response in all_aliases["stats"]:
+            dualSummaries(dt.now()-t0, session_history,
+                          history, old_jar, pomo)
         
         # user wants to continue with next activity
         elif response in all_aliases["next"]: 
@@ -199,12 +208,13 @@ def activityLoop(tree):
                 if choice.activity.url : linkOut(choice.activity.url)
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
-                if (isinstance(choice.activity, rollticktick.TickTickTask) or
-                    isinstance(choice.activity, rolltodoist.TodoistTask)):
+                if isinstance(choice.activity, rollticktick.TickTickTask):
+                    tree = completeTask(tree, choice)
+                if isinstance(choice.activity, rolltodoist.TodoistTask):
                     tree = completeTask(tree, choice, todoist_client)
-                if choice.activity.title == "Add a next action":
-                    todoist_client.sync()
-                    updateTasks(tree)
+                    if choice.activity.title == "Add a next action":
+                        todoist_client.sync()
+                updateTasks(tree)
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)
                 session_history.append(history_entry)
@@ -220,10 +230,6 @@ def activityLoop(tree):
                         choice.prob,
                         not pomo.isOnBreak()
                         ])
-
-        elif response in all_aliases["stats"]:
-            dualSummaries(dt.now()-t0, session_history,
-                          history, old_jar, pomo)
 
         else: # user did not select a valid command
             print(invalid)

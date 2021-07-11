@@ -1,7 +1,8 @@
 #!/usr/bin/env python3.9
 
 # import statements
-from ticktick import api
+from ticktick.oauth2 import OAuth2
+from ticktick.api import TickTickClient
 from getpass import getpass
 from random import choice
 import datetime
@@ -10,12 +11,16 @@ from activity import *
 
 # create a client (type: dict) object for the user.
 # if no username and password are passed as arguments, requests them from user.
-def loginTickTick(username = "", password = ""):
+def loginTickTick(client_id, client_secret, redirect_uri,
+                  username = "", password = ""):
     if username == "":
         username = input("Enter your TickTick username: ")
     if password == "":
         password = getpass()
-    return api.TickTickClient(username, password)
+    auth_client = OAuth2(client_id=client_id,
+                         client_secret=client_secret,
+                         redirect_uri=redirect_uri)
+    return TickTickClient(username, password, auth_client)
 
 class TickTickTask(Activity, Task):
 
@@ -34,7 +39,9 @@ class TickTickTask(Activity, Task):
 
         if "childIds" in task_dict : self.addSubtasks(client)
 
-        self.due = self.dueDate(task_dict["dueDate"]) if "dueDate" in task_dict else None
+        self.due = None
+        if "dueDate" in task_dict:
+            self.due = self.dueDate(task_dict["dueDate"])
 
     @staticmethod
     def dueDate(dd):
@@ -53,15 +60,19 @@ class TickTickTaskTree():
         self.tree = self.build_task_tree()
 
     # call TickTick (or other) API to mark task completed
-    def complete(self, t):
-        self.client.task.complete(t.id)
+    def complete(self, task_dict):
+        self.task_dict = self.client.task.complete(task_dict)
+        assert "completedTime" in self.task_dict
 
     def taskMaker(self, project):
         if self.client.task.get_from_project(project["id"]):
-            return [TickTickTask(self.client, task_dict) for task_dict in self.client.task.get_from_project(project["id"])]
+            return [TickTickTask(self.client, task_dict) for
+                    task_dict in
+                    self.client.task.get_from_project(project["id"])]
         return ["Add next action to project"]
 
-    # create an activity tree of tasks from TickTick: projects > tasks > subtasks > more subtasks
+    # create an activity tree of tasks from TickTick:
+    # projects > tasks > subtasks > more subtasks
     def build_task_tree(self):
         act = Activity
         # initialize activity tree for tasks
@@ -73,7 +84,8 @@ class TickTickTaskTree():
                     # loop through projects 
                     for project in self.client.state["projects"] \
                     # that are active and in the current folder
-                    if not project["closed"] and project["groupId"] == folder["id"]
+                    if (not project["closed"] and
+                        project["groupId"] == folder["id"])
             # loop through folders
             ]) for folder in self.client.state["project_folders"] \
                 # add pseudo-folder for any projects not in folders

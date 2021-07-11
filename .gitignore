@@ -3,3 +3,4 @@ record
 *.pyc
 *.vscode
 mydata/output/
+.token-oauth

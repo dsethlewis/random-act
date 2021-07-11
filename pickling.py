@@ -3,7 +3,8 @@ from alias import all_aliases
 from messages import invalid
 
 def continueSession(filename):
-    response = input("\nWould you like to continue from last session? (Y/n) ").lower()
+    response = input("\nWould you like to continue "
+                     "from last session? (Y/n) ").lower()
     if response in all_aliases["yes"]:
         infile = open(filename, 'rb')
         old_jar = load(infile)

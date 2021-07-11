@@ -38,10 +38,15 @@ class Activity:
 class ActivityTreeNode:
 
     def __init__(self, activity, parent=None):
-        self.activity = activity if isinstance(activity, Activity) \
-            else activity.activity if isinstance(activity, ActivityTreeNode) \
-            else Activity(**activity) if isinstance(activity, dict) \
-            else Activity(activity)
+        if isinstance(activity, Activity):
+            self.activity = activity
+        elif isinstance(activity, ActivityTreeNode):
+            self.activity = activity.activity
+        elif isinstance(activity, dict):
+            self.activity = Activity(**activity) 
+        else:
+            self.activity = Activity(activity)
+        
         self.parent = parent
 
         # calculate further variables
@@ -49,7 +54,8 @@ class ActivityTreeNode:
         self.ancestry = parent.ancestry + [parent] if parent else []
         self.prob = 0
         self.children_weight = 0
-        self.children = [ActivityTreeNode(option, self) for option in self.activity.options]
+        self.children = [ActivityTreeNode(option, self)
+                         for option in self.activity.options]
 
     def setProb(self, prob):
         self.prob = prob
@@ -65,7 +71,9 @@ class ActivityTreeNode:
     # get Activity's probability as a percentage
     def pctProb(self, prob=None):
         if not prob : prob = self.prob
-        return "{} ({}%) {}".format(self.activity.title, round(prob * 100, 2), self.displLimit())
+        return "{} ({}%) {}".format(self.activity.title,
+                                    round(prob * 100, 2),
+                                    self.displLimit())
 
     # print full tree from this node down
     def displTree(self, spc=""):
@@ -111,7 +119,8 @@ class ActivityTreeNode:
         
     def replaceWith(self, other):
         # self.parent.activity.options[self.parent.activity.options.index(self.activity)] = other
-        self.parent.children[self.parent.children.index(self)] = ActivityTreeNode(other, self.parent)
+        c = self.parent.children
+        c[c.index(self)] = ActivityTreeNode(other, self.parent)
 
     def incrementCount(self):
         self.count += 1
