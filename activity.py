@@ -3,9 +3,16 @@ from collections.abc import Sequence
 from random import choice
 
 class Activity:
+
+    i = 1
+
     def __init__(self, title: str, options: Sequence=[],
                  priority: int=1, limit: int=-1, ordered: bool=False,
                  url: str=None):
+
+        self.id = Activity.i
+        Activity.i += 1
+
         self.title = title
         self.options = options
         self.priority = priority
@@ -57,6 +64,9 @@ class ActivityTreeNode:
         self.children = [ActivityTreeNode(option, self)
                          for option in self.activity.options]
 
+    def getChildren(self):
+        return self.children
+
     def setProb(self, prob):
         self.prob = prob
 
@@ -98,7 +108,7 @@ class ActivityTreeNode:
             # list indices with rank number of duplicates
             weighted = []
             for x in range(len(self.children)):
-                weighted.extend([x] * self.children[x].activity.priority)
+                weighted.extend([x] * self.children[x].priorityValue())
 
             # choose a random activity
             c = self.children[choice(weighted)]
@@ -124,6 +134,8 @@ class ActivityTreeNode:
 
     def incrementCount(self):
         self.count += 1
+        for a in self.ancestry:
+            a.count += 1
 
     def isActive(self):
         return self.activity.limit == -1 or self.count < self.activity.limit

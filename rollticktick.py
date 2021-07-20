@@ -35,7 +35,7 @@ class TickTickTask(Activity, Task):
             )
 
         self.task_dict = task_dict
-        self.id = task_dict["id"]
+        self.tickid = task_dict["id"]
 
         if "childIds" in task_dict : self.addSubtasks(client)
 
@@ -75,19 +75,20 @@ class TickTickTaskTree():
     # projects > tasks > subtasks > more subtasks
     def build_task_tree(self):
         act = Activity
+        projects = [project for project
+                    in self.client.state["projects"]
+                    if not project["closed"]]
+        project_folders = self.client.state["project_folders"]
+        # add pseudo-folder for any projects not in folders
+        if not all(["groupID" in project for project in projects]):
+            project_folders += [{"id": None, "name": "Other Projects"}]
         # initialize activity tree for tasks
-        return act("Do a task", [
-            # turn project folder into Activity
-            act(folder["name"], [
-                # turn project into Activity
-                act(project["name"], self.taskMaker(project)) \
-                    # loop through projects 
-                    for project in self.client.state["projects"] \
-                    # that are active and in the current folder
-                    if (not project["closed"] and
-                        project["groupId"] == folder["id"])
-            # loop through folders
-            ]) for folder in self.client.state["project_folders"] \
-                # add pseudo-folder for any projects not in folders
-                + [{"id": None, "name": "Other Projects"}]
-        ])
+        return act("Do a task",
+                   # turn project folder into Activity
+                   [act(folder["name"],
+                        # turn project into Activity
+                        [act(project["name"], self.taskMaker(project))
+                         for project in projects
+                         # if project is in the current folder
+                         if project["groupId"] == folder["id"]])
+                    for folder in project_folders])

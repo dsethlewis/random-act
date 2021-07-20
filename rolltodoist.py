@@ -113,11 +113,11 @@ class TodoistTask(TodoistObject, Task):
         return tasks
 
     def complete(self, client):
-        id = self.todo_dict["id"]
-        client.items.close(id)
+        todoid = self.todo_dict["id"]
+        client.items.close(todoid)
         client.commit()
         client.sync()
-        assert client.items.get(id)["checked"]
+        assert client.items.get(todoid)["checked"]
         return client
 
 def buildTree(client):

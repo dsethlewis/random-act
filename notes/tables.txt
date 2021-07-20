@@ -1,0 +1,22 @@
+users
+    id
+    username
+    password
+
+activities
+    id
+    user_id
+    parent_id
+    title
+    priority
+    limit
+    ordered_list
+    ordered_rank
+    url
+
+history
+    id
+    activity_id
+    timestamp
+    prob
+    during_pomo
