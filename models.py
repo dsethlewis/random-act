@@ -1,18 +1,19 @@
-from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import declarative_base, relationship
 
-metadata = MetaData()
+Base = declarative_base()
 
-activity_table = Table(
-    "activities",
-    metadata,
-    Column('id', Integer, primary_key=True),
-    Column('title', String(140), nullable=False),
-    Column('parent_id', ForeignKey('activities.id'), nullable=False)
-)
+class DBActivity(Base):
+    __tablename__ = 'activity'
 
-history_table = Table(
-    "history",
-    metadata,
-    Column('id', Integer, primary_key=True),
-    Column('activity_id', ForeignKey('activities.id'), nullable=False)
-)
+    id = Column(Integer, primary_key=True)
+    title = Column(String(140), nullable=False)
+    parent_id = Column(Integer, ForeignKey('activity.id'))
+    children = relationship("DBActivity")
+
+class PastActivity(Base):
+    __tablename__ = 'past_activity'
+
+    id = Column(Integer, primary_key=True)
+    activity_id = Column(Integer, ForeignKey('activity.id'))
+    timestamp = Column(DateTime)

@@ -3,7 +3,7 @@ import webbrowser
 import rollticktick
 import pickling
 import pomodoro
-import csv
+# import csv
 import os
 import rolltodoist
 
@@ -17,6 +17,12 @@ from termcolor import colored
 from messages import niceJob, invalid
 from treebuilder import tree, times, task_tree
 # from treebuilder import todoist_client
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from models import PastActivity
+
+db_path = r"sqlite:///C:\Users\dseth\Documents\rollpy\mydata\roll.db"
+engine = create_engine(db_path)
 
 outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
@@ -210,26 +216,31 @@ def activityLoop(tree):
                 if not choice.isActive() : choice.parent.updateProbs()
                 if isinstance(choice.activity, rollticktick.TickTickTask):
                     tree = completeTask(tree, choice)
-                if isinstance(choice.activity, rolltodoist.TodoistTask):
-                    tree = completeTask(tree, choice, todoist_client)
-                    if choice.activity.title == "Add a next action":
-                        todoist_client.sync()
+                # if isinstance(choice.activity, rolltodoist.TodoistTask):
+                #     tree = completeTask(tree, choice, todoist_client)
+                #     if choice.activity.title == "Add a next action":
+                #         todoist_client.sync()
                 updateTasks(tree)
                 history_entry = (choice, choice.prob)
                 history.append(history_entry)
                 session_history.append(history_entry)
 
-                # export to persistent CSV
-                with open(os.path.join(outdir, 'history.csv'),
-                          'a', newline='') as history_file:
-                    history_writer = csv.writer(history_file)
-                    history_writer.writerow([
-                        t1.timestamp(),
-                        choice.activity.title,
-                        choice.ancestryStr(),
-                        choice.prob,
-                        not pomo.isOnBreak()
-                        ])
+                # # export to persistent CSV
+                # with open(os.path.join(outdir, 'history.csv'),
+                #           'a', newline='') as history_file:
+                #     history_writer = csv.writer(history_file)
+                #     history_writer.writerow([
+                #         t1.timestamp(),
+                #         choice.activity.title,
+                #         choice.ancestryStr(),
+                #         choice.prob,
+                #         not pomo.isOnBreak()
+                #         ])
+
+                with Session(engine) as session:
+                    session.add(PastActivity(activity_id=choice.activity.id,
+                                             timestamp = dt.now()))
+                    session.commit()
 
         else: # user did not select a valid command
             print(invalid)
