@@ -80,8 +80,8 @@ class TickTickTaskTree():
                     if not project["closed"]]
         project_folders = self.client.state["project_folders"]
         # add pseudo-folder for any projects not in folders
-        if not all(["groupID" in project for project in projects]):
-            project_folders += [{"id": None, "name": "Other Projects"}]
+        if not all(["groupId" in project for project in projects]):
+            project_folders += [{"id": 0, "name": "Other Projects"}]
         # initialize activity tree for tasks
         return act("Do a task",
                    # turn project folder into Activity
