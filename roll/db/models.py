@@ -11,6 +11,7 @@ class DBActivity(Base):
     status = Column(Boolean)
     parent_id = Column(Integer, ForeignKey('activity.id'))
     children = relationship("DBActivity")
+    priority = Column(Integer)
 
 class PastActivity(Base):
     __tablename__ = 'past_activity'

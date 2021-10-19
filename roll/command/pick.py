@@ -1,5 +1,5 @@
 from random import choice, random
-from math import log, ceil
+# from math import log, ceil
 
 # This function selects an activity at random from the list
 def pick(node):
@@ -7,7 +7,7 @@ def pick(node):
     c = [child for child in node.children if child.status]
     if not c:
         return node
-    return pick(choice(c))
+    return pick(c[scale([child.priority for child in c])])
 
 # def pos_int(nums):
 
