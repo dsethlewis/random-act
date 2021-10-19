@@ -39,6 +39,9 @@ while running:
             if add_title or add_parent:
                 helpers.addition(session, add_title, add_parent.id)
 
+    elif command == "help":
+        print('\nd(isplay), p(ick), a(dd), q(uit)\n')
+
     # quit session
     elif command == "q":
         running = False
