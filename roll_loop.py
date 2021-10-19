@@ -1,21 +1,19 @@
 #!/usr/bin/env python3.9
 import webbrowser
-import rollticktick
-import pickling
+# import rollticktick
 import pomodoro
-# import csv
 import os
-import rolltodoist
+# import rolltodoist
 
 from datetime import datetime as dt
 from textwrap import dedent
 from statistics import mode
 from activity import *
-from timerange import TimeRange
+# from timerange import TimeRange
 from alias import all_aliases
 from termcolor import colored
 from messages import niceJob, invalid
-from treebuilder import tree, times, task_tree
+from treebuilder import tree#, times, task_tree
 # from treebuilder import todoist_client
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -24,7 +22,7 @@ from models import PastActivity
 db_path = r"sqlite:///C:\Users\dseth\Documents\rollpy\mydata\roll.db"
 engine = create_engine(db_path)
 
-outdir = os.path.join(os.getcwd(), 'mydata', 'output')
+# outdir = os.path.join(os.getcwd(), 'mydata', 'output')
 
 def suggestActivity(tree, choice=None):
     if not choice : choice = tree.choose()
@@ -42,37 +40,37 @@ def suggestActivity(tree, choice=None):
             return suggestActivity(tree, choice)
     return suggestActivity(tree)
 
-def updateTasks(tree):
-    # TickTick
-    new = rollticktick.TickTickTaskTree(task_tree.client).tree
-    # # Todoist
-    # new = rolltodoist.buildTree(todoist_client)
-    old = tree.findNode("Do a task")
-    if old:
-        old.replaceWith(new)
-    else:
-        tree.findNode("Get things done").addChild(new)
-    return tree
+# def updateTasks(tree):
+#     # TickTick
+#     new = rollticktick.TickTickTaskTree(task_tree.client).tree
+#     # # Todoist
+#     # new = rolltodoist.buildTree(todoist_client)
+#     old = tree.findNode("Do a task")
+#     if old:
+#         old.replaceWith(new)
+#     else:
+#         tree.findNode("Get things done").addChild(new)
+#     return tree
 
-def completeTask(tree, choice, todoist_client = None):
-    prompt = "\nWould you like to mark this task completed? (Y/n) "
-    response2 = input(prompt).lower()
-    if response2 in all_aliases["yes"]:
-        if isinstance(choice, rollticktick.TickTickTask):
-            task_tree.complete(choice.activity.task_dict)
-        elif isinstance(choice, rolltodoist.TodoistTask):
-            todoist_client = choice.activity.complete(todoist_client)
-            assert choice.activity.todo_dict["id"] in \
-                [t["id"] for t in \
-                    todoist_client.state["tasks"] if t["checked"]]
-        updateTasks(tree)
-        print("Task marked complete and list updated.")
-    elif response2 in all_aliases["no"]:
-        print("Task not marked complete")
-    elif response2 not in all_aliases["quit"]:
-        print(invalid)
-        return completeTask(tree, choice)
-    return tree
+# def completeTask(tree, choice, todoist_client = None):
+#     prompt = "\nWould you like to mark this task completed? (Y/n) "
+#     response2 = input(prompt).lower()
+#     if response2 in all_aliases["yes"]:
+#         if isinstance(choice, rollticktick.TickTickTask):
+#             task_tree.complete(choice.activity.task_dict)
+#         elif isinstance(choice, rolltodoist.TodoistTask):
+#             todoist_client = choice.activity.complete(todoist_client)
+#             assert choice.activity.todo_dict["id"] in \
+#                 [t["id"] for t in \
+#                     todoist_client.state["tasks"] if t["checked"]]
+#         updateTasks(tree)
+#         print("Task marked complete and list updated.")
+#     elif response2 in all_aliases["no"]:
+#         print("Task not marked complete")
+#     elif response2 not in all_aliases["quit"]:
+#         print(invalid)
+#         return completeTask(tree, choice)
+#     return tree
 
 # print a summary of the session
 def summarize(elapsed, history, pomo=None):
@@ -105,13 +103,9 @@ def summarize(elapsed, history, pomo=None):
     else:
         print("\nNo activities completed.\n")
 
-def dualSummaries(elapsed, session_history, history, old_jar, pomo=None):
+def dualSummaries(elapsed, session_history, pomo=None):
     print(colored("Session Summary", "blue", attrs=["bold"]), end='')
     summarize(elapsed, session_history, pomo)
-    if old_jar:
-        print(colored("Overall Summary", "magenta", attrs=["bold"]), end='')
-        elapsed += old_jar[2]
-        summarize(elapsed, history)
 
 def linkOut(url):
     prompt = "\nWould you like to open this activity in a browser? (Y/n) "
@@ -129,20 +123,10 @@ def activityLoop(tree):
 
     # initialize session
     
-    pickle_file = 'record'
-
-    try:
-        old_jar = pickling.continueSession(pickle_file)
-    except FileNotFoundError:
-        old_jar = None
-
-    if old_jar : tree = updateTasks(old_jar[0])
-    gtd = tree.children[0]
-
     running = True # true while session is active
 
     t0 = dt.now() # start time
-    t1 = period1 = None
+    period1 = None
 
     pomo = pomodoro.PomodoroTimer()
 
@@ -152,7 +136,6 @@ def activityLoop(tree):
         early_start = True
 
     # list of completed activities
-    history = old_jar[1] if old_jar else []
     session_history = []
 
     # session loop
@@ -161,13 +144,13 @@ def activityLoop(tree):
         # if time of day has changed (e.g., daytime --> evening),
         # update top-level activity priorities
         t2 = dt.now()
-        period2 = TimeRange.pick(times)
-        gtd_priority = period2.priorities[0]
-        if period2 != period1:
-            for i, child in enumerate(tree.children):
-                child.activity.setPriority(period2.priorities[i])
-            tree.updateProbs()
-        period1 = period2
+        # period2 = TimeRange.pick(times)
+        # gtd_priority = period2.priorities[0]
+        # if period2 != period1:
+        #     for i, child in enumerate(tree.children):
+        #         child.activity.setPriority(period2.priorities[i])
+        #     tree.updateProbs()
+        # period1 = period2
         t1 = t2
 
          # it's now after noon
@@ -185,12 +168,12 @@ def activityLoop(tree):
         if pomo.ring():
             if pomo.isOnBreak():
                 print("You're on a break.")
-                new_prio = gtd_priority
+                # new_prio = gtd_priority
             else:
                 print("You're in a pomodoro.")
-                new_prio = gtd_priority * 3
-            gtd.activity.setPriority(new_prio)
-            tree.updateProbs()
+                # new_prio = gtd_priority * 3
+            # gtd.activity.setPriority(new_prio)
+            # tree.updateProbs()
 
         # respond to user command
 
@@ -200,11 +183,10 @@ def activityLoop(tree):
 
         elif response == "tree" : tree.displTree()
 
-        elif response == "update" : updateTasks(tree)
+        # elif response == "update" : updateTasks(tree)
 
         elif response in all_aliases["stats"]:
-            dualSummaries(dt.now()-t0, session_history,
-                          history, old_jar, pomo)
+            dualSummaries(dt.now()-t0, session_history, pomo)
         
         # user wants to continue with next activity
         elif response in all_aliases["next"]: 
@@ -214,15 +196,15 @@ def activityLoop(tree):
                 if choice.activity.url : linkOut(choice.activity.url)
                 choice.incrementCount()
                 if not choice.isActive() : choice.parent.updateProbs()
-                if isinstance(choice.activity, rollticktick.TickTickTask):
-                    tree = completeTask(tree, choice)
-                # if isinstance(choice.activity, rolltodoist.TodoistTask):
-                #     tree = completeTask(tree, choice, todoist_client)
-                #     if choice.activity.title == "Add a next action":
-                #         todoist_client.sync()
-                updateTasks(tree)
+                # if isinstance(choice.activity, rollticktick.TickTickTask):
+                #     tree = completeTask(tree, choice)
+                # # if isinstance(choice.activity, rolltodoist.TodoistTask):
+                # #     tree = completeTask(tree, choice, todoist_client)
+                # #     if choice.activity.title == "Add a next action":
+                # #         todoist_client.sync()
+                # updateTasks(tree)
                 history_entry = (choice, choice.prob)
-                history.append(history_entry)
+                # history.append(history_entry)
                 session_history.append(history_entry)
 
                 # # export to persistent CSV
@@ -248,10 +230,7 @@ def activityLoop(tree):
     # timedelta for how much time passed while program was running
     elapsed = (dt.now() - t0)
 
-    dualSummaries(elapsed, session_history, history, old_jar, pomo)
-    if old_jar : elapsed += old_jar[2]
-    jar = (tree, history, elapsed)
-    pickling.saveAndQuit(pickle_file, jar)
+    dualSummaries(elapsed, session_history, pomo)
 
 # start a session
 activityLoop(tree)

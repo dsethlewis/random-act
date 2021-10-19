@@ -6,15 +6,15 @@ class Activity:
 
     i = 1
 
-    def __init__(self, title: str, options: Sequence=[],
+    def __init__(self, ttl: str, opts: Sequence=[],
                  priority: int=1, limit: int=-1, ordered: bool=False,
                  url: str=None):
 
         self.id = Activity.i
         Activity.i += 1
 
-        self.title = title
-        self.options = options
+        self.title = ttl
+        self.options = opts
         self.priority = priority
         self.limit = limit
         self.ordered = ordered
@@ -159,6 +159,7 @@ class ActivityTreeNode:
              + "]'s probability is invalid: "
              + str(self.prob))
         for child in self.children : child.updateProbs()
+        return self
 
     def __key(self):
         return (self.activity, self.parent)
