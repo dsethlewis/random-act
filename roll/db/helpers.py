@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from db.database import engine
-from db.models import DBActivity
-from sqlalchemy import select, insert, update
+from database import engine
+from models import DBActivity
+from sqlalchemy import select
 
 def new_session():
     return Session(engine, future=True)
@@ -20,3 +20,9 @@ def addition(session, title, parent_id):
         priority=1
         ))
     session.commit()
+
+def get_parent(session, activity):
+    return session.execute(
+        select(DBActivity).
+        where(DBActivity.id == activity.parent_id and DBActivity.status)
+    ).all()[0][0]
