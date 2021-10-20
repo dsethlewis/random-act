@@ -18,4 +18,13 @@ class PastActivity(Base):
 
     id = Column(Integer, primary_key=True)
     activity_id = Column(Integer, ForeignKey('activity.id'))
+    session_id = Column(Integer, ForeignKey('activity_session.id'))
+    accepted = Column(Boolean)
     timestamp = Column(DateTime)
+
+class ActivitySession(Base):
+    __tablename__ = 'activity_session'
+
+    id = Column(Integer, primary_key=True)
+    start_time = Column(DateTime)
+    end_time = Column(DateTime)

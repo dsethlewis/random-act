@@ -7,6 +7,8 @@ from command.modify import modify
 
 def loop():
 
+    with helpers.new_session() as session:
+        activity_session_id = helpers.start_activity_session(session)
     running = True
     next = None
 
@@ -27,16 +29,20 @@ def loop():
                 next_tpl = next.id, next.title, next.parent_id
 
                 # collect feedback
-                choice = (
+                accepted = (
                     input("\nDo you want to do this activity? (Y/n) ").
                     lower()
+                    ) in ["y", ""]
+                helpers.add_past_activity(
+                    session, next,
+                    activity_session_id, accepted
                     )
-                if choice in ["y", ""]:
+                if accepted:
                     if like(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority += 1
                         print("OK, thanks for the feedback!")
-                elif choice == "n":
+                else:
                     if dislike(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority -= 1
@@ -69,5 +75,8 @@ def loop():
         # quit session
         elif command == "q":
             running = False
+    
+    with helpers.new_session() as session:
+        helpers.end_activity_session(session, activity_session_id)
 
 loop()
