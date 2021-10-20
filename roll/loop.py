@@ -3,6 +3,7 @@ from command.display import display
 from command.pick import pick
 from command.add import add
 from command.rate import like, dislike
+from command.modify import modify
 
 def loop():
 
@@ -23,6 +24,7 @@ def loop():
             print("")
             with helpers.new_session() as session:
                 next = pick(helpers.tip(session))
+                next_tpl = next.id, next.title, next.parent_id
 
                 # collect feedback
                 choice = (
@@ -49,8 +51,20 @@ def loop():
                 if add_title or add_parent:
                     helpers.addition(session, add_title, add_parent.id)
 
+        # make changes to the most recent activity
+        elif command == "m":
+            if not next:
+                print("Pick an activity first.\n")
+            else:
+                with helpers.new_session() as session:
+                    helpers.update_activity(
+                        session, 
+                        next_tpl[0], 
+                        **modify(*next_tpl)
+                        )
+
         elif command in ["help", "h"]:
-            print('\nd(isplay), p(ick), a(dd), q(uit), h(elp)\n')
+            print('\nd(isplay), p(ick), a(dd), m(odify), q(uit), h(elp)\n')
 
         # quit session
         elif command == "q":

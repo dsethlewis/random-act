@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from db.database import engine
 from db.models import DBActivity
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 def new_session():
     return Session(engine, future=True)
@@ -32,3 +32,12 @@ def get_ancestry(session, activity, descendants=[]):
         return descendants
     descendants.append(activity)
     return get_ancestry(session, get_parent(session, activity), descendants)
+
+# doesn't work, need to find a workaround for update()
+def update_activity(session, id, **kwargs):
+    session.execute(
+        update(DBActivity).
+        where(DBActivity.id == id and DBActivity.status).
+        values(**kwargs)
+    )
+    session.commit()
