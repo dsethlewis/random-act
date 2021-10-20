@@ -1,6 +1,6 @@
-from collections import namedtuple
+from command.helpers import browser
 
-def modify(id, title, parent_id):
+def modify(tip, id, title, parent_id):
 
     quoted = "\"" + title + "\""
 
@@ -17,9 +17,8 @@ def modify(id, title, parent_id):
         return {"title": new_title}
 
     elif choice == 2:
-        # TBA - reference to version of add_helper() in command.add
-        node = namedtuple('Node', 'id')(1)
-        print(quoted + " will be moved")
+        node = browser(tip)
+        print(quoted + " will be moved under \"" + node.title + "\"")
         return {"parent_id": node.id}
 
     elif choice == 3:

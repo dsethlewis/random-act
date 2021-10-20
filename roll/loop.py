@@ -60,7 +60,7 @@ def loop():
                     helpers.update_activity(
                         session, 
                         next_tpl[0], 
-                        **modify(*next_tpl)
+                        **modify(helpers.tip(session), *next_tpl)
                         )
 
         elif command in ["help", "h"]:
