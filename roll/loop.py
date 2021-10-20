@@ -29,7 +29,7 @@ def loop():
                     input("\nDo you want to do this activity? (Y/n) ").
                     lower()
                     )
-                if choice == "y":
+                if choice in ["y", ""]:
                     if like(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority += 1
