@@ -30,6 +30,7 @@ while running:
                 if dislike(next):
                     next.priority -= 1
                     print("OK, thanks for the feedback!")
+            print("")
             session.commit()
 
     # add a new activity
@@ -39,8 +40,8 @@ while running:
             if add_title or add_parent:
                 helpers.addition(session, add_title, add_parent.id)
 
-    elif command == "help":
-        print('\nd(isplay), p(ick), a(dd), q(uit)\n')
+    elif command in ["help", "h"]:
+        print('\nd(isplay), p(ick), a(dd), q(uit), h(elp)\n')
 
     # quit session
     elif command == "q":

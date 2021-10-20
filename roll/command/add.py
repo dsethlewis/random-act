@@ -7,6 +7,7 @@ def add(tip):
     node = add_helper(tip)
 
     confirm = input('You want to add \"' + title + "\" under \"" + node.title + '". Is that correct? Y/n ').lower()
+    print("")
     if confirm == "y":
         return title, node
 
