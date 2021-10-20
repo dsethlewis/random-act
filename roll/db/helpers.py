@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from database import engine
-from models import DBActivity
+from db.database import engine
+from db.models import DBActivity
 from sqlalchemy import select
 
 def new_session():
@@ -26,3 +26,9 @@ def get_parent(session, activity):
         select(DBActivity).
         where(DBActivity.id == activity.parent_id and DBActivity.status)
     ).all()[0][0]
+
+def get_ancestry(session, activity, descendants=[]):
+    if activity.parent_id == 0:
+        return descendants
+    descendants.append(activity)
+    return get_ancestry(session, get_parent(session, activity), descendants)
