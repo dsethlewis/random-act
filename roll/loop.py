@@ -19,7 +19,7 @@ def loop():
                 display(helpers.tip(session))
 
         # pick next activity
-        elif command == "p":
+        elif command in ["p", ""]:
             print("")
             with helpers.new_session() as session:
                 next = pick(helpers.tip(session))
