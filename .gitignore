@@ -1,8 +1,10 @@
 __pycache__/
-record
 *.pyc
-*.vscode
-mydata/output/
+rand-env/
+
 *.db
 .token-oauth
 mydata/
+
+*.vscode
+*.code-workspace
