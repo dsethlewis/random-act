@@ -1,5 +1,4 @@
 from random import choice, random
-# from math import log, ceil
 
 # This function selects an activity at random from the list
 def pick(node):
@@ -8,16 +7,6 @@ def pick(node):
     if not c:
         return node
     return pick(c[scale([child.priority for child in c])])
-
-# def pos_int(nums):
-
-#     powers = [2 ** num for num in nums]
-
-#     s = sum(powers)
-#     props = [pow / s for pow in powers]
-
-#     d = 10 ** ceil(-log(min(props), 10))
-#     return [round(prop * d) for prop in props]
 
 def scale(nums):
 
