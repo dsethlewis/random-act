@@ -37,12 +37,14 @@ def loop():
                     session, next,
                     activity_session_id, accepted
                     )
-                if accepted:
+                session.commit()
+                stddvs = helpers.acpt_rate_dev(session, next)
+                if accepted and stddvs >= 1:
                     if like(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority += 1
                         print("OK, thanks for the feedback!")
-                else:
+                elif not accepted and stddvs <= 1:
                     if dislike(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority -= 1

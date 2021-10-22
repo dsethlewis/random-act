@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select, update
+from sqlalchemy import select, update, func
 
 from db.database import engine
 from db.models import DBActivity, ActivitySession, PastActivity
@@ -76,3 +76,31 @@ def add_past_activity(session, activity, activity_session_id, accepted):
         accepted=accepted
     ))
     session.commit()
+
+def acpt_rate_dev(session, activity):
+
+    mean = session.execute(
+        select(func.avg(PastActivity.accepted))
+    ).scalar()
+
+    rates_by_activity = (
+        select(
+            PastActivity.activity_id, 
+            func.avg(PastActivity.accepted).label("rate")
+        ).
+        filter(PastActivity.accepted != None).
+        group_by(PastActivity.activity_id).
+        subquery()
+    )
+
+    sd = session.execute(
+        select(func.sqrt(func.avg(func.pow(rates_by_activity.c.rate - mean, 2))))    
+    ).scalar()
+
+    rate = session.execute(
+        select(rates_by_activity.c.rate).
+        filter(rates_by_activity.c.activity_id == activity.id)
+    ).scalar()
+
+    return (rate - mean) / sd if rate else 0
+
