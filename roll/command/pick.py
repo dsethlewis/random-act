@@ -10,7 +10,7 @@ def pick(node):
 
 def scale(nums):
 
-    powers = [2 ** num for num in nums]
+    powers = [1.1 ** num for num in nums]
     s = sum(powers)
     props = [pow / s for pow in powers]
 
