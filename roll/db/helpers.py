@@ -88,7 +88,10 @@ def acpt_rate_dev(session, activity):
     rates_by_activity = (
         select(
             PastActivity.activity_id, 
-            func.avg(PastActivity.accepted).label("rate")
+            func.ln(
+                func.avg(PastActivity.accepted)
+                / (1 - func.avg(PastActivity.accepted))
+            ).label("rate")
         ).
         filter(PastActivity.accepted != None).
         group_by(PastActivity.activity_id).
