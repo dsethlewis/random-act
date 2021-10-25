@@ -10,7 +10,9 @@ def loop():
     with helpers.new_session() as session:
         activity_session_id = helpers.start_activity_session(session)
     running = True
+
     next = None
+    last_title = None
     z = 1.28
 
     while running:
@@ -26,8 +28,8 @@ def loop():
         elif command in ["p", ""]:
             print("")
             with helpers.new_session() as session:
-                last = next
-                next = pick(helpers.tip(session), last)
+                next = pick(helpers.tip(session), last_title)
+                last_title = next.title
                 next_tpl = next.id, next.title, next.parent_id
 
                 # collect feedback
