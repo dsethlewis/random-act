@@ -11,6 +11,7 @@ def loop():
         activity_session_id = helpers.start_activity_session(session)
     running = True
     next = None
+    z = 1.28
 
     while running:
 
@@ -25,7 +26,8 @@ def loop():
         elif command in ["p", ""]:
             print("")
             with helpers.new_session() as session:
-                next = pick(helpers.tip(session))
+                last = next
+                next = pick(helpers.tip(session), last)
                 next_tpl = next.id, next.title, next.parent_id
 
                 # collect feedback
@@ -38,13 +40,15 @@ def loop():
                     activity_session_id, accepted
                     )
                 session.commit()
+
+                # tweak priority
                 stddvs = helpers.acpt_rate_dev(session, next)
-                if accepted and stddvs >= 1:
+                if accepted and stddvs >= z:
                     if like(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority += 1
                         print("OK, thanks for the feedback!")
-                elif not accepted and stddvs <= 1:
+                elif not accepted and stddvs <= z:
                     if dislike(next):
                         for a in helpers.get_ancestry(session, next):
                             a.priority -= 1
@@ -69,7 +73,7 @@ def loop():
                         session, 
                         next_tpl[0], 
                         **modify(helpers.tip(session), *next_tpl)
-                        )
+                    )
 
         elif command in ["help", "h"]:
             print('\nd(isplay), p(ick), a(dd), m(odify), q(uit), h(elp)\n')

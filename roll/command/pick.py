@@ -1,12 +1,18 @@
-from random import choice, random
+from random import random
 
 # This function selects an activity at random from the list
-def pick(node):
+def pick(node, last_node):
+
     print(node.title)
+
     c = [child for child in node.children if child.status]
     if not c:
         return node
-    return pick(c[scale([child.priority for child in c])])
+    
+    p = last_node
+    while p == last_node:
+        p = pick(c[scale([child.priority for child in c])], last_node)
+    return p
 
 def scale(nums):
 
