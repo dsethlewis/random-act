@@ -80,7 +80,7 @@ def add_past_activity(session, activity, activity_session_id, accepted):
 def acpt_rate_dev(session, activity):
 
     if session.execute(
-        select(func.count(PastActivity)).
+        select(func.count(PastActivity.id)).
         filter(PastActivity.activity_id == activity.id)
     ).scalar() < 5:
         return 0
