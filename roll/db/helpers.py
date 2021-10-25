@@ -79,9 +79,11 @@ def add_past_activity(session, activity, activity_session_id, accepted):
 
 def acpt_rate_dev(session, activity):
 
-    mean = session.execute(
-        select(func.avg(PastActivity.accepted))
-    ).scalar()
+    if session.execute(
+        select(func.count(PastActivity)).
+        filter(PastActivity.activity_id == activity.id)
+    ).scalar() < 5:
+        return 0
 
     rates_by_activity = (
         select(
@@ -92,6 +94,10 @@ def acpt_rate_dev(session, activity):
         group_by(PastActivity.activity_id).
         subquery()
     )
+
+    mean = session.execute(
+        select(func.avg(rates_by_activity.c.rate))
+    ).scalar()
 
     sd = session.execute(
         select(func.sqrt(func.avg(func.pow(rates_by_activity.c.rate - mean, 2))))    
