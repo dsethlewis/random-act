@@ -1,4 +1,4 @@
-from db import helpers
+from db.helpers import activities, past_activities, sessions
 from db.database import Session
 from command.display import display
 from command.pick import pick
@@ -9,7 +9,7 @@ from command.modify import modify
 def loop():
 
     with Session() as session:
-        activity_session_id = helpers.start_activity_session(session)
+        activity_session_id = sessions.start_activity_session(session)
     running = True
 
     next = None
@@ -23,13 +23,13 @@ def loop():
         # display list
         if command == "d":
             with Session() as session:
-                display(helpers.tip(session))
+                display(activities.tip(session))
 
         # pick next activity
         elif command in ["p", ""]:
             print("")
             with Session() as session:
-                next = pick(helpers.tip(session), last_title)
+                next = pick(activities.tip(session), last_title)
                 next_tpl = next.id, next.title, next.parent_id
             next_id = next_tpl[0]
             last_title = next_tpl[1]
@@ -40,25 +40,25 @@ def loop():
                 lower()
             ) in ["y", ""]
             with Session() as session:
-                helpers.add_past_activity(
+                past_activities.add_past_activity(
                     session, next_id,
                     activity_session_id, accepted
                 )
 
             # tweak priority
             with Session() as session:
-                stddvs = helpers.acpt_rate_dev(session, next_id)
+                stddvs = past_activities.acpt_rate_dev(session, next_id)
             if accepted and stddvs >= z:
                 if like(next):
                     with Session() as session:
-                        for a in helpers.get_ancestry(session, next):
+                        for a in activities.get_ancestry(session, next):
                             a.priority += 1
                         session.commit()
                     print("OK, thanks for the feedback!")
             elif not accepted and stddvs <= z:
                 if dislike(next):
                     with Session() as session:
-                        for a in helpers.get_ancestry(session, next):
+                        for a in activities.get_ancestry(session, next):
                             a.priority -= 1
                         session.commit()
                     print("OK, thanks for the feedback!")
@@ -67,9 +67,9 @@ def loop():
         # add a new activity
         elif command == "a":
             with Session() as session:
-                add_title, add_parent = add(helpers.tip(session))
+                add_title, add_parent = add(activities.tip(session))
                 if add_title or add_parent:
-                    helpers.addition(session, add_title, add_parent.id)
+                    activities.addition(session, add_title, add_parent.id)
 
         # make changes to the most recent activity
         elif command == "m":
@@ -77,10 +77,10 @@ def loop():
                 print("Pick an activity first.\n")
             else:
                 with Session() as session:
-                    helpers.update_activity(
+                    activities.update_activity(
                         session, 
                         next_tpl[0], 
-                        **modify(helpers.tip(session), *next_tpl)
+                        **modify(activities.tip(session), *next_tpl)
                     )
 
         elif command in ["help", "h"]:
@@ -91,6 +91,6 @@ def loop():
             running = False
     
     with Session() as session:
-        helpers.end_activity_session(session, activity_session_id)
+        sessions.end_activity_session(session, activity_session_id)
 
 loop()
