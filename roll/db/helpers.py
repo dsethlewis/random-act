@@ -1,15 +1,9 @@
 from datetime import datetime
 
-from sqlalchemy.orm import Session
 from sqlalchemy import select, update, func
 
 from db.database import engine
 from db.models import DBActivity, ActivitySession, PastActivity
-
-# General DBMS helpers
-
-def new_session():
-    return Session(engine, future=True)
 
 # activity helpers
 
@@ -68,20 +62,20 @@ def end_activity_session(session, activity_session_id):
 
 # past_activity helpers
 
-def add_past_activity(session, activity, activity_session_id, accepted):
+def add_past_activity(session, activity_id, activity_session_id, accepted):
     session.add(PastActivity(
-        activity_id=activity.id,
+        activity_id=activity_id,
         timestamp=datetime.now(),
         session_id=activity_session_id,
         accepted=accepted
     ))
     session.commit()
 
-def acpt_rate_dev(session, activity):
+def acpt_rate_dev(session, activity_id):
 
     if session.execute(
         select(func.count(PastActivity.id)).
-        filter(PastActivity.activity_id == activity.id)
+        filter(PastActivity.activity_id == activity_id)
     ).scalar() < 5:
         return 0
 
@@ -108,7 +102,7 @@ def acpt_rate_dev(session, activity):
 
     rate = session.execute(
         select(rates_by_activity.c.rate).
-        filter(rates_by_activity.c.activity_id == activity.id)
+        filter(rates_by_activity.c.activity_id == activity_id)
     ).scalar()
 
     return (rate - mean) / sd if rate else 0

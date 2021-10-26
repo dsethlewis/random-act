@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy.orm import sessionmaker
 
 from db import models, helpers
 
@@ -11,3 +12,5 @@ if not database_exists(engine.url):
     with helpers.new_session() as session:
         models.Base.metadata.create_all(engine)
         session.commit()
+
+Session = sessionmaker(engine, future=True)
