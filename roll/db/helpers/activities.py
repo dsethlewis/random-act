@@ -10,13 +10,15 @@ def tip(session):
         where(DBActivity.parent_id == 0 and DBActivity.status)
     ).all()[0][0]
 
-def addition(session, title, parent_id):
+def addition(session, title, parent_id, ordered=False, order_index=None):
     session.add(DBActivity(
         title=title,
         parent_id=parent_id,
         status=True,
-        priority=1
-        ))
+        priority=0,
+        ordered=ordered,
+        order_index=order_index
+    ))
     session.commit()
 
 def get_parent(session, activity):

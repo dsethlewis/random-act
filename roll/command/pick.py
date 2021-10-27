@@ -1,7 +1,9 @@
 from random import random
 
+from db.helpers.past_activities import last_seq_index
+
 # This function selects an activity at random from the list
-def pick(node, last_title):
+def pick(session, node, last_title):
 
     print(node.title)
 
@@ -9,8 +11,17 @@ def pick(node, last_title):
          if child.status and child.title != last_title]
     if not c:
         return node
-    
-    return pick(c[scale([child.priority for child in c])], last_title)
+
+    if node.ordered:
+        lsi = last_seq_index(session, node.id)
+        c.sort(key=lambda child: child.order_index)
+        if lsi:
+            if max([child.order_index for child in c]) > lsi:
+                c = [child for child in c
+                    if child.order_index > lsi]
+        return c[0]
+        
+    return pick(session, c[scale([child.priority for child in c])], last_title)
 
 def scale(nums):
 

@@ -29,7 +29,7 @@ def loop():
         elif command in ["p", ""]:
             print("")
             with Session() as session:
-                next = pick(activities.tip(session), last_title)
+                next = pick(session, activities.tip(session), last_title)
                 next_tpl = next.id, next.title, next.parent_id
             next_id = next_tpl[0]
             last_title = next_tpl[1]
@@ -67,9 +67,9 @@ def loop():
         # add a new activity
         elif command == "a":
             with Session() as session:
-                add_title, add_parent = add(activities.tip(session))
-                if add_title or add_parent:
-                    activities.addition(session, add_title, add_parent.id)
+                new = add(activities.tip(session))
+                if new:
+                    activities.addition(session, **new)
 
         # make changes to the most recent activity
         elif command == "m":

@@ -2,7 +2,7 @@ from datetime import datetime
 
 from sqlalchemy import select, func
 
-from db.models import PastActivity
+from db.models import PastActivity, DBActivity
 
 # past_activity helpers
 
@@ -52,3 +52,19 @@ def acpt_rate_dev(session, activity_id):
     ).scalar()
 
     return (rate - mean) / sd if rate else 0
+
+def last_seq_index(session, parent_id):
+    session.execute(
+        select(DBActivity.order_index).
+        join(PastActivity).
+        filter(
+            DBActivity.parent_id == parent_id
+            and DBActivity.status
+            and PastActivity.accepted
+            and PastActivity.timestamp > (
+                datetime.now().
+                replace(hour=5, minute=0, second=0, microsecond=0)
+                )
+        ).
+        order_by(PastActivity.timestamp.desc())
+    ).first()

@@ -1,4 +1,4 @@
-from command.helpers import browser
+import command.helpers as hp
 
 def modify(tip, id, title, parent_id):
 
@@ -17,9 +17,17 @@ def modify(tip, id, title, parent_id):
         return {"title": new_title}
 
     elif choice == 2:
-        node = browser(tip)
-        print(quoted + " will be moved under \"" + node.title + "\"")
-        return {"parent_id": node.id}
+
+        node = hp.browser(tip)
+
+        order_index, confirm_order = hp.ordering(node)
+
+        print(
+            quoted
+            + " will be moved under \"" + node.title + "\""
+            + confirm_order
+            )
+        return {"parent_id": node.id, "order_index": order_index}
 
     elif choice == 3:
         print("\"" + title + "\" will be archived\n")
