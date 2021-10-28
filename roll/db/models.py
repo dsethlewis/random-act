@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.orm import declarative_base, relationship, backref
 
 Base = declarative_base()
 
@@ -7,10 +7,10 @@ class DBActivity(Base):
     __tablename__ = 'activity'
 
     id = Column(Integer, primary_key=True)
+    parent_id = Column(Integer, ForeignKey('activity.id'))
+    children = relationship("DBActivity", backref=backref('parent', remote_side=[id]))
     title = Column(String(140), nullable=False)
     status = Column(Boolean)
-    parent_id = Column(Integer, ForeignKey('activity.id'))
-    children = relationship("DBActivity")
     priority = Column(Integer)
     ordered = Column(Boolean)
     order_index = Column(Integer)

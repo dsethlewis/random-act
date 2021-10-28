@@ -3,7 +3,7 @@ from db.database import Session
 from command.display import display
 from command.pick import pick
 from command.add import add
-from command.rate import like, dislike
+from command.rate import rate
 from command.modify import modify
 
 def loop():
@@ -34,7 +34,7 @@ def loop():
             next_id = next_tpl[0]
             last_title = next_tpl[1]
 
-            # collect feedback
+            # collect response and add activity to history
             accepted = (
                 input("\nDo you want to do this activity? (Y/n) ").
                 lower()
@@ -49,19 +49,9 @@ def loop():
             with Session() as session:
                 stddvs = past_activities.acpt_rate_dev(session, next_id)
             if accepted and stddvs >= z:
-                if like(next):
-                    with Session() as session:
-                        for a in activities.get_ancestry(session, next):
-                            a.priority += 1
-                        session.commit()
-                    print("OK, thanks for the feedback!")
+                rate(next, like=True)
             elif not accepted and stddvs <= z:
-                if dislike(next):
-                    with Session() as session:
-                        for a in activities.get_ancestry(session, next):
-                            a.priority -= 1
-                        session.commit()
-                    print("OK, thanks for the feedback!")
+                rate(next, like=False)
             print("")
 
         # add a new activity
