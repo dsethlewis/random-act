@@ -70,7 +70,7 @@ def last_seq_index(session, parent_id):
     ).first()
 
 def activity_n(session, activity_id):
-    session.execute(
-        select(func.count(DBActivity.id)).
+    return session.execute(
+        select(func.count(PastActivity.id)).
         filter(PastActivity.activity_id == activity_id)
     ).scalar()
