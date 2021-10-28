@@ -67,7 +67,7 @@ def loop():
                 print("Pick an activity first.\n")
             else:
                 with Session() as session:
-                    activities.update_activity(
+                    activities.update_activities(
                         session, 
                         next_tpl[0], 
                         **modify(activities.tip(session), *next_tpl)
