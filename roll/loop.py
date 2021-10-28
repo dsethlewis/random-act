@@ -48,9 +48,10 @@ def loop():
             # tweak priority
             with Session() as session:
                 stddvs = past_activities.acpt_rate_dev(session, next_id)
-            if accepted and stddvs >= z:
+                fifth = not past_activities.activity_n(session, next_id) % 5
+            if accepted and stddvs >= z and fifth:
                 rate(next, like=True)
-            elif not accepted and stddvs <= z:
+            elif not accepted and stddvs <= z and fifth:
                 rate(next, like=False)
             print("")
 
