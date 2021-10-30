@@ -1,6 +1,6 @@
 from random import random
 
-from db.helpers.past_activities import last_seq_index
+import db.helpers.past_activities as pa
 
 # This function selects an activity at random from the list
 def pick(session, node, last_title):
@@ -16,7 +16,7 @@ def pick(session, node, last_title):
         return node
 
     if node.ordered:
-        lsi = last_seq_index(session, node.id)
+        lsi = pa.last_seq_index(session, node.id)
         c.sort(key=lambda child: child.order_index)
         if lsi:
             if max([child.order_index for child in c]) > lsi:
@@ -24,7 +24,12 @@ def pick(session, node, last_title):
                     if child.order_index > lsi]
         return c[0]
         
-    return pick(session, c[scale([child.priority for child in c])], last_title)
+    return pick(
+        session,
+        c[scale([child.priority * pa.period_acpt_rt(session, child.id)
+                 for child in c])],
+        last_title
+        )
 
 # return the first ancestor with non-zero siblings
 def ancestor_with_siblings(node):

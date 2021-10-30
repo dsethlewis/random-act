@@ -74,3 +74,14 @@ def activity_n(session, activity_id):
         select(func.count(PastActivity.id)).
         filter(PastActivity.activity_id == activity_id)
     ).scalar()
+
+def period_acpt_rt(session, activity_id):
+    curr_period = datetime.now().hour // 6
+    rt = session.execute(
+        select(func.avg(PastActivity.accepted)).
+        filter(
+            func.time(PastActivity.timestamp) / 6 == curr_period,
+            PastActivity.activity_id == activity_id
+        )
+    ).scalar()
+    return rt if rt else 1
