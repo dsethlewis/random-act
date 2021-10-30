@@ -2,15 +2,19 @@ from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import sessionmaker
 
-from db import models, helpers
+from db import models
+from db.helpers.activities import addition
 
-db_path = r"sqlite:///C:\Users\dseth\Documents\repos\random-act\mydata\roll.db"
+db_path = "sqlite:///mydata/roll.db"
 engine = create_engine(db_path)
+
+Session = sessionmaker(engine, future=True)
 
 if not database_exists(engine.url):
     create_database(engine.url)
-    with helpers.new_session() as session:
+    with Session() as session:
         models.Base.metadata.create_all(engine)
         session.commit()
 
-Session = sessionmaker(engine, future=True)
+    with Session() as session:
+        addition(session, "Do something", 0)
