@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.orm import sessionmaker
@@ -5,7 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from db import models
 from db.helpers.activities import addition
 
-db_path = "sqlite:///mydata/roll.db"
+db_path = os.path.join("sqlite:///mydata", "roll.db")
 engine = create_engine(db_path)
 
 Session = sessionmaker(engine, future=True)
