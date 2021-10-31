@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import select, func
 
 from db.models import PastActivity, DBActivity
+import db.helpers.activities as ac
 
 # past_activity helpers
 
@@ -75,13 +76,19 @@ def activity_n(session, activity_id):
         filter(PastActivity.activity_id == activity_id)
     ).scalar()
 
+def curr_period():
+    datetime.now().hour // 4
+
 def period_acpt_rt(session, activity_id):
-    curr_period = datetime.now().hour // 6
+    per = curr_period()
+    descendants = ac.descendants_ids(
+        ac.get_activity_by_id(session, activity_id)
+    )
     rt = session.execute(
         select(func.avg(PastActivity.accepted)).
         filter(
-            func.time(PastActivity.timestamp) / 6 == curr_period,
-            PastActivity.activity_id == activity_id
+            func.mod(func.time(PastActivity.timestamp) + 2, 24) / 6 == per,
+            PastActivity.activity_id in descendants
         )
     ).scalar()
     return rt if rt else 1

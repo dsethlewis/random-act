@@ -1,5 +1,5 @@
 from db.database import Session
-from db.helpers.activities import refresh_activity, increment_priorities
+import db.helpers.activities as ac
 
 # Rate an activity in the activity list
 
@@ -11,14 +11,9 @@ def rate(activity, like):
     ).lower()
     if rating == "y":
         with Session() as session:
-            increment_priorities(
+            ac.increment_priorities(
                 session,
-                lineage_ids(refresh_activity(session, activity)),
+                ac.lineage_ids(ac.refresh_activity(session, activity)),
                 x
             )
         print("Thanks for the feedback!")
-
-def lineage_ids(activity, ancestors=[]):
-    if activity.parent_id == 0:
-        return ancestors
-    return lineage_ids(activity.parent, ancestors + [activity.id])

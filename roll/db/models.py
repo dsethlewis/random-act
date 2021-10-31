@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import (Column, Integer, String, Boolean, DateTime, ForeignKey,
+    Float)
 from sqlalchemy.orm import declarative_base, relationship, backref
 
 Base = declarative_base()
@@ -14,6 +15,7 @@ class DBActivity(Base):
     priority = Column(Integer)
     ordered = Column(Boolean)
     order_index = Column(Integer)
+    prd_acpt_rt = Column(Float)
 
 class PastActivity(Base):
     __tablename__ = 'past_activity'
