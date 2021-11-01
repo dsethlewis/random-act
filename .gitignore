@@ -5,7 +5,10 @@ venv/
 
 *.db
 .token-oauth
-mydata/*
 
 *.vscode
 *.code-workspace
+
+loop.spec
+build/
+dist/

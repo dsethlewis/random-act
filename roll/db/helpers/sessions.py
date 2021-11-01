@@ -2,7 +2,6 @@ from datetime import datetime
 
 from sqlalchemy import update
 
-from db.database import engine
 from db.models import ActivitySession
 
 # activity_session helpers

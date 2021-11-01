@@ -84,4 +84,5 @@ def loop():
     with Session() as session:
         sessions.end_activity_session(session, activity_session_id)
 
-loop()
+if __name__ == '__main__':
+    loop()

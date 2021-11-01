@@ -1,7 +1,19 @@
-from db.database import Session
-from db.helpers.activities import get_activity_by_id, descendants_ids
+from pathlib import Path
 
-with Session() as s:
-    l=descendants_ids(get_activity_by_id(s, 364))
+from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists
 
-print(l)
+db_path = ("sqlite:///" + str(Path(__file__).parents[1] / "mydata" / "roll.db")).encode("unicode_escape").decode()
+print(db_path)
+
+engine = create_engine(db_path)
+
+# from sqlalchemy import text
+
+# with engine.connect() as conn:
+#      result = conn.execute(text("select * from activity where status=1 limit 10"))
+#      print(result.all())
+
+print(engine.url)
+
+print(database_exists(engine.url))
