@@ -47,7 +47,7 @@ def update_activities(session, ids, **kwargs):
     if isinstance(ids, int) : ids = [ids]
     session.execute(
         update(DBActivity).
-        filter(DBActivity.id in ids, DBActivity.status).
+        filter(DBActivity.id.in_(ids), DBActivity.status).
         values(**kwargs).
         execution_options(synchronize_session="fetch")
     )
