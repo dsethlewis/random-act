@@ -1,6 +1,7 @@
 from datetime import datetime
+from math import pi
 
-from sqlalchemy import select, func
+from sqlalchemy import select, func, Integer
 
 from db.models import PastActivity, DBActivity
 import db.helpers.activities as ac
@@ -85,7 +86,7 @@ def period_acpt_rt(session, activity_id):
         ac.get_activity_by_id(session, activity_id)
     )
     rt = session.execute(
-        select(func.avg(PastActivity.accepted)).
+        select(func.avg(PastActivity.accepted.cast(Integer))).
         filter(
             func.mod(func.time(PastActivity.timestamp) + 2, 24) / 6 == per,
             PastActivity.activity_id in descendants

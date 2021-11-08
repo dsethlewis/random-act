@@ -15,7 +15,6 @@ class DBActivity(Base):
     priority = Column(Integer)
     ordered = Column(Boolean)
     order_index = Column(Integer)
-    prd_acpt_rt = Column(Float)
 
 class PastActivity(Base):
     __tablename__ = 'past_activity'

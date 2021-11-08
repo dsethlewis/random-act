@@ -6,8 +6,8 @@ from db.models import DBActivity
 
 def tip(session):
     return session.execute(
-        select(DBActivity).
-        where(DBActivity.parent_id == 0 and DBActivity.status)
+        select(DBActivity)
+        .filter(DBActivity.parent_id == None, DBActivity.status)
     ).all()[0][0]
 
 def get_activity_by_id(session, activity_id):
@@ -39,7 +39,7 @@ def addition(session, title, parent_id, ordered=False, order_index=None):
     session.commit()
 
 def lineage_ids(activity, ancestors=[]):
-    if activity.parent_id == 0:
+    if not activity.parent_id:
         return ancestors
     return lineage_ids(activity.parent, ancestors + [activity.id])
 
