@@ -1,19 +1,7 @@
-from pathlib import Path
+from db.database import Session
+from db.helpers.past_activities import time_of_day_weight
 
-from sqlalchemy import create_engine
-from sqlalchemy_utils import database_exists
+with Session() as sesh:
+    m = time_of_day_weight(sesh, 369)
 
-db_path = ("sqlite:///" + str(Path(__file__).parents[1] / "mydata" / "roll.db")).encode("unicode_escape").decode()
-print(db_path)
-
-engine = create_engine(db_path)
-
-# from sqlalchemy import text
-
-# with engine.connect() as conn:
-#      result = conn.execute(text("select * from activity where status=1 limit 10"))
-#      print(result.all())
-
-print(engine.url)
-
-print(database_exists(engine.url))
+print(m)

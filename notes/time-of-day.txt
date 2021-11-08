@@ -1,0 +1,13 @@
+This algorithm calculates a weight for each activity based on the difference between the current time and the mean time this activity has been accepted in the past.
+
+An open question: How to handle `PastActivity.accepted == False`? Don't want to just ignore it, but not sure how to interpret it in the abstract. And I don't want to have to do a regression... Could calculate the circular mean for both, and somehow combine the weights?
+
+Fundamentally, the problem is that, while there is only one reason to do an activity (i.e., I can and want to do it), there are lots of reasons not to: I don't have the time right now, I don't feel like it, I don't see much value in doing this right now, I did this same thing too recently, etc. So !accepted doesn't just mean that I don't want to do it right now, but I would do it a different time. Theoretically, all that other stuff is error that should cancel each other out with a large enough sample, but I'm not sure it makes sense to negate it and add it back in. I don't see a solution here in the highly simplified predictive model (i.e., just a circular mean) I'm building. Maybe this is something to use in a future iteration.
+
+Here are the steps:
+
+1. Select the past occurrences of this activity.
+2. Convert the timestamp first to seconds-since-midnight and then to radians.
+3. Calculate the circular mean of the activity in polar coordinates.
+4. Take the minimum absolute deviation of the current time from the azimuth.
+5. Subtract from 1, square, and premultiply by the radius.

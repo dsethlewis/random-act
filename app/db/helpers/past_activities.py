@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import select, func
+from sqlalchemy import select, func, Integer, extract
 
 from db.models import PastActivity, DBActivity
 import db.helpers.activities as ac
@@ -92,3 +92,32 @@ def period_acpt_rt(session, activity_id):
         )
     ).scalar()
     return rt if rt else 1
+
+def time_of_day_weight(session, activity_id):
+    julian_times = (
+        select(extract("julian", PastActivity.timestamp).label("julian"))
+        .filter(PastActivity.activity_id == activity_id, PastActivity.accepted)
+        .subquery()
+    )
+
+    radial_times = select(
+            (
+                (julian_times.c.julian - func.trunc(julian_times.c.julian))
+                * 2 * func.pi()
+            ).label("rad")
+    ).subquery()
+
+    agg = select(
+            func.sum(func.sin(radial_times.c.rad)).label("s"),
+            func.sum(func.cos(radial_times.c.rad)).label("c"),
+            func.count(radial_times).label("n")
+    ).subquery()
+
+    return session.execute(
+        select(
+            func.atan2(agg.c.s, agg.c.c) * 24,
+            func.sqrt(func.pow(agg.c.s, 2) + func.pow(agg.c.c, 2)) / agg.c.n
+        )
+    ).all()
+
+    
