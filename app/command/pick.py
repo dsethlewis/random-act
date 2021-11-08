@@ -20,9 +20,8 @@ def pick(session, node, last_title):
         c.sort(key=lambda child: child.order_index)
         if lsi:
             if max([child.order_index for child in c]) > lsi:
-                c = [child for child in c
-                    if child.order_index > lsi]
-        return c[0]
+                c = [child for child in c if child.order_index > lsi]
+        return pick(session, c[0], last_title)
         
     return pick(
         session,
