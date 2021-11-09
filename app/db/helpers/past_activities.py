@@ -23,14 +23,14 @@ def acpt_rate_dev(session, activity_id):
         select(func.count(PastActivity.id)).
         filter(PastActivity.activity_id == activity_id)
     ).scalar() < 5:
-        return 0
+        return 1
 
     rates_by_activity = (
         select(
             PastActivity.activity_id, 
             func.ln(
-                func.avg(PastActivity.accepted)
-                / (1 - func.avg(PastActivity.accepted))
+                (0.01 + func.avg(PastActivity.accepted.cast(Integer)))
+                / (1.01 - func.avg(PastActivity.accepted.cast(Integer)))
             ).label("rate")
         ).
         filter(PastActivity.accepted != None).
