@@ -71,7 +71,7 @@ def loop():
                     activities.update_activities(
                         session, 
                         next_tpl[0], 
-                        **modify(activities.tip(session), *next_tpl)
+                        **modify(session, activities.tip(session), *next_tpl)
                     )
 
         elif command in ["help", "h"]:

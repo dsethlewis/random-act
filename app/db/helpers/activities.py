@@ -44,6 +44,7 @@ def lineage_ids(activity, ancestors=[]):
     return lineage_ids(activity.parent, ancestors + [activity.id])
 
 def update_activities(session, ids, **kwargs):
+    if not kwargs : return
     if isinstance(ids, int) : ids = [ids]
     session.execute(
         update(DBActivity).
