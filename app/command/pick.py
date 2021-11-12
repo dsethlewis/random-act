@@ -28,7 +28,7 @@ def pick(session, node, last_title):
         c[scale([child.priority * pa.period_acpt_rt(session, child.id)
                  for child in c])],
         last_title
-        )
+    )
 
 # return the first ancestor with non-zero siblings
 def ancestor_with_siblings(node):

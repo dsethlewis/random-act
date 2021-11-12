@@ -36,13 +36,18 @@ def loop():
 
             # collect response and add activity to history
             accepted = (
-                input("\nDo you want to do this activity? (Y/n) ").
-                lower()
+                input("\nDo you want to do this activity? (Y/n) ")
+                .lower()
             ) in ["y", ""]
+
+            skipped = None
+            if not accepted and next.parent.ordered:
+                skipped = input("\nDo you want to skip this step in the routine today? (Y/n) ").lower() == "y"
+
             with Session() as session:
                 past_activities.add_past_activity(
                     session, next_id,
-                    activity_session_id, accepted
+                    activity_session_id, accepted, skipped
                 )
 
             # tweak priority

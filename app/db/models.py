@@ -24,6 +24,7 @@ class PastActivity(Base):
     session_id = Column(Integer, ForeignKey('activity_session.id'))
     accepted = Column(Boolean)
     timestamp = Column(DateTime)
+    skipped = Column(Boolean)
 
 class ActivitySession(Base):
     __tablename__ = 'activity_session'

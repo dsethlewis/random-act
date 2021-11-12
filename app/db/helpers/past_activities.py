@@ -1,19 +1,20 @@
 from datetime import datetime
 from math import pi
 
-from sqlalchemy import select, func, Integer
+from sqlalchemy import select, func, Integer, or_
 
 from db.models import PastActivity, DBActivity
 import db.helpers.activities as ac
 
 # past_activity helpers
 
-def add_past_activity(session, activity_id, activity_session_id, accepted):
+def add_past_activity(session, activity_id, activity_session_id, accepted, skipped):
     session.add(PastActivity(
         activity_id=activity_id,
         timestamp=datetime.now(),
         session_id=activity_session_id,
-        accepted=accepted
+        accepted=accepted,
+        skipped=skipped
     ))
     session.commit()
 
@@ -60,15 +61,15 @@ def last_seq_index(session, parent_id):
         select(DBActivity.order_index).
         join(PastActivity).
         filter(
-            DBActivity.parent_id == parent_id
-            and DBActivity.status
-            and PastActivity.accepted
-            and PastActivity.timestamp > (
+            DBActivity.parent_id == parent_id,
+            DBActivity.status,
+            or_(PastActivity.accepted, PastActivity.skipped),
+            PastActivity.timestamp > (
                 datetime.now().
                 replace(hour=5, minute=0, second=0, microsecond=0)
-                )
-        ).
-        order_by(PastActivity.timestamp.desc())
+            )
+        )
+        .order_by(PastActivity.timestamp.desc())
     ).first()
 
 def activity_n(session, activity_id):
