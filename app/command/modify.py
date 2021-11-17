@@ -1,7 +1,7 @@
 import command.helpers as hp
 from db.helpers.activities import increment_priorities
 
-def modify(session, tip, id, title, parent_id):
+def modify(session, tip, id, title, *args):
 
     quoted = "\"" + title + "\""
 

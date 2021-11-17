@@ -30,7 +30,7 @@ def loop():
             print("")
             with Session() as session:
                 next = pick(session, activities.tip(session), last_title)
-                next_tpl = next.id, next.title, next.parent_id
+                next_tpl = next.id, next.title, next.parent_id, next.parent.ordered
             next_id = next_tpl[0]
             last_title = next_tpl[1]
 
@@ -41,7 +41,7 @@ def loop():
             ) in ["y", ""]
 
             skipped = None
-            if not accepted and next.parent.ordered:
+            if not accepted and next_tpl[3]:
                 skipped = input("\nDo you want to skip this step in the routine today? (Y/n) ").lower() == "y"
 
             with Session() as session:
