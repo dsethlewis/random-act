@@ -7,7 +7,8 @@ from sqlalchemy.orm import sessionmaker
 from db import models
 from db.helpers.activities import addition
 
-db_path = ("sqlite:///" + str(Path(__file__).parents[2] / "data" / "random.db")).encode("unicode_escape").decode()
+db_path = ("postgresql://daniel:pw9876@localhost:5432/random_act")
+# db_path = ("sqlite:///" + str(Path(__file__).parents[2] / "data" / "random.db")).encode("unicode_escape").decode()
 engine = create_engine(db_path)
 
 Session = sessionmaker(engine, future=True)
@@ -20,4 +21,4 @@ if not database_exists(engine.url):
         session.commit()
 
     with Session() as session:
-        addition(session, "Do something", 0)
+        addition(session, "Do something", None)

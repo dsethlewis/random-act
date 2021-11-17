@@ -30,19 +30,24 @@ def loop():
             print("")
             with Session() as session:
                 next = pick(session, activities.tip(session), last_title)
-                next_tpl = next.id, next.title, next.parent_id
+                next_tpl = next.id, next.title, next.parent_id, next.parent.ordered
             next_id = next_tpl[0]
             last_title = next_tpl[1]
 
             # collect response and add activity to history
             accepted = (
-                input("\nDo you want to do this activity? (Y/n) ").
-                lower()
+                input("\nDo you want to do this activity? (Y/n) ")
+                .lower()
             ) in ["y", ""]
+
+            skipped = None
+            if not accepted and next_tpl[3]:
+                skipped = input("\nDo you want to skip this step in the routine today? (Y/n) ").lower() == "y"
+
             with Session() as session:
                 past_activities.add_past_activity(
                     session, next_id,
-                    activity_session_id, accepted
+                    activity_session_id, accepted, skipped
                 )
 
             # tweak priority
@@ -71,7 +76,7 @@ def loop():
                     activities.update_activities(
                         session, 
                         next_tpl[0], 
-                        **modify(activities.tip(session), *next_tpl)
+                        **modify(session, activities.tip(session), *next_tpl)
                     )
 
         elif command in ["help", "h"]:

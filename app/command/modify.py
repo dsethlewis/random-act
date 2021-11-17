@@ -1,6 +1,7 @@
 import command.helpers as hp
+from db.helpers.activities import increment_priorities
 
-def modify(tip, id, title, parent_id):
+def modify(session, tip, id, title, *args):
 
     quoted = "\"" + title + "\""
 
@@ -9,6 +10,7 @@ def modify(tip, id, title, parent_id):
         "1. Change the description\n"
         "2. Move it to another place in the list\n"
         "3. Archive it\n"
+        "4. Change its priority\n"
     ))
     
     if choice == 1:
@@ -32,3 +34,17 @@ def modify(tip, id, title, parent_id):
     elif choice == 3:
         print("\"" + title + "\" will be archived\n")
         return {"status": 0}
+
+    elif choice == 4:
+        change = input("Increase or decrease priority of " + quoted + "? I/d ").lower()
+        if change == "i":
+            increment = 1, "increased"
+        elif change == "d":
+            increment = -1, "decreased"
+        else:
+            print("Not a valid selection. Exiting.")
+        print("The priority of " + quoted + " will be " + increment[1])
+        
+        increment_priorities(session, id, increment[0])
+        return {}
+        

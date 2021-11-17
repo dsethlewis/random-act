@@ -3,7 +3,7 @@ __pycache__/
 rand-env/
 venv/
 
-*.db
+data/*
 .token-oauth
 
 *.vscode

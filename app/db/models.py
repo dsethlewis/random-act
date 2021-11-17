@@ -15,7 +15,6 @@ class DBActivity(Base):
     priority = Column(Integer)
     ordered = Column(Boolean)
     order_index = Column(Integer)
-    prd_acpt_rt = Column(Float)
 
 class PastActivity(Base):
     __tablename__ = 'past_activity'
@@ -25,6 +24,7 @@ class PastActivity(Base):
     session_id = Column(Integer, ForeignKey('activity_session.id'))
     accepted = Column(Boolean)
     timestamp = Column(DateTime)
+    skipped = Column(Boolean)
 
 class ActivitySession(Base):
     __tablename__ = 'activity_session'

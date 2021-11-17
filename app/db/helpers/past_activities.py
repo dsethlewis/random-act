@@ -1,18 +1,20 @@
 from datetime import datetime
+from math import pi
 
-from sqlalchemy import select, func, Integer, extract
+from sqlalchemy import select, func, Integer, extract, or_
 
 from db.models import PastActivity, DBActivity
 import db.helpers.activities as ac
 
 # past_activity helpers
 
-def add_past_activity(session, activity_id, activity_session_id, accepted):
+def add_past_activity(session, activity_id, activity_session_id, accepted, skipped):
     session.add(PastActivity(
         activity_id=activity_id,
         timestamp=datetime.now(),
         session_id=activity_session_id,
-        accepted=accepted
+        accepted=accepted,
+        skipped=skipped
     ))
     session.commit()
 
@@ -22,14 +24,14 @@ def acpt_rate_dev(session, activity_id):
         select(func.count(PastActivity.id)).
         filter(PastActivity.activity_id == activity_id)
     ).scalar() < 5:
-        return 0
+        return 1
 
     rates_by_activity = (
         select(
             PastActivity.activity_id, 
             func.ln(
-                func.avg(PastActivity.accepted)
-                / (1 - func.avg(PastActivity.accepted))
+                (0.01 + func.avg(PastActivity.accepted.cast(Integer)))
+                / (1.01 - func.avg(PastActivity.accepted.cast(Integer)))
             ).label("rate")
         ).
         filter(PastActivity.accepted != None).
@@ -59,15 +61,15 @@ def last_seq_index(session, parent_id):
         select(DBActivity.order_index).
         join(PastActivity).
         filter(
-            DBActivity.parent_id == parent_id
-            and DBActivity.status
-            and PastActivity.accepted
-            and PastActivity.timestamp > (
+            DBActivity.parent_id == parent_id,
+            DBActivity.status,
+            or_(PastActivity.accepted, PastActivity.skipped),
+            PastActivity.timestamp > (
                 datetime.now().
                 replace(hour=5, minute=0, second=0, microsecond=0)
-                )
-        ).
-        order_by(PastActivity.timestamp.desc())
+            )
+        )
+        .order_by(PastActivity.timestamp.desc())
     ).first()
 
 def activity_n(session, activity_id):
@@ -85,7 +87,7 @@ def period_acpt_rt(session, activity_id):
         ac.get_activity_by_id(session, activity_id)
     )
     rt = session.execute(
-        select(func.avg(PastActivity.accepted)).
+        select(func.avg(PastActivity.accepted.cast(Integer))).
         filter(
             func.mod(func.time(PastActivity.timestamp) + 2, 24) / 6 == per,
             PastActivity.activity_id in descendants

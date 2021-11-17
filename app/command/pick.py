@@ -20,16 +20,15 @@ def pick(session, node, last_title):
         c.sort(key=lambda child: child.order_index)
         if lsi:
             if max([child.order_index for child in c]) > lsi:
-                c = [child for child in c
-                    if child.order_index > lsi]
-        return c[0]
+                c = [child for child in c if child.order_index > lsi]
+        return pick(session, c[0], last_title)
         
     return pick(
         session,
         c[scale([child.priority * pa.period_acpt_rt(session, child.id)
                  for child in c])],
         last_title
-        )
+    )
 
 # return the first ancestor with non-zero siblings
 def ancestor_with_siblings(node):
