@@ -1,7 +1,6 @@
-from datetime import datetime
-from math import pi
+from datetime import datetime, timedelta
 
-from sqlalchemy import select, func, Integer, extract, or_
+from sqlalchemy import select, func, Integer, extract, or_, case, not_
 
 from db.models import PastActivity, DBActivity
 import db.helpers.activities as ac
@@ -96,30 +95,48 @@ def period_acpt_rt(session, activity_id):
     return rt if rt else 1
 
 def time_of_day_weight(session, activity_id):
+    descendants = ac.descendants_ids(
+        ac.get_activity_by_id(session, activity_id)
+    )
+
     julian_times = (
-        select(extract("julian", PastActivity.timestamp).label("julian"))
-        .filter(PastActivity.activity_id == activity_id, PastActivity.accepted)
+        select(
+            extract("julian", PastActivity.timestamp).label("julian"),
+            PastActivity.accepted
+        )
+        .filter(PastActivity.activity_id.in_(descendants))
         .subquery()
     )
 
     radial_times = select(
-            (
-                (julian_times.c.julian - func.trunc(julian_times.c.julian))
-                * 2 * func.pi()
-            ).label("rad")
+        (
+            (julian_times.c.julian - func.trunc(julian_times.c.julian))
+            * 2 * func.pi()
+        ).label("rad"),
+        julian_times.c.accepted
     ).subquery()
+
+    rev_reject = select(case(
+        (radial_times.c.accepted, radial_times.c.rad),
+        (not_(radial_times.c.accepted), radial_times.c.rad + func.pi())
+    ).label("rad_reversed"))
 
     agg = select(
-            func.sum(func.sin(radial_times.c.rad)).label("s"),
-            func.sum(func.cos(radial_times.c.rad)).label("c"),
-            func.count(radial_times).label("n")
+            func.sum(func.sin(rev_reject.c.rad_reversed)).label("s"),
+            func.sum(func.cos(rev_reject.c.rad_reversed)).label("c"),
+            func.count(rev_reject.c.rad_reversed).label("n")
     ).subquery()
 
-    return session.execute(
+    t, radius = session.execute(
         select(
-            func.atan2(agg.c.s, agg.c.c) * 24,
+            (func.atan2(agg.c.s, agg.c.c) * 12 / func.pi()),
             func.sqrt(func.pow(agg.c.s, 2) + func.pow(agg.c.c, 2)) / agg.c.n
         )
-    ).all()
+    ).all()[0]
 
-    
+    t = t % 24
+    t_now = datetime.now()
+    t_now = (t_now - datetime(t_now.year, t_now.month, t_now.day)) / timedelta(hours=1)
+    t_dev = min(abs(t - t_now), abs(t + 12 - t_now))
+
+    return (t_dev / 6) ** radius

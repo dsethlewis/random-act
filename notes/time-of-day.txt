@@ -11,3 +11,8 @@ Here are the steps:
 3. Calculate the circular mean of the activity in polar coordinates.
 4. Take the minimum absolute deviation of the current time from the azimuth.
 5. Subtract from 1, square, and premultiply by the radius.
+
+f(w, r)
+f(w, 0) = 1
+f(w, 1) = w
+f(w, r) = w ** r 

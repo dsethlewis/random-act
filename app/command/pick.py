@@ -22,10 +22,10 @@ def pick(session, node, last_title):
             if max([child.order_index for child in c]) > lsi:
                 c = [child for child in c if child.order_index > lsi]
         return pick(session, c[0], last_title)
-        
+
     return pick(
         session,
-        c[scale([child.priority * pa.period_acpt_rt(session, child.id)
+        c[scale([child.priority * pa.time_of_day_weight(session, child.id)
                  for child in c])],
         last_title
     )
