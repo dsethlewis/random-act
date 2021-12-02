@@ -1,9 +1,8 @@
 from db.database import Session
-from command.pick import ancestor_with_siblings
 from db.helpers.activities import get_activity_by_id
+from command.pick import pick
+from db.helpers.past_activities import last_seq_index
 
 with Session() as sesh:
-    node = get_activity_by_id(sesh, 20)
-    ancestor = ancestor_with_siblings(node)
-    print(node.title)
-    print(ancestor.title)
+    print(last_seq_index(sesh, 387))
+    # pick(sesh, get_activity_by_id(sesh, 387), "")
