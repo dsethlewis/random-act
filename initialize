@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# This restarts the local PostgreSQL server and launches the command-line app
+# in Python
+
+sudo service postgresql restart
+
+cd ~/projects/random-act
+
+source venv/bin/activate
+
+python app/loop.py

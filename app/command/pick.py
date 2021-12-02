@@ -5,10 +5,10 @@ import db.helpers.past_activities as pa
 # This function selects an activity at random from the list
 def pick(session, node, last_title):
 
-    print(node.title)
-
     if len(node.children) == 1 and node.children[0].title == last_title:
         return pick(session, ancestor_with_siblings(node), last_title)
+
+    print(node.title)
 
     c = [child for child in node.children
          if child.status and child.title != last_title]
@@ -32,7 +32,7 @@ def pick(session, node, last_title):
 
 # return the first ancestor with non-zero siblings
 def ancestor_with_siblings(node):
-    if len(node.parent.children) > 1:
+    if len(node.children) > 1:
         return node
     return ancestor_with_siblings(node.parent)
 
