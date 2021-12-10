@@ -18,7 +18,7 @@ def pick(session, node, last_title):
     if node.ordered:
         lsi = pa.last_seq_index(session, node.id)
         c.sort(key=lambda child: child.order_index)
-        if lsi:
+        if lsi is not None:
             if max([child.order_index for child in c]) > lsi:
                 c = [child for child in c if child.order_index > lsi]
         return pick(session, c[0], last_title)

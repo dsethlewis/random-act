@@ -56,7 +56,7 @@ def acpt_rate_dev(session, activity_id):
     return (rate - mean) / sd if rate else 0
 
 def last_seq_index(session, parent_id):
-    return session.execute(
+    lsi = session.execute(
         select(DBActivity.order_index)
         .join(PastActivity)
         .filter(
@@ -69,7 +69,8 @@ def last_seq_index(session, parent_id):
             )
         )
         .order_by(PastActivity.timestamp.desc())
-    ).first()[0]
+    ).first()
+    return lsi[0] if lsi else None
 
 def activity_n(session, activity_id):
     return session.execute(
